@@ -1,0 +1,30 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!--
+	<import resource="affectation-servlet.xml"/>
+	
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+    	<property name="targetObject" ref="configurationService" />  
+    	<property name="targetMethod" value="start" />  
+    	<property name="concurrent" value="false" />  
+    </bean>  
+    
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="jobDetail" />  
+    	<property name="cronExpression" value="0,10,20,30,40,50 * * * * ?" />  
+    </bean>
+    
+     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">  
+    	<property name="jobDetail" ref="jobDetail" />  
+    	<property name="startTime" value="12/23/2012/21:32" />
+    	<property name="repeatInterval" value="10000000" />
+    </bean> 
+    --> 
+    
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+	</bean>  
+ 
+</beans>
