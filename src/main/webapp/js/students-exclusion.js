@@ -18,8 +18,8 @@ function removeStudent(id) {
 	newI.className = "icon-plus-sign";
 	var newA = document.createElement("a");
 	newA.title = login;
-	//newA.href ="javascript:addStudent(this.id);";
-	//newA.onclick = "addStudent(this.id);";
+	newA.setAttribute("href", "javascript:addStudent(this.id);");
+	newA.setAttribute("onclick", "addStudent(this.id);");
 	newA.appendChild(newI);
 	var newLi = document.createElement("li");
 	newLi.appendChild(newA);
@@ -34,18 +34,32 @@ function removeStudent(id) {
 		var name = fullName;
 	}
 
+	var resume = document.getElementById("resume");
+	var texte = "";
 	var exclusionElements = exclusion.getElementsByTagName("li");	
 	if (exclusionElements.length > 1){
 		var foundPosition = false;
 		var position = 0;
+		var la = exclusionElements.length - 1;
 		var fullName1 = exclusionElements[0].childNodes[1].textContent;
 		var fullName2 = exclusionElements[exclusionElements.length - 1].childNodes[1].textContent;
+		texte += "prout<br>";
+		texte += exclusionElements.length;
+		texte += "<br>";
+		texte += fullName;
+		texte += "<br";
+		texte += fullName1;
+		texte += "<br>";
+		texte += fullName2;
+		texte += "<br>";
+		texte += compareNames(fullName, fullName1);
 		if (compareNames(fullName, fullName1) == 1){
 			foundPosition = true;
 			position = 0;
 		}
 		else{
-			if ((compareNames(fullName2, fullName) == 1) || (compareNames(fullName2, fullName) == 0)){
+			if ((compareNames(fullName, fullName2) == 1) || (compareNames(fullName2, fullName) == 0)){
+				texte += "oo";
 				foundPosition = true;
 				position = exclusionElements.length;
 			}
@@ -74,6 +88,7 @@ function removeStudent(id) {
 		else{
 			exclusion.insertBefore(newLi, exclusionElements[position]);
 		}
+		texte += position;
 	}
 	else{
 		if (exclusionElements.length == 1){
@@ -91,23 +106,30 @@ function removeStudent(id) {
 		}
 	}
 	
+	resume.innerHTML = texte;
+	
 	var liExclusionElements = exclusion.getElementsByTagName("a");
 	for ( var childIndex = 0; childIndex < liExclusionElements.length; childIndex++) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
-		liExclusionElements[childIndex].href = "javascript:addStudent(" + "exclusion" + childIndex + ");";
 	}
 	
 };
 
 function compareNames(fullName1, fullName2) {
 	if (fullName1.split(" ").length > 1){
-		var name1 = fullName1.split(" ")[2];
+		var name1 = "";
+		for (var i=2; i<fullName1.split(" ").length; i++){
+			name1 += fullName1.split(" ")[i];
+		}
 	}
 	else{
 		var name1 = fullName1;
 	}
 	if (fullName2.split(" ").length > 1){
-		var name2 = fullName2.split(" ")[2];
+		var name2 = "";
+		for (var i=2; i<fullName2.split(" ").length; i++){
+			name2 += fullName2.split(" ")[i];
+		}
 	}
 	else{
 		var name2 = fullName2;
@@ -141,8 +163,6 @@ function addStudent(id) {
 	var promo = document.getElementById("promo");
 	var exclusion = document.getElementById("exclusion");
 	var id2 = id.toString();
-	var resume = document.getElementById("resume");
-	resume.innerHTML = id2;
 	var number = parseInt(id2.substring(9, id2.length));
 
 	var li = exclusion.getElementsByTagName('li')[number];
@@ -159,8 +179,8 @@ function addStudent(id) {
 	newI.className = "icon-minus-sign";
 	var newA = document.createElement("a");
 	newA.title = login;
-	newA.href ="javascript:void(0);";
-	newA.onclick = "removeStudent(this.id);";
+	newA.setAttribute("href", "javascript:void(0);");
+	newA.setAttribute("onclick", "removeStudent(this.id);");
 	newA.appendChild(newI);
 	var newLi = document.createElement("li");
 	newLi.appendChild(newA);
@@ -213,7 +233,7 @@ function addStudent(id) {
 			promo.appendChild(newLi);
 		}
 		else{
-			promo.insertBefore(newLi, promoElements[position])
+			promo.insertBefore(newLi, promoElements[position]);
 		}
 	}
 	else{
@@ -224,7 +244,6 @@ function addStudent(id) {
 			}
 			else{
 				promo.insertBefore(newLi, promoElements[0]);
-				var resume = document.getElementById("resume");
 			}
 		}
 		else{

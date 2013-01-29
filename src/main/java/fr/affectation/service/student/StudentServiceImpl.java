@@ -155,6 +155,12 @@ public class StudentServiceImpl implements StudentService {
 		Collections.sort(studentsToExclude, new ComparatorSimpleStudent());
 		return studentsToExclude;
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public int findNecessarySizeForStudentExclusion(){
+		return findAllStudentsConcerned().size() + findAllStudentsToExclude().size();
+	}
 
 
 }

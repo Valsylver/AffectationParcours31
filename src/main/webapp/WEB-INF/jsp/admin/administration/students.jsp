@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
@@ -21,47 +22,75 @@
 	<div class="container">
 		<tags:headerAdmin run="<%=true%>" />
 
-		<div class="row">
-			<div class="span2">
-				<ul class="nav nav-list">
-					<li><a href="/admin/administration/specialization">Spécialisations</a></li>
-					<li class="active"><a href="/admin/administration/students">Elèves</a></li>
-					<li><a href="/admin/administration/process">Processus</a></li>
-				</ul>
-			</div>
-		
-			<div class="span7">
-				<a href="#" class="btn btn-primary"><i
-					class="icon-white icon-ok"></i> Sauvegarder les modifications</a>
-				<div class="row">
-					<div class="span2">
-						<h4>Promo ${promo}</h4>
-						<ul id="promo" class="unstyled">
-							<c:forEach var="student" items="${studentsConcerned}"
-								varStatus="status">
-								<li><a id="promo${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removeStudent(this.id);"><i
-										class="icon-minus-sign"></i></a> ${student.name}</li>
-							</c:forEach>
-						</ul>
-					</div>
-					<div class="span2">
-						<h4>Elèves à exclure</h4>
-						<ul id="exclusion" class="unstyled">
-							<c:forEach var="student" items="${studentsToExclude}"
-								varStatus="status">
-								<li><a id="exclusion${status.index}" href="javascript:void(0);" title="${student.login}" onclick="addStudent(this.id);"><i
-										class="icon-plus-sign"></i></a> ${student.name}</li>
-							</c:forEach>
-						</ul>
-					</div>
-					<div class="span2">
-						<h4>Elèves en césure</h4>
-						<div id="resume"></div>
+		<form:form action="/admin/run/edit-exclusion" method="POST"
+			commandName="studentExclusion" enctype="multipart/form-data">
+
+			<c:forEach begin="0"
+				end="${fn:length(studentExclusion.currentPromotion)-1}" var="i">
+				<form:input id="currentPromotionInput${i}"
+					path="currentPromotion[${i}]" style="display:none"></form:input>
+				<c:choose>
+					<c:when test="${i < fn:length(studentsToExclude)}">
+						<form:input id="excludedInput${i}" path="excluded[${i}]"
+							style="display:none" value="${studentsToExclude[i].login}"></form:input>
+					</c:when>
+					<c:otherwise>
+						<form:input id="excludedInput${i}" path="excluded[${i}]"
+							style="display:none"></form:input>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+
+			<div class="row">
+				<div class="span2">
+					<ul class="nav nav-list">
+						<li><a href="/admin/administration/specialization">Spécialisations</a></li>
+						<li class="active"><a href="/admin/administration/students">Elèves</a></li>
+						<li><a href="/admin/administration/process">Processus</a></li>
+					</ul>
+				</div>
+
+				<div class="span7">
+					<button class="btn btn-primary" name="commit" type="submit">
+						<i class="icon-white icon-ok"></i> Sauvegarder les modifications
+					</button>
+					<div class="row">
+						<div class="span2">
+							<h4>Promo ${promo}</h4>
+							<ul id="promo" class="unstyled">
+								<c:forEach var="student" items="${studentsConcerned}"
+									varStatus="status">
+									<li><a id="promo${status.index}" title="${student.login}"
+										href="javascript:void(0);" onclick="removeStudent(this.id);"><i
+											class="icon-minus-sign"></i></a> ${student.name}</li>
+								</c:forEach>
+							</ul>
+						</div>
+						<div class="span2">
+							<h4>Elèves à exclure</h4>
+							<ul id="exclusion" class="unstyled">
+								<c:forEach var="student" items="${studentsToExclude}"
+									varStatus="status">
+									<li><a id="exclusion${status.index}"
+										title="${student.login}"
+										href="javascript:void(0);"
+										onclick="addStudent(this.id);"><i class="icon-plus-sign"></i></a>
+										 ${student.name}</li>
+								</c:forEach>
+							</ul>
+						</div>
+						<div class="span2">
+							<h4>Elèves en césure</h4>
+							<div id="resume"></div>
+						</div>
 					</div>
 				</div>
+
+				<tags:rightColumnAdmin />
+
+
 			</div>
-			<tags:rightColumnAdmin />
-		</div>
+		</form:form>
 	</div>
 
 </body>

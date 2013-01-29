@@ -27,4 +27,6 @@ public interface StudentService {
 
 	public List<SimpleStudent> findAllStudentsConcerned();
 
+	public int findNecessarySizeForStudentExclusion();
+
 }

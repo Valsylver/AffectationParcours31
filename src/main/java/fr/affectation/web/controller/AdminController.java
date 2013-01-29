@@ -36,11 +36,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.comparator.ComparatorName;
-import fr.affectation.domain.comparator.ComparatorSimpleStudent;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.Student;
+import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
@@ -111,10 +110,21 @@ public class AdminController {
 	public String manageStudents(Model model) {
 		model.addAttribute("studentsConcerned",
 				studentService.findAllStudentsConcerned());
-		model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
+		model.addAttribute("studentsToExclude",
+				studentService.findAllStudentsToExclude());
 		model.addAttribute("promo",
 				Calendar.getInstance().get(Calendar.YEAR) + 1);
+		model.addAttribute("studentExclusion", new StudentsExclusion(
+				studentService.findNecessarySizeForStudentExclusion()));
 		return "admin/administration/students";
+	}
+
+	@RequestMapping(value = "/run/edit-exclusion", method = RequestMethod.POST)
+	public String editExclusion(StudentsExclusion studentExclusion) {
+		for (String login : studentExclusion.getExcluded()){
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&" + login);
+		}
+		return "redirect:/admin/administration/students";
 	}
 
 	@RequestMapping("/exclude")
@@ -147,14 +157,16 @@ public class AdminController {
 			// exclusion.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 			boolean condition = true;
 			condition = exclusion.getContentType().equals(
-					"application/vnd.ms-excel");
+					"application/vnd.ms-excel") || exclusion.getContentType().equals(
+							"application/msexcel");
 			if (!condition) {
 				redirectAttributes.addFlashAttribute("alertMessage",
-						"Seuls les fichiers (*.xls) sont acceptÃ©s.");
+						"Seuls les fichiers (*.xls) sont acceptés.");
+				System.out.println("ptdr " + exclusion.getContentType());
 			} else {
 				if (studentService.populateStudentToExcludeFromFile(exclusion)) {
 					redirectAttributes.addFlashAttribute("successMessage",
-							"Le fichier a bien Ã©tÃ© ajoutÃ©.");
+							"Le fichier a bien été ajouté.");
 				} else {
 					redirectAttributes
 							.addFlashAttribute("alertMessage",
