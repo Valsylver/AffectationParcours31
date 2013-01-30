@@ -34,8 +34,8 @@ function removeStudent(id) {
 		var name = fullName;
 	}
 
-	var resume = document.getElementById("resume");
-	var texte = "";
+//	var resume = document.getElementById("resume");
+//	var texte = "azerty";
 	var exclusionElements = exclusion.getElementsByTagName("li");	
 	if (exclusionElements.length > 1){
 		var foundPosition = false;
@@ -43,23 +43,40 @@ function removeStudent(id) {
 		var la = exclusionElements.length - 1;
 		var fullName1 = exclusionElements[0].childNodes[1].textContent;
 		var fullName2 = exclusionElements[exclusionElements.length - 1].childNodes[1].textContent;
-		texte += "prout<br>";
-		texte += exclusionElements.length;
-		texte += "<br>";
-		texte += fullName;
-		texte += "<br";
-		texte += fullName1;
-		texte += "<br>";
-		texte += fullName2;
-		texte += "<br>";
-		texte += compareNames(fullName, fullName1);
+//		texte += "hoho<br>";
+//		texte += exclusionElements.length;
+//		texte += "<br>";
+//		texte += fullName;
+//		texte += "<br>";
+//		texte += "fullName1 : <br>"
+//		texte += fullName1;
+//		texte += "<br>";
+//		texte += "fullName2 : <br>"
+//		texte += fullName2;
+//		texte += "<br>";
+//		texte += "comparaison ? ";
+//		texte += compareNames(fullName, fullName1);
+//		texte += "<br>";
+//		texte += compareNames(fullName2, fullName);
+//		texte += "<br>";
+//		texte += fullName == " Jeremie Andre";
+//		texte += "<br>";
+//		texte += fullName1 == "Michel Anthony           ";
+//		texte += "<br>";
+//		texte += fullName.length;
+//		texte += "<br>";
+//		texte += fullName1.length;
+//		texte += "<br>";
+//		texte += fullName2.length;
+//		texte += "<br>";
+//		texte += (" Jeremie Andre").length;
+//		resume.innerHTML = texte;
 		if (compareNames(fullName, fullName1) == 1){
 			foundPosition = true;
 			position = 0;
 		}
 		else{
-			if ((compareNames(fullName, fullName2) == 1) || (compareNames(fullName2, fullName) == 0)){
-				texte += "oo";
+			if ((compareNames(fullName2, fullName) == 1) || (compareNames(fullName2, fullName) == 0)){
 				foundPosition = true;
 				position = exclusionElements.length;
 			}
@@ -88,7 +105,6 @@ function removeStudent(id) {
 		else{
 			exclusion.insertBefore(newLi, exclusionElements[position]);
 		}
-		texte += position;
 	}
 	else{
 		if (exclusionElements.length == 1){
@@ -106,11 +122,18 @@ function removeStudent(id) {
 		}
 	}
 	
-	resume.innerHTML = texte;
-	
 	var liExclusionElements = exclusion.getElementsByTagName("a");
 	for ( var childIndex = 0; childIndex < liExclusionElements.length; childIndex++) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
+	}
+	
+	var allExclusionInputs = document.getElementById("exclusionInputs").getElementsByTagName("input");
+	for (var inputIndex = 0; inputIndex < allExclusionInputs.length; inputIndex++){
+		var input = allExclusionInputs[inputIndex];
+		if (input.value == ""){
+			input.setAttribute("value", login);
+			break;
+		}
 	}
 	
 };
@@ -252,7 +275,16 @@ function addStudent(id) {
 	}
 	
 	var liPromoElements = promo.getElementsByTagName("a");
-	for ( var childIndex = 0; childIndex < liPromoElements.length; childIndex++) {
+	for (var childIndex = 0; childIndex < liPromoElements.length; childIndex++) {
 		liPromoElements[childIndex].id = "promo" + childIndex;
+	}
+	
+	var allExclusionInputs = document.getElementById("exclusionInputs").getElementsByTagName("input");
+	for (var inputIndex = 0; inputIndex < allExclusionInputs.length; inputIndex++){
+		var input = allExclusionInputs[inputIndex];
+		if (input.value == login){
+			input.setAttribute("value", "");
+			break;
+		}
 	}
 };

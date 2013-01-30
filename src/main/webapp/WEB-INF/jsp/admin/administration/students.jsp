@@ -25,21 +25,21 @@
 		<form:form action="/admin/run/edit-exclusion" method="POST"
 			commandName="studentExclusion" enctype="multipart/form-data">
 
-			<c:forEach begin="0"
-				end="${fn:length(studentExclusion.currentPromotion)-1}" var="i">
-				<form:input id="currentPromotionInput${i}"
-					path="currentPromotion[${i}]" style="display:none"></form:input>
-				<c:choose>
-					<c:when test="${i < fn:length(studentsToExclude)}">
-						<form:input id="excludedInput${i}" path="excluded[${i}]"
-							style="display:none" value="${studentsToExclude[i].login}"></form:input>
-					</c:when>
-					<c:otherwise>
-						<form:input id="excludedInput${i}" path="excluded[${i}]"
-							style="display:none"></form:input>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
+			<div id="exclusionInputs">
+				<c:forEach begin="0"
+					end="${fn:length(studentExclusion.currentPromotion)-1}" var="i">
+					<c:choose>
+						<c:when test="${i < fn:length(studentsToExclude)}">
+							<form:input id="excludedInput${i}" path="excluded[${i}]"
+								style="display:none" value="${studentsToExclude[i].login}"></form:input>
+						</c:when>
+						<c:otherwise>
+							<form:input id="excludedInput${i}" path="excluded[${i}]"
+								style="display:none"></form:input>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</div>
 
 			<div class="row">
 				<div class="span2">
@@ -72,10 +72,8 @@
 								<c:forEach var="student" items="${studentsToExclude}"
 									varStatus="status">
 									<li><a id="exclusion${status.index}"
-										title="${student.login}"
-										href="javascript:void(0);"
-										onclick="addStudent(this.id);"><i class="icon-plus-sign"></i></a>
-										 ${student.name}</li>
+										title="${student.login}" href="javascript:void(0);"
+										onclick="addStudent(this.id);"><i class="icon-plus-sign"></i></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>

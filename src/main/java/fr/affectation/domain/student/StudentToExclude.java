@@ -17,6 +17,13 @@ public class StudentToExclude {
 
 	@Column
 	private String login;
+	
+	public StudentToExclude(String login){
+		this.login = login;
+	}
+	
+	public StudentToExclude(){
+	}
 
 	public String getLogin() {
 		return login;

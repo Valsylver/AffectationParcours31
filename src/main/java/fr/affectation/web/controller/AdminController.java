@@ -39,6 +39,7 @@ import fr.affectation.domain.comparator.ComparatorName;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.student.Student;
+import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
@@ -121,8 +122,22 @@ public class AdminController {
 
 	@RequestMapping(value = "/run/edit-exclusion", method = RequestMethod.POST)
 	public String editExclusion(StudentsExclusion studentExclusion) {
+		List<String> newExcluded = new ArrayList<String>();
+		List<String> oldExcluded = studentService.findAllStudentToExcludeLogin();
 		for (String login : studentExclusion.getExcluded()){
-			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&" + login);
+			if (!login.equals("")){
+				newExcluded.add(login);
+			}
+		}
+		for (String login : newExcluded){
+			if (!oldExcluded.contains(login)){
+				studentService.saveStudentToExclude(new StudentToExclude(login));
+			}
+		}
+		for (String login : oldExcluded){
+			if (!newExcluded.contains(login)){
+				studentService.removeStudentByLogin(login);
+			}
 		}
 		return "redirect:/admin/administration/students";
 	}
@@ -153,20 +168,18 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("alertMessage",
 					"Le fichier est vide.");
 		} else {
-			// boolean condition =
-			// exclusion.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 			boolean condition = true;
 			condition = exclusion.getContentType().equals(
 					"application/vnd.ms-excel") || exclusion.getContentType().equals(
 							"application/msexcel");
 			if (!condition) {
 				redirectAttributes.addFlashAttribute("alertMessage",
-						"Seuls les fichiers (*.xls) sont acceptés.");
+						"Seuls les fichiers (*.xls) sont acceptÃ©s.");
 				System.out.println("ptdr " + exclusion.getContentType());
 			} else {
 				if (studentService.populateStudentToExcludeFromFile(exclusion)) {
 					redirectAttributes.addFlashAttribute("successMessage",
-							"Le fichier a bien été ajouté.");
+							"Le fichier a bien Ã©tÃ© ajoutÃ©.");
 				} else {
 					redirectAttributes
 							.addFlashAttribute("alertMessage",

@@ -5,15 +5,16 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import fr.affectation.service.agap.AgapService;
+import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.service.responsible.ResponsibleService;
+import fr.affectation.service.student.StudentService;
 import fr.affectation.service.superuser.SuperUserService;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
 	
 	@Inject
-	private AgapService agapService;
+	private StudentService studentService;
 	
 	@Inject
 	private ResponsibleService responsibleService;
@@ -23,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
 	@Override
 	public boolean isStudent(String login) {
-		return agapService.isStudentConcerned(login);
+		return studentService.isStudentConcerned(login);
 	}
 
 	@Override

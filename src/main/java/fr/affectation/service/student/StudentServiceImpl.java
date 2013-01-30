@@ -69,6 +69,12 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Override 
 	@Transactional(readOnly = true)
+	public boolean isExcluded(String login){
+		return findByLogin(login)!= null;
+	}
+	
+	@Override 
+	@Transactional(readOnly = true)
 	public StudentToExclude findByLogin(String login){
 		String queryStudent = "from StudentToExclude where login=:login";
 		Session session = sessionFactory.getCurrentSession();
@@ -115,8 +121,7 @@ public class StudentServiceImpl implements StudentService {
 					if (!cell.toString().equals("")){
 						String login = cell.toString();
 						if ((!login.equals("")) && (agapService.checkStudent(login))){
-							StudentToExclude student = new StudentToExclude();
-							student.setLogin(login);
+							StudentToExclude student = new StudentToExclude(login);
 							saveStudentToExclude(student);
 						}
 					}
@@ -144,6 +149,23 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Override
 	@Transactional(readOnly = true)
+	public List<String> findAllStudentsConcernedLogin(){
+		List<SimpleStudent> allStudentsConcerned = findAllStudentsConcerned();
+		List<String> allStudentsConcernedLogin = new ArrayList<String>();
+		for (SimpleStudent student : allStudentsConcerned){
+			allStudentsConcernedLogin.add(student.getLogin());
+		}
+		return allStudentsConcernedLogin;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public boolean isStudentConcerned(String login){
+		return findAllStudentsConcernedLogin().contains(login);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
 	public List<SimpleStudent> findAllStudentsToExclude() {
 		List<SimpleStudent> studentsToExclude = new ArrayList<SimpleStudent>();
 		List<String> studentsLogin = findAllStudentToExcludeLogin();
@@ -162,5 +184,13 @@ public class StudentServiceImpl implements StudentService {
 		return findAllStudentsConcerned().size() + findAllStudentsToExclude().size();
 	}
 
+	@Override
+	@Transactional
+	public void removeStudentByLogin(String login) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("delete StudentToExclude where login=:login");
+		query.setString("login", login);
+		query.executeUpdate();
+	}
 
 }

@@ -27,15 +27,13 @@ public class StudentServiceTest {
 	
 	@Test
 	public void saveStudentToExclude(){
-		StudentToExclude student = new StudentToExclude();
-		student.setLogin("login");
+		StudentToExclude student = new StudentToExclude("login");
 		studentService.saveStudentToExclude(student);
 	}
 	
 	@Test
 	public void isStudentToExcludeSaved(){
-		StudentToExclude student = new StudentToExclude();
-		student.setLogin("login");
+		StudentToExclude student = new StudentToExclude("login");
 		studentService.saveStudentToExclude(student);
 		Assert.assertTrue(studentService.findAllStudentToExcludeLogin().contains("login"));
 	}
@@ -43,6 +41,14 @@ public class StudentServiceTest {
 	@Test
 	public void deleteAllStudentToExclude(){
 		studentService.deleteAllStudentToExclude();
+	}
+	
+	@Test
+	public void deleteStudent(){
+		StudentToExclude student = new StudentToExclude("login");
+		studentService.saveStudentToExclude(student);
+		studentService.removeStudentByLogin("login");
+		Assert.assertTrue(!studentService.findAllStudentToExcludeLogin().contains("login"));
 	}
 	
 	@After

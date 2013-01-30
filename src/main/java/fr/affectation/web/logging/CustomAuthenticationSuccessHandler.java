@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.User;
 
 import fr.affectation.service.responsible.ResponsibleService;
 
@@ -29,14 +28,18 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		if (isRolePresent(authorities, "ROLE_ELEVE")){
 			response.sendRedirect("eleve/add");
 		}
-		if (isRolePresent(authorities, "ROLE_ADMIN")){
-			response.sendRedirect("admin/");
-		}
-		if (isRolePresent(authorities, "ROLE_RESPONSABLE")){
-			User currentUser = (User) authentication.getPrincipal();
-			String login = currentUser.getUsername();
-			String specialisation = responsibleService.forWhichSpecialization(login).toLowerCase();
-			response.sendRedirect("responsable/");
+		else{
+			if (isRolePresent(authorities, "ROLE_ADMIN")){
+				response.sendRedirect("admin/");
+			}
+			else{
+				if (isRolePresent(authorities, "ROLE_RESPONSABLE")){
+					response.sendRedirect("responsable/");
+				}
+				else{
+					response.sendRedirect("noauthorities");
+				}
+			}
 		}
 	}
 	

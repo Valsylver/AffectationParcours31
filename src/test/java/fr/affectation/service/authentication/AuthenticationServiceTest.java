@@ -21,6 +21,7 @@ import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.specialization.SpecializationService;
+import fr.affectation.service.student.StudentService;
 import fr.affectation.service.superuser.SuperUserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,6 +42,9 @@ public class AuthenticationServiceTest {
 	
 	@Inject
 	private AgapService agapService;
+	
+	@Inject
+	private StudentService studentService;
 	
 	@After
 	public void cleanDb() {
@@ -98,7 +102,7 @@ public class AuthenticationServiceTest {
 	}
 	
 	public String chooseRandomLogin(){
-		List<String> allLogin = agapService.getAllStudentConcernedLogin();
+		List<String> allLogin = studentService.findAllStudentsConcernedLogin();
 		return allLogin.get((int) (Math.random() * allLogin.size()));   
 	}
 

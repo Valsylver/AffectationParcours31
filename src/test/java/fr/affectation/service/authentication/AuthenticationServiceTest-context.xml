@@ -21,7 +21,7 @@
 			</bean>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="fr.affectation.domain.superuser, fr.affectation.domain.specialization" />
+		<property name="packagesToScan" value="fr.affectation.domain.superuser, fr.affectation.domain.specialization, fr.affectation.domain.student" />
 	</bean>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -59,6 +59,8 @@
 	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
 	
 	<bean class="fr.affectation.service.responsible.ResponsibleServiceImpl" />
+	
+	<bean class="fr.affectation.service.student.StudentServiceImpl" />
 	
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
     	<property name="sessionFactory" ref="sessionFactory"/>
