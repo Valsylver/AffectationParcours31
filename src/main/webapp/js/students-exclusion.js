@@ -14,8 +14,8 @@ function removeStudent(id) {
 		liPromoElements[childIndex].id = "promo" + childIndex;
 	}
 
-	var newI = document.createElement("i");
-	newI.className = "icon-plus-sign";
+	var newI = document.createElement("img");
+	newI.setAttribute("src", "/img/plus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:addStudent(this.id);");
@@ -198,8 +198,8 @@ function addStudent(id) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
 	}
 
-	var newI = document.createElement("i");
-	newI.className = "icon-minus-sign";
+	var newI = document.createElement("img");
+	newI.setAttribute("src", "/img/minus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:void(0);");

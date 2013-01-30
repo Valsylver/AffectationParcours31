@@ -61,8 +61,7 @@
 								<c:forEach var="student" items="${studentsConcerned}"
 									varStatus="status">
 									<li><a id="promo${status.index}" title="${student.login}"
-										href="javascript:void(0);" onclick="removeStudent(this.id);"><i
-											class="icon-minus-sign"></i></a> ${student.name}</li>
+										href="javascript:void(0);" onclick="removeStudent(this.id);"><img src="/img/minus-new.png"></img></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>
@@ -73,7 +72,7 @@
 									varStatus="status">
 									<li><a id="exclusion${status.index}"
 										title="${student.login}" href="javascript:void(0);"
-										onclick="addStudent(this.id);"><i class="icon-plus-sign"></i></a> ${student.name}</li>
+										onclick="addStudent(this.id);"><img src="/img/plus-new.png"></img></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>
