@@ -25,6 +25,7 @@ import fr.affectation.domain.comparator.ComparatorSimpleStudent;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.service.agap.AgapService;
+import fr.affectation.service.validation.ValidationService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -34,6 +35,9 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Inject
 	private AgapService agapService;
+	
+	@Inject
+	private ValidationService validationService;
 
 	@Override
 	@Transactional

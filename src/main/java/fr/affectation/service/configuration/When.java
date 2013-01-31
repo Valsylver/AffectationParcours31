@@ -14,6 +14,17 @@ public class When {
 	
 	@NotNull
 	private Date endSubmission;
+	
+	@NotNull
+	private Date endValidation;
+	
+	public Date getEndValidation() {
+		return endValidation;
+	}
+
+	public void setEndValidation(Date endValidation) {
+		this.endValidation = endValidation;
+	}
 
 	public Date getFirstEmail() {
 		return firstEmail;

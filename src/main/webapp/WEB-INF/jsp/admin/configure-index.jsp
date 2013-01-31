@@ -78,6 +78,10 @@
 				</div>
 				<div class="span4">
 					<h2>Dates</h2>
+					<c:if test="${not empty alertMessage}">
+						<div class="alert alert-block">${alertMessage}</div>
+						<br>
+					</c:if>
 					<label for="firstEmail">Envoi du premier mail de rappel <form:errors
 							path="firstEmail">
 							<br />
@@ -111,7 +115,19 @@
 							value="${now}" />
 						<span class="add-on">dd/MM/yyyy HH:mm</span>
 					</div>
-					<br />
+
+					<br /> <label for="endValidation">Fin de la validation par
+						les responsables <form:errors path="endValidation">
+							<br />
+							<a style="color: red">La date n'a pas le bon format</a>
+						</form:errors>
+					</label>
+					<div class="input-append">
+						<form:input id="endValidation" path="endValidation" class="span2"
+							value="${now}" />
+						<span class="add-on">dd/MM/yyyy HH:mm</span>
+					</div>
+					<br /> <br />
 				</div>
 			</div>
 		</form:form>
@@ -122,32 +138,34 @@
 <script src="js/jquery-ui-1.9.2.custom.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$('#firstEmail, #secondEmail, #endSubmission').datetimepicker(
-				{
-					timeFormat : 'HH:mm',
-					closeText : 'Fermer',
-					prevText : 'Précédent',
-					nextText : 'Suivant',
-					currentText : 'Aujourd\'hui',
-					monthNames : [ 'Janvier', 'Février', 'Mars', 'Avril',
-							'Mai', 'Juin', 'Juillet', 'Août', 'Septembre',
-							'Octobre', 'Novembre', 'Décembre' ],
-					monthNamesShort : [ 'Janv.', 'Févr.', 'Mars', 'Avril',
-							'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.',
-							'Nov.', 'Déc.' ],
-					dayNames : [ 'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
-							'Jeudi', 'Vendredi', 'Samedi' ],
-					dayNamesShort : [ 'Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.',
-							'Ven.', 'Sam.' ],
-					dayNamesMin : [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
-					weekHeader : 'Sem.',
-					dateFormat : 'dd/mm/yy',
-					firstDay : 1,
-					isRTL : false,
-					showMonthAfterYear : false,
-					yearSuffix : '',
-					minDate : new Date(),
-				});
+		$('#firstEmail, #secondEmail, #endSubmission, #endValidation')
+				.datetimepicker(
+						{
+							timeFormat : 'HH:mm',
+							closeText : 'Fermer',
+							prevText : 'Précédent',
+							nextText : 'Suivant',
+							currentText : 'Aujourd\'hui',
+							monthNames : [ 'Janvier', 'Février', 'Mars',
+									'Avril', 'Mai', 'Juin', 'Juillet', 'Août',
+									'Septembre', 'Octobre', 'Novembre',
+									'Décembre' ],
+							monthNamesShort : [ 'Janv.', 'Févr.', 'Mars',
+									'Avril', 'Mai', 'Juin', 'Juil.', 'Août',
+									'Sept.', 'Oct.', 'Nov.', 'Déc.' ],
+							dayNames : [ 'Dimanche', 'Lundi', 'Mardi',
+									'Mercredi', 'Jeudi', 'Vendredi', 'Samedi' ],
+							dayNamesShort : [ 'Dim.', 'Lun.', 'Mar.', 'Mer.',
+									'Jeu.', 'Ven.', 'Sam.' ],
+							dayNamesMin : [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
+							weekHeader : 'Sem.',
+							dateFormat : 'dd/mm/yy',
+							firstDay : 1,
+							isRTL : false,
+							showMonthAfterYear : false,
+							yearSuffix : '',
+							minDate : new Date(),
+						});
 	});
 </script>
 </html>

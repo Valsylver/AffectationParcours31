@@ -414,12 +414,40 @@ public class AdminController {
 					"lol");
 			result.addError(fieldError);
 		}
+		if (when.getEndValidation() == null) {
+			FieldError fieldError = new FieldError("when", "endValidation",
+					"lol");
+			result.addError(fieldError);
+		}
 		if (result.hasErrors()) {
 			model.addAttribute("paAvailable",
 					specializationService.findAllImprovementCourse());
 			model.addAttribute("fmAvailable",
 					specializationService.findAllJobSector());
 			return "admin/configure-index";
+		}
+		else{
+			List<Date> allDates = new ArrayList<Date>();
+			allDates.add(when.getFirstEmail());
+			allDates.add(when.getSecondEmail());
+			allDates.add(when.getEndSubmission());
+			allDates.add(when.getEndValidation());
+			boolean areDatesSuccessive = true;
+			for (int i=0; i<allDates.size()-1; i++){
+				Date date1 = allDates.get(i);
+				Date date2 = allDates.get(i+1);
+				if (!date1.before(date2)){
+					areDatesSuccessive = false;
+				}
+			}
+			if (!areDatesSuccessive){
+				model.addAttribute("paAvailable",
+						specializationService.findAllImprovementCourse());
+				model.addAttribute("fmAvailable",
+						specializationService.findAllJobSector());
+				model.addAttribute("alertMessage", "Les dates doivent êtres successives.");
+				return "admin/configure-index";
+			}
 		}
 		try {
 			configurationService.setWhen(when);
@@ -434,7 +462,6 @@ public class AdminController {
 			e.printStackTrace();
 		}
 
-		model.addAttribute("when", when);
 		return "redirect:/admin";
 	}
 

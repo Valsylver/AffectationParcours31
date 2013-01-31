@@ -21,7 +21,7 @@
 			</bean>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="fr.affectation.domain.choice" />
+		<property name="packagesToScan" value="fr.affectation.domain.choice, fr.affectation.domain.student" />
 	</bean>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -45,6 +45,10 @@
 	<bean class="fr.affectation.service.choice.ChoiceServiceImpl" />
 
 	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
+	
+	<bean class="fr.affectation.service.student.StudentServiceImpl" />
+	
+	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
 
 	<bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSourceAgap" />

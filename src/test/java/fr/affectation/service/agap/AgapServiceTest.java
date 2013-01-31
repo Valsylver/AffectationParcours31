@@ -62,6 +62,7 @@ public class AgapServiceTest {
 	@Test
 	public void getUeGrade(){
 		agapService.generateRanking();
+		agapService.generateUeCode();
 		if (agapService.getAllStudentConcernedLogin().size() > 0){
 			for (int i=0; i<10; i++){
 				agapService.getUeGrade(chooseRandomLogin());

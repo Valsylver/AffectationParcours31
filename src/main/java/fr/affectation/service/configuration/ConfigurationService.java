@@ -30,21 +30,34 @@ public class ConfigurationService{
 	
 	private boolean config = true;
 	
+	private boolean validation = false;
+	
+	public boolean isValidation() {
+		return validation;
+	}
+
+	public void setValidation(boolean validation) {
+		this.validation = validation;
+	}
+
 	private When when;
 	
 	public void initialize() throws ClassNotFoundException, NoSuchMethodException, ParseException, SchedulerException {
 		MethodInvokingJobDetailFactoryBean jobDetailFirstEmail = createJobDetail("sendFirstEmail", "jobDetailFirstEmail");
 		MethodInvokingJobDetailFactoryBean jobDetailSecondEmail = createJobDetail("sendSecondEmail", "jobDetailSecondEmail");
 		MethodInvokingJobDetailFactoryBean jobDetailEndSubmission = createJobDetail("endSubmission", "jobDetailEndSubmission");
+		MethodInvokingJobDetailFactoryBean jobDetailEndValidation = createJobDetail("endValidation", "jobDetailEndValidation");
 		
 		SimpleTriggerBean triggerFirstEmail = createTrigger("triggerFirstEmail", when.getFirstEmail(), jobDetailFirstEmail);
 		SimpleTriggerBean triggerSecondEmail = createTrigger("triggerSecondEmail", when.getSecondEmail(), jobDetailSecondEmail);
 		SimpleTriggerBean triggerEndSubmission = createTrigger("triggerEndSubmission", when.getEndSubmission(), jobDetailEndSubmission);
+		SimpleTriggerBean triggerEndValidation = createTrigger("triggerEndValidation", when.getEndValidation(), jobDetailEndValidation);
 		
 		Scheduler scheduler = schedulerFactoryBean.getScheduler();
 		scheduler.scheduleJob((JobDetail) jobDetailFirstEmail.getObject(), triggerFirstEmail);
 		scheduler.scheduleJob((JobDetail) jobDetailSecondEmail.getObject(), triggerSecondEmail);
 		scheduler.scheduleJob((JobDetail) jobDetailEndSubmission.getObject(), triggerEndSubmission);
+		scheduler.scheduleJob((JobDetail) jobDetailEndValidation.getObject(), triggerEndValidation);
 		
 		run = true;
 		config = false;
@@ -73,6 +86,16 @@ public class ConfigurationService{
 	
 	public void endSubmission(){
 		submissionAvailable = false;
+		validation = true;
+		populateValidation();
+	}
+	
+	public void endValidation(){
+		validation = false;
+	}
+	
+	public void populateValidation(){
+		
 	}
 	
 	private MethodInvokingJobDetailFactoryBean createJobDetail(String method, String name) throws ClassNotFoundException, NoSuchMethodException{

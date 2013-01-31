@@ -33,8 +33,6 @@
 		<property name="packagesToScan" value="fr.affectation.domain.student" />
 	</bean>
 	
-	<bean class="fr.affectation.service.student.StudentServiceImpl" />
-	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -42,24 +40,6 @@
 	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<bean id="dataSourceAgap" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/affectation" />
-		<property name="username" value="root" />
-		<property name="password" value="lol" />
-	</bean>
-	
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-     	<constructor-arg ref="dataSourceAgap" />
-  	</bean>
-  	
-  	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-     	<constructor-arg ref="dataSourceAgap" />
-  	</bean>
-  	
-  	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
-  	
   	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
 
 </beans>
