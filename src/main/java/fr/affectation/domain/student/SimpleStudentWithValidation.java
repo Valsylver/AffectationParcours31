@@ -13,6 +13,9 @@ public class SimpleStudentWithValidation {
 		this.login = login;
 		this.validated = validated;
 	}
+	
+	public SimpleStudentWithValidation(){
+	}
 
 	public String getLogin() {
 		return login;

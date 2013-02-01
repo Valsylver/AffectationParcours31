@@ -157,6 +157,7 @@ public class FakeDataService {
 		improvementCourse.setCodeUe3(getRandomUeCode());
 		improvementCourse.setCodeUe4(getRandomUeCode());
 		improvementCourse.setCodeUe5(getRandomUeCode());
+		improvementCourse.setResponsibleLogin("respo_" + abbreviation);
 		specializationService.save(improvementCourse);
 	}
 
@@ -169,6 +170,7 @@ public class FakeDataService {
 		jobSector.setCodeUe3(getRandomUeCode());
 		jobSector.setCodeUe4(getRandomUeCode());
 		jobSector.setCodeUe5(getRandomUeCode());
+		jobSector.setResponsibleLogin("respo_" + abbreviation);
 		specializationService.save(jobSector);
 	}
 	

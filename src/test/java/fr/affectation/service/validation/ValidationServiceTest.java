@@ -26,51 +26,72 @@ public class ValidationServiceTest {
 	private SessionFactory sessionFactory;
 	
 	@Test
-	public void deleteAll(){
+	public void saveValidationAccepted(){
+		validationService.saveStudentValidation("login", true, true);
+		Assert.assertTrue(validationService.isValidatedIc("login"));
+		Assert.assertTrue(validationService.isValidatedJs("login"));
+	}
+	
+	@Test
+	public void saveValidationRefused(){
+		validationService.saveStudentValidation("login", false, false);
+		Assert.assertTrue(!validationService.isValidatedIc("login"));
+		Assert.assertTrue(!validationService.isValidatedJs("login"));
+	}
+	
+	@Test
+	public void saveValidationCrossed(){
+		validationService.saveStudentValidation("login", true, false);
+		Assert.assertTrue(validationService.isValidatedIc("login"));
+		Assert.assertTrue(!validationService.isValidatedJs("login"));
+		
+		validationService.saveStudentValidation("login2", false, true);
+		Assert.assertTrue(!validationService.isValidatedIc("login2"));
+		Assert.assertTrue(validationService.isValidatedJs("login2"));
+	}
+	
+	@Test
+	public void saveStudentNumber(){
 		for (int i=0; i<10; i++){
-			validationService.saveStudentValidation(new StudentValidation("login"+i, true));
+			validationService.saveStudentValidation(new StudentValidation("login"+i, true, true));
+		}
+		Assert.assertTrue(validationService.findStudentsValidatedIc().size() == 10);
+	}
+	
+	@Test
+	public void deleteAllStudents(){
+		for (int i=0; i<10; i++){
+			validationService.saveStudentValidation(new StudentValidation("login"+i, true, true));
 		}
 		validationService.deleteAllStudents();
-		Assert.assertTrue(validationService.getAllStudentsValidatedLogin().size() == 0);
-		Assert.assertTrue(validationService.getAllStudentsValidated().size() == 0);
+		Assert.assertTrue(validationService.findStudentsValidatedIc().size() == 0);
 	}
 	
 	@Test
-	public void addStudent(){
-		validationService.saveStudentValidation(new StudentValidation("login", true));
-		Assert.assertTrue(validationService.getAllStudentsValidatedLogin().contains("login"));
-	}
-	
-	@Test
-	public void isValidate(){
-		validationService.saveStudentValidation(new StudentValidation("login", true));
-		Assert.assertTrue(validationService.isValidated("login"));
-	}
-	
-	@Test
-	public void isNotValidate(){
-		validationService.saveStudentValidation(new StudentValidation("login", false));
-		Assert.assertFalse(validationService.isValidated("login"));
-	}
-	
-	@Test
-	public void isNotValidateWhenNotInDb(){
-		Assert.assertFalse(validationService.isValidated("login"));
-	}
-	
-	@Test
-	public void deleteStudent(){
-		validationService.saveStudentValidation(new StudentValidation("login", true));
+	public void deletStudentByLogin(){
+		validationService.saveStudentValidation(new StudentValidation("login", true, true));
 		validationService.deleteStudentByLogin("login");
-		Assert.assertFalse(validationService.isValidated("login"));
+		Assert.assertFalse(validationService.isInValidationProcess("login"));
+		Assert.assertFalse(validationService.isValidatedIc("login"));
+		Assert.assertFalse(validationService.isValidatedIc("login"));
 	}
 	
 	@Test
-	public void getAllStudentsValidated(){
-		for (int i=0; i<10; i++){
-			validationService.saveStudentValidation(new StudentValidation("login"+i, true));
-		}
-		Assert.assertTrue(validationService.getAllStudentsValidatedLogin().size() == 10);
+	public void updateValidationIc(){
+		validationService.saveStudentValidation(new StudentValidation("login", true, true));
+		validationService.updateIcValidation("login", false);
+		Assert.assertFalse(validationService.isValidatedIc("login"));
+		Assert.assertTrue(validationService.isValidatedJs("login"));
+		Assert.assertTrue(validationService.isInValidationProcess("login"));
+	}
+	
+	@Test
+	public void updateValidationJs(){
+		validationService.saveStudentValidation(new StudentValidation("login", true, true));
+		validationService.updateJsValidation("login", false);
+		Assert.assertFalse(validationService.isValidatedJs("login"));
+		Assert.assertTrue(validationService.isValidatedIc("login"));
+		Assert.assertTrue(validationService.isInValidationProcess("login"));
 	}
 	
 	@After

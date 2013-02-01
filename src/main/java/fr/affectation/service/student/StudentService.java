@@ -59,6 +59,9 @@ public interface StudentService {
 	
 	//OK
 	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllJsByOrder(int order);
+
+	public void updateValidation(List<String> students, List<Boolean> validated_,
+			String type);
 	
 
 }

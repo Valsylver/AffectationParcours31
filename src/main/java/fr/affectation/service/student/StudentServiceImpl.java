@@ -221,7 +221,8 @@ public class StudentServiceImpl implements StudentService {
 		List<String> studentsToExcludeLogins = findAllStudentToExcludeLogin();
 		for (String login : allLogins){
 			if (!studentsToExcludeLogins.contains(login)){
-				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.getNameFromLogin(login), validationService.isValidated(login)));
+				boolean isValidated = specialization.getType().equals("JobSector") ? validationService.isValidatedJs(login) : validationService.isValidatedIc(login);
+				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.getNameFromLogin(login), isValidated));
 			}
 		}
 		Collections.sort(allSimpleStudents, new ComparatorSimpleStudentWithValidation());
@@ -294,7 +295,30 @@ public class StudentServiceImpl implements StudentService {
 		validationService.deleteAllStudents();
 		List<String> allLoginsConcerned = findAllStudentsConcernedLogin();
 		for (String login : allLoginsConcerned){
-			validationService.saveStudentValidation(new StudentValidation(login, true));
+			validationService.saveStudentValidation(new StudentValidation(login, true, true));
+		}
+	}
+
+	@Override
+	public void updateValidation(List<String> students, List<Boolean> validated_, String type) {
+		for (int i=0; i<students.size(); i++){
+			String login = students.get(i);
+			Boolean validated;
+			if (i<validated_.size()){
+				validated = validated_.get(i);
+			}
+			else{
+				validated = null;
+			}
+			if (validated == null){
+				validated = false;
+			}
+			if (type.equals("JobSector")){
+				validationService.updateJsValidation(login, validated);
+			}
+			else{
+				validationService.updateIcValidation(login, validated);
+			}
 		}
 	}
 	
