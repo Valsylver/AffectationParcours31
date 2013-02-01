@@ -35,7 +35,7 @@
 			</c:choose>
 			<div class="span2">
 			</div>
-			<div class="span7">
+			<div class="span5">
 				<form:form action="${action}" method="post" commandName="specialization">
 					<label for="name">
 					Nom
@@ -66,17 +66,7 @@
 					</label>
 					<form:input id="responsibleLogin" path="responsibleLogin" class="span2" />
 					
-					<c:forEach var="i" begin="1" end="5">
-						<c:set var="codeUe" value="codeUe${i}" />
-						<label for="${codeUe}">
-							Code UE ${i}
-						</label>
-						<form:input id="${codeUe}" path="${codeUe}" class="span2" />
-						<form:errors path="${codeUe}" >
-							<a style="color:red">Ce code n'est pas valide</a>
-						</form:errors>
-					</c:forEach>
-					
+					<br />
 					<br />
 					<div class="btn-group pull-right">
 						<c:if test="${(alreadyExists) && (not (state == 'run'))}">

@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Affectation parcours/filière 3ème année Centrale
-	Marseille</title>
+<title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <!-- Bootstrap -->
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
@@ -29,13 +28,36 @@
 					<li><a href="/admin/administration/process">Processus</a></li>
 				</ul>
 			</div>
-		
-			<div class="span7">
-				<a href="/admin/config/ic" class="btn btn-primary"><i
-					class="icon-white icon-edit"></i> Parcours d'approfondissement</a> <br />
-				<br /> <a href="/admin/config/js" class="btn btn-primary"><i
-					class="icon-white icon-edit"></i> Filières métier</a>
+
+			<div class="span4">
+				<h2>
+					Parcours
+				</h2>
+				<br />
+
+				<c:forEach var="pa" items="${paAvailable}">
+					${pa.stringForForm}
+					<br />
+					<a href="/admin/config/modif/parcours/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+					<br />
+					<br />
+				</c:forEach>
 			</div>
+			<div class="span4">
+				<h2>
+					Filières
+				</h2>
+				<br />
+
+				<c:forEach var="fm" items="${fmAvailable}">
+					${fm.stringForForm}
+					<br />
+					<a href="/admin/config/modif/filieres/${fm.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+					<br />
+					<br />
+				</c:forEach>
+			</div>
+
 			<tags:rightColumnAdmin />
 		</div>
 	</div>

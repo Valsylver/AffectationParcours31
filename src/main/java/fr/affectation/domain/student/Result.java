@@ -19,21 +19,21 @@ public class Result {
 	
 	public void generateMeanForSpecialization(Specialization specialization){
 		Float sum = new Float(0);
-		if (ueGrade.containsKey(specialization.getCodeUe1())){
-			sum += ueGrade.get(specialization.getCodeUe1());
-		}
-		if (ueGrade.containsKey(specialization.getCodeUe2())){
-			sum += ueGrade.get(specialization.getCodeUe2());
-		}
-		if (ueGrade.containsKey(specialization.getCodeUe3())){
-			sum += ueGrade.get(specialization.getCodeUe3());
-		}
-		if (ueGrade.containsKey(specialization.getCodeUe4())){
-			sum += ueGrade.get(specialization.getCodeUe4());
-		}
-		if (ueGrade.containsKey(specialization.getCodeUe5())){
-			sum += ueGrade.get(specialization.getCodeUe5());
-		}
+//		if (ueGrade.containsKey(specialization.getCodeUe1())){
+//			sum += ueGrade.get(specialization.getCodeUe1());
+//		}
+//		if (ueGrade.containsKey(specialization.getCodeUe2())){
+//			sum += ueGrade.get(specialization.getCodeUe2());
+//		}
+//		if (ueGrade.containsKey(specialization.getCodeUe3())){
+//			sum += ueGrade.get(specialization.getCodeUe3());
+//		}
+//		if (ueGrade.containsKey(specialization.getCodeUe4())){
+//			sum += ueGrade.get(specialization.getCodeUe4());
+//		}
+//		if (ueGrade.containsKey(specialization.getCodeUe5())){
+//			sum += ueGrade.get(specialization.getCodeUe5());
+//		}
 		meanForSpecialization = (sum / 5) * (5/4);
 	}
 	

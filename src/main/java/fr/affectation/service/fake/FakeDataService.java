@@ -152,11 +152,6 @@ public class FakeDataService {
 		ImprovementCourse improvementCourse = new ImprovementCourse();
 		improvementCourse.setAbbreviation(abbreviation);
 		improvementCourse.setName(name);
-		improvementCourse.setCodeUe1(getRandomUeCode());
-		improvementCourse.setCodeUe2(getRandomUeCode());
-		improvementCourse.setCodeUe3(getRandomUeCode());
-		improvementCourse.setCodeUe4(getRandomUeCode());
-		improvementCourse.setCodeUe5(getRandomUeCode());
 		improvementCourse.setResponsibleLogin("respo_" + abbreviation);
 		specializationService.save(improvementCourse);
 	}
@@ -165,11 +160,6 @@ public class FakeDataService {
 		JobSector jobSector = new JobSector();
 		jobSector.setAbbreviation(abbreviation);
 		jobSector.setName(name);
-		jobSector.setCodeUe1(getRandomUeCode());
-		jobSector.setCodeUe2(getRandomUeCode());
-		jobSector.setCodeUe3(getRandomUeCode());
-		jobSector.setCodeUe4(getRandomUeCode());
-		jobSector.setCodeUe5(getRandomUeCode());
 		jobSector.setResponsibleLogin("respo_" + abbreviation);
 		specializationService.save(jobSector);
 	}

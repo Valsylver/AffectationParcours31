@@ -85,20 +85,19 @@ public class AdminController {
 
 	@RequestMapping({ "/", "" })
 	public String redirect(Model mode) {
-		return configurationService.isRunning() ? "redirect:/admin/statistics/synthese"
-				: "redirect:/admin/config";
+		return configurationService.isRunning() ? "redirect:/admin/statistics/synthese" : "redirect:/admin/config";
 	}
 
 	@InitBinder
 	public void initBinder(DataBinder binder) {
-		SimpleDateFormat dateFormatter = new SimpleDateFormat(
-				"dd/MM/yyyy HH:mm");
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(
-				dateFormatter, true));
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormatter, true));
 	}
 
 	@RequestMapping("/administration/specialization")
 	public String manageSpecialization(Model model) {
+		model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
+		model.addAttribute("fmAvailable", specializationService.findAllJobSector());
 		return "admin/administration/specialization";
 	}
 
@@ -109,14 +108,10 @@ public class AdminController {
 
 	@RequestMapping("/administration/students")
 	public String manageStudents(Model model) {
-		model.addAttribute("studentsConcerned",
-				studentService.findAllStudentsConcerned());
-		model.addAttribute("studentsToExclude",
-				studentService.findAllStudentsToExclude());
-		model.addAttribute("promo",
-				Calendar.getInstance().get(Calendar.YEAR) + 1);
-		model.addAttribute("studentExclusion", new StudentsExclusion(
-				studentService.findNecessarySizeForStudentExclusion()));
+		model.addAttribute("studentsConcerned", studentService.findAllStudentsConcerned());
+		model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
+		model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
+		model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
 		return "admin/administration/students";
 	}
 
@@ -124,18 +119,18 @@ public class AdminController {
 	public String editExclusion(StudentsExclusion studentExclusion) {
 		List<String> newExcluded = new ArrayList<String>();
 		List<String> oldExcluded = studentService.findAllStudentToExcludeLogin();
-		for (String login : studentExclusion.getExcluded()){
-			if (!login.equals("")){
+		for (String login : studentExclusion.getExcluded()) {
+			if (!login.equals("")) {
 				newExcluded.add(login);
 			}
 		}
-		for (String login : newExcluded){
-			if (!oldExcluded.contains(login)){
+		for (String login : newExcluded) {
+			if (!oldExcluded.contains(login)) {
 				studentService.saveStudentToExclude(new StudentToExclude(login));
 			}
 		}
-		for (String login : oldExcluded){
-			if (!newExcluded.contains(login)){
+		for (String login : oldExcluded) {
+			if (!newExcluded.contains(login)) {
 				studentService.removeStudentByLogin(login);
 			}
 		}
@@ -150,8 +145,7 @@ public class AdminController {
 	}
 
 	public List<String> findAllStudentsToExcludeName() {
-		List<String> studentsLogin = studentService
-				.findAllStudentToExcludeLogin();
+		List<String> studentsLogin = studentService.findAllStudentToExcludeLogin();
 		List<String> studentsName = new ArrayList<String>();
 		for (String login : studentsLogin) {
 			studentsName.add(agapService.getNameFromLogin(login));
@@ -161,29 +155,19 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/excludeProcess", method = RequestMethod.POST)
-	public String processExclusion(
-			@RequestParam(value = "exclusion", required = true) MultipartFile exclusion,
-			RedirectAttributes redirectAttributes) {
+	public String processExclusion(@RequestParam(value = "exclusion", required = true) MultipartFile exclusion, RedirectAttributes redirectAttributes) {
 		if (exclusion.isEmpty()) {
-			redirectAttributes.addFlashAttribute("alertMessage",
-					"Le fichier est vide.");
+			redirectAttributes.addFlashAttribute("alertMessage", "Le fichier est vide.");
 		} else {
 			boolean condition = true;
-			condition = exclusion.getContentType().equals(
-					"application/vnd.ms-excel") || exclusion.getContentType().equals(
-							"application/msexcel");
+			condition = exclusion.getContentType().equals("application/vnd.ms-excel") || exclusion.getContentType().equals("application/msexcel");
 			if (!condition) {
-				redirectAttributes.addFlashAttribute("alertMessage",
-						"Seuls les fichiers (*.xls) sont acceptés.");
-				System.out.println("ptdr " + exclusion.getContentType());
+				redirectAttributes.addFlashAttribute("alertMessage", "Seuls les fichiers (*.xls) sont acceptés.");
 			} else {
 				if (studentService.populateStudentToExcludeFromFile(exclusion)) {
-					redirectAttributes.addFlashAttribute("successMessage",
-							"Le fichier a bien été ajouté.");
+					redirectAttributes.addFlashAttribute("successMessage", "Le fichier a bien été ajouté.");
 				} else {
-					redirectAttributes
-							.addFlashAttribute("alertMessage",
-									"Une erreur est survenue lors de la lecture du fichier.");
+					redirectAttributes.addFlashAttribute("alertMessage", "Une erreur est survenue lors de la lecture du fichier.");
 				}
 			}
 		}
@@ -201,31 +185,24 @@ public class AdminController {
 	}
 
 	@RequestMapping("/student/{login}")
-	public String displayStudent(@PathVariable String login, Model model,
-			HttpServletRequest request) {
+	public String displayStudent(@PathVariable String login, Model model, HttpServletRequest request) {
 		agapService.generateRanking();
 		agapService.generateUeCode();
 		Student student = new Student();
 		student.setDetails(agapService.getStudentDetailsFromLogin(login));
-		ImprovementCourseChoice icChoice = (ImprovementCourseChoice) choiceService
-				.getImprovementCourseChoicesByLogin(login);
+		ImprovementCourseChoice icChoice = (ImprovementCourseChoice) choiceService.getImprovementCourseChoicesByLogin(login);
 		student.setImprovementCourseChoice(icChoice);
-		JobSectorChoice jsChoice = (JobSectorChoice) choiceService
-				.getJobSectorChoicesByLogin(login);
+		JobSectorChoice jsChoice = (JobSectorChoice) choiceService.getJobSectorChoicesByLogin(login);
 		student.setJobSectorChoice(jsChoice);
 		student.setResults(agapService.getResultsFromLogin(login));
 		model.addAttribute("student", student);
 
 		String path = request.getSession().getServletContext().getRealPath("/");
-		model.addAttribute("hasFilledResume",
-				documentService.hasFilledResume(path, login));
-		model.addAttribute("hasFilledLetterIc",
-				documentService.hasFilledLetterIc(path, login));
-		model.addAttribute("hasFilledLetterJs",
-				documentService.hasFilledLetterJs(path, login));
+		model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
+		model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
+		model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
 
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		return "admin/student";
 	}
@@ -233,34 +210,28 @@ public class AdminController {
 	@RequestMapping("/config")
 	public String configurationIndex(Model model) {
 		model.addAttribute("when", new When());
-		model.addAttribute("paAvailable",
-				specializationService.findAllImprovementCourse());
-		model.addAttribute("fmAvailable",
-				specializationService.findAllJobSector());
+		model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
+		model.addAttribute("fmAvailable", specializationService.findAllJobSector());
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		model.addAttribute("now", dateFormat.format(date));
-		return "admin/configure-index";
+		return "admin/configuration/index";
 	}
 
 	@RequestMapping("/config/modif/parcours/{abbreviation}")
 	public String modifyIc(@PathVariable String abbreviation, Model model) {
-		model.addAttribute("specialization", specializationService
-				.getImprovementCourseByAbbreviation(abbreviation));
+		model.addAttribute("specialization", specializationService.getImprovementCourseByAbbreviation(abbreviation));
 		model.addAttribute("alreadyExists", true);
-		model.addAttribute("state", configurationService.isRunning() ? "run"
-				: "config");
-		return "admin/edit-specialization";
+		model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
+		return "admin/configuration/edit-specialization";
 	}
 
 	@RequestMapping("/config/modif/filieres/{abbreviation}")
 	public String modifyJs(@PathVariable String abbreviation, Model model) {
-		model.addAttribute("specialization",
-				specializationService.getJobSectorByAbbreviation(abbreviation));
+		model.addAttribute("specialization", specializationService.getJobSectorByAbbreviation(abbreviation));
 		model.addAttribute("alreadyExists", true);
-		model.addAttribute("state", configurationService.isRunning() ? "run"
-				: "config");
-		return "admin/edit-specialization";
+		model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
+		return "admin/configuration/edit-specialization";
 	}
 
 	@RequestMapping(value = "/config/modif/new/filieres", method = RequestMethod.GET)
@@ -268,7 +239,7 @@ public class AdminController {
 		model.addAttribute("specialization", new JobSector());
 		model.addAttribute("alreadyExists", false);
 		model.addAttribute("state", "config");
-		return "admin/edit-specialization";
+		return "admin/configuration/edit-specialization";
 	}
 
 	@RequestMapping(value = "/config/modif/new/parcours", method = RequestMethod.GET)
@@ -276,131 +247,43 @@ public class AdminController {
 		model.addAttribute("specialization", new ImprovementCourse());
 		model.addAttribute("alreadyExists", false);
 		model.addAttribute("state", "config");
-		return "admin/edit-specialization";
+		return "admin/configuration/edit-specialization";
 	}
 
 	@RequestMapping(value = "/config/edit/ic", method = RequestMethod.POST)
-	public String saveImprovementCourse(
-			@ModelAttribute("specialization") @Valid ImprovementCourse specialization,
-			BindingResult result, Model model) {
-		List<String> validUeCode = agapService.findAllValidForSpecUeCode();
-		if (!validUeCode.contains(specialization.getCodeUe1())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe1",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe2())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe2",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe3())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe3",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe4())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe4",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe5())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe5",
-					"lol");
-			result.addError(fieldError);
-		}
-
+	public String saveImprovementCourse(@ModelAttribute("specialization") @Valid ImprovementCourse specialization, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			model.addAttribute("state", configurationService.isRunning() ? "run"
-					: "config");
-			return "admin/edit-specialization";
+			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
+			return "admin/configuration/edit-specialization";
 		}
 		specializationService.save(specialization);
-		return configurationService.isRunning() ? "redirect:/admin/config/ic"
-				: "redirect:/admin/config";
+		return configurationService.isRunning() ? "redirect:/admin/administration/specialization" : "redirect:/admin/config";
 	}
 
 	@RequestMapping(value = "/config/edit/js", method = RequestMethod.POST)
-	public String saveJobSector(
-			@ModelAttribute("specialization") @Valid JobSector specialization,
-			BindingResult result, Model model) {
-		List<String> validUeCode = agapService.findAllValidForSpecUeCode();
-		if (!validUeCode.contains(specialization.getCodeUe1())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe1",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe2())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe2",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe3())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe3",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe4())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe4",
-					"lol");
-			result.addError(fieldError);
-		}
-		if (!validUeCode.contains(specialization.getCodeUe5())) {
-			FieldError fieldError = new FieldError("specialization", "codeUe5",
-					"lol");
-			result.addError(fieldError);
-		}
+	public String saveJobSector(@ModelAttribute("specialization") @Valid JobSector specialization, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			model.addAttribute("state", configurationService.isRunning() ? "run"
-					: "config");
-			return "admin/edit-specialization";
+			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
+			return "admin/configuration/edit-specialization";
 		}
 		specializationService.save(specialization);
-		return configurationService.isRunning() ? "redirect:/admin/config/js"
-				: "redirect:/admin/config";
-	}
-
-	@RequestMapping(value = "/config/ic")
-	public String configurePa(Model model) {
-		model.addAttribute("paAvailable",
-				specializationService.findAllImprovementCourse());
-		if (configurationService.isRunning()) {
-			model.addAttribute("state", "run");
-		} else {
-			model.addAttribute("state", "config");
-		}
-		return "admin/configure-pa";
-	}
-
-	@RequestMapping(value = "/config/js")
-	public String configureFm(Model model) {
-		model.addAttribute("fmAvailable",
-				specializationService.findAllJobSector());
-		if (configurationService.isRunning()) {
-			model.addAttribute("state", "run");
-		} else {
-			model.addAttribute("state", "config");
-		}
-		return "admin/configure-fm";
+		return configurationService.isRunning() ? "redirect:/admin/administration/specialization" : "redirect:/admin/config";
 	}
 
 	@RequestMapping("/config/delete/filieres/{abbreviation}")
 	public String deleteJobSector(@PathVariable String abbreviation) {
-		specializationService.delete(specializationService
-				.getJobSectorByAbbreviation(abbreviation));
+		specializationService.delete(specializationService.getJobSectorByAbbreviation(abbreviation));
 		return "redirect:/admin/config";
 	}
 
 	@RequestMapping("/config/delete/parcours/{abbreviation}")
 	public String deleteImprovementCourse(@PathVariable String abbreviation) {
-		specializationService.delete(specializationService
-				.getImprovementCourseByAbbreviation(abbreviation));
+		specializationService.delete(specializationService.getImprovementCourseByAbbreviation(abbreviation));
 		return "redirect:/admin/config";
 	}
 
 	@RequestMapping(value = "/save-config", method = RequestMethod.POST)
-	public String post(@ModelAttribute When when, BindingResult result,
-			Model model) {
+	public String post(@ModelAttribute When when, BindingResult result, Model model) {
 		if (when.getFirstEmail() == null) {
 			FieldError fieldError = new FieldError("when", "firstEmail", "lol");
 			result.addError(fieldError);
@@ -410,41 +293,34 @@ public class AdminController {
 			result.addError(fieldError);
 		}
 		if (when.getEndSubmission() == null) {
-			FieldError fieldError = new FieldError("when", "endSubmission",
-					"lol");
+			FieldError fieldError = new FieldError("when", "endSubmission", "lol");
 			result.addError(fieldError);
 		}
 		if (when.getEndValidation() == null) {
-			FieldError fieldError = new FieldError("when", "endValidation",
-					"lol");
+			FieldError fieldError = new FieldError("when", "endValidation", "lol");
 			result.addError(fieldError);
 		}
 		if (result.hasErrors()) {
-			model.addAttribute("paAvailable",
-					specializationService.findAllImprovementCourse());
-			model.addAttribute("fmAvailable",
-					specializationService.findAllJobSector());
+			model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
+			model.addAttribute("fmAvailable", specializationService.findAllJobSector());
 			return "admin/configure-index";
-		}
-		else{
+		} else {
 			List<Date> allDates = new ArrayList<Date>();
 			allDates.add(when.getFirstEmail());
 			allDates.add(when.getSecondEmail());
 			allDates.add(when.getEndSubmission());
 			allDates.add(when.getEndValidation());
 			boolean areDatesSuccessive = true;
-			for (int i=0; i<allDates.size()-1; i++){
+			for (int i = 0; i < allDates.size() - 1; i++) {
 				Date date1 = allDates.get(i);
-				Date date2 = allDates.get(i+1);
-				if (!date1.before(date2)){
+				Date date2 = allDates.get(i + 1);
+				if (!date1.before(date2)) {
 					areDatesSuccessive = false;
 				}
 			}
-			if (!areDatesSuccessive){
-				model.addAttribute("paAvailable",
-						specializationService.findAllImprovementCourse());
-				model.addAttribute("fmAvailable",
-						specializationService.findAllJobSector());
+			if (!areDatesSuccessive) {
+				model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
+				model.addAttribute("fmAvailable", specializationService.findAllJobSector());
 				model.addAttribute("alertMessage", "Les dates doivent êtres successives.");
 				return "admin/configure-index";
 			}
@@ -465,112 +341,93 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 
-	@RequestMapping("/config/stopProcess")
-	public String stopProcess(Model model) {
-		try {
-			configurationService.stopProcess();
-		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "redirect:/admin";
-	}
-
 	@RequestMapping("/parcours/statistics")
 	public String statisticsIc(Model model, HttpServletRequest request) {
-		statisticsService.generatePieChartIc(request.getSession()
-				.getServletContext().getRealPath("/"));
+		statisticsService.generatePieChartIc(request.getSession().getServletContext().getRealPath("/"));
 		model.addAttribute("type", 1);
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		return "admin/statistics";
 	}
 
 	@RequestMapping("/filieres/statistics")
 	public String statisticsSynthese(Model model, HttpServletRequest request) {
-		statisticsService.generatePieChartJs(request.getSession()
-				.getServletContext().getRealPath("/"));
+		statisticsService.generatePieChartJs(request.getSession().getServletContext().getRealPath("/"));
 		model.addAttribute("type", 2);
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		return "admin/statistics";
 	}
 
 	@RequestMapping("/statistics/synthese")
 	public String statisticsJs(Model model, HttpServletRequest request) {
-		statisticsService.generatePieChartJs(request.getSession()
-				.getServletContext().getRealPath("/"));
-		statisticsService.generatePieChartIc(request.getSession()
-				.getServletContext().getRealPath("/"));
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
+		statisticsService.generatePieChartJs(request.getSession().getServletContext().getRealPath("/"));
+		statisticsService.generatePieChartIc(request.getSession().getServletContext().getRealPath("/"));
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		return "admin/statistics-synthese";
 	}
 
-	//OK
 	@RequestMapping("/parcours/synthese/choix{order}")
 	public String allResultsIc(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
 		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
-		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllIcByOrder(order) :
-				studentService.findSimpleStudentsForAllIcByOrder(order));
+		model.addAttribute(
+				"allStudents",
+				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllIcByOrder(order) : studentService
+						.findSimpleStudentsForAllIcByOrder(order));
 		return "admin/choix/parcours/synthese";
 	}
-	
-	//OK
+
 	@RequestMapping("/filieres/synthese/choix{order}")
 	public String allResultsJs(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
 		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
-		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllJsByOrder(order) :
-			studentService.findSimpleStudentsForAllJsByOrder(order));
+		model.addAttribute(
+				"allStudents",
+				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllJsByOrder(order) : studentService
+						.findSimpleStudentsForAllJsByOrder(order));
 		return "admin/choix/filieres/synthese";
 	}
 
-	//OK
 	@RequestMapping("/parcours/details/{abbreviation}/choix{order}")
-	public String resultsIcDetails(@PathVariable String abbreviation,
-			@PathVariable int order, Model model) {
-		ImprovementCourse improvementCourse = specializationService
-				.getImprovementCourseByAbbreviation(abbreviation);
+	public String resultsIcDetails(@PathVariable String abbreviation, @PathVariable int order, Model model) {
+		ImprovementCourse improvementCourse = specializationService.getImprovementCourseByAbbreviation(abbreviation);
 		model.addAttribute("order", order);
 		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		model.addAttribute("abbreviation", abbreviation);
 		model.addAttribute("specialization", improvementCourse);
-		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, improvementCourse) :
-			studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, improvementCourse));
+		model.addAttribute(
+				"allStudents",
+				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order,
+						improvementCourse) : studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, improvementCourse));
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
 		return "admin/choix/parcours/details";
 	}
 
-	//OK
 	@RequestMapping("/filieres/details/{abbreviation}/choix{order}")
-	public String resultsJsDetails(@PathVariable String abbreviation,
-			@PathVariable int order, Model model) {
-		JobSector jobSector = specializationService
-				.getJobSectorByAbbreviation(abbreviation);
+	public String resultsJsDetails(@PathVariable String abbreviation, @PathVariable int order, Model model) {
+		JobSector jobSector = specializationService.getJobSectorByAbbreviation(abbreviation);
 		model.addAttribute("order", order);
 		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		model.addAttribute("abbreviation", abbreviation);
 		model.addAttribute("specialization", jobSector);
-		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, jobSector) :
-			studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, jobSector));
+		model.addAttribute(
+				"allStudents",
+				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order,
+						jobSector) : studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, jobSector));
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
 		return "admin/choix/filieres/details";
 	}
 
 	@RequestMapping("/statistics/eleves/{category}")
-	public String studentSynthese(@PathVariable String category,
-			HttpServletRequest request, Model model) {
+	public String studentSynthese(@PathVariable String category, HttpServletRequest request, Model model) {
 		List<String> logins = agapService.getAllStudentConcernedLogin();
 		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
 
@@ -584,13 +441,10 @@ public class AdminController {
 		int nbreNo = 0;
 
 		for (String login : logins) {
-			filledDoc = documentService.hasFilledLetterIc(path, login)
-					&& documentService.hasFilledLetterJs(path, login)
+			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
 					&& documentService.hasFilledResume(path, login);
-			filledChoices = (choiceService
-					.getElementNotFilledImprovementCourse(login).size() == 0)
-					&& (choiceService.getElementNotFilledJobSector(login)
-							.size() == 0);
+			filledChoices = (choiceService.getElementNotFilledImprovementCourse(login).size() == 0)
+					&& (choiceService.getElementNotFilledJobSector(login).size() == 0);
 
 			if ((filledDoc) && (filledChoices)) {
 				if (category.equals("all")) {
@@ -627,8 +481,7 @@ public class AdminController {
 		model.addAttribute("nbreNo", nbreNo);
 		model.addAttribute("category", category);
 		model.addAttribute("results", results);
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 
 		return "admin/eleves-synthese";

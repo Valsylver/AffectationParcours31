@@ -44,6 +44,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 		return (ImprovementCourse) session.get(ImprovementCourse.class, abbreviation);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
 	public List<JobSector> findAllJobSector() {
@@ -54,6 +55,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 		return allJs;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
 	public List<ImprovementCourse> findAllImprovementCourse() {

@@ -65,11 +65,6 @@ public class SpecializationServiceTest {
 			specialization = new ImprovementCourse();
 		}
 		specialization.setAbbreviation("S2I");
-		specialization.setCodeUe1("ALG-1");
-		specialization.setCodeUe2("ALG-1");
-		specialization.setCodeUe3("ALG-1");
-		specialization.setCodeUe4("ALG-1");
-		specialization.setCodeUe5("ALG-1");
 		specialization.setResponsibleLogin("login");
 		return specialization;
 	}
