@@ -16,20 +16,12 @@ import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.Student;
-import fr.affectation.service.agap.AgapService;
-import fr.affectation.service.student.StudentService;
 
 @Service
 public class ChoiceServiceImpl implements ChoiceService {
 
 	@Inject
 	private SessionFactory sessionFactory;
-
-	@Inject
-	private AgapService agapService;
-
-	@Inject
-	private StudentService studentService;
 
 	@Override
 	@Transactional
@@ -97,10 +89,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 		List<Choice> allChoices = query.list();
 		List<String> allLogins = new ArrayList<String>();
 		for (Choice choice : allChoices) {
-			String login = choice.getLogin();
-			if (!studentService.isExcluded(login)) {
-				allLogins.add(login);
-			}
+			allLogins.add(choice.getLogin());
 		}
 		return allLogins;
 	}
@@ -114,9 +103,6 @@ public class ChoiceServiceImpl implements ChoiceService {
 		List<Student> allStudent = new ArrayList<Student>();
 		for (String login : allLogin) {
 			Student student = new Student();
-			student.setDetails(agapService.getStudentDetailsFromLogin(login));
-			student.setResults(agapService
-					.getResultsFromLoginAndSpecialization(login, specialization));
 			student.setImprovementCourseChoice(getImprovementCourseChoicesByLogin(login));
 			allStudent.add(student);
 		}
@@ -181,6 +167,13 @@ public class ChoiceServiceImpl implements ChoiceService {
 	public boolean hasFilledAll(String login) {
 		return (getElementNotFilledImprovementCourse(login).size() == 0)
 				&& (getElementNotFilledJobSector(login).size() == 0);
+	}
+
+	@Override
+	public List<Student> getSimpleStudentsByOrderChoiceAndSpecialization(
+			int orderChoice, Specialization specialization) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

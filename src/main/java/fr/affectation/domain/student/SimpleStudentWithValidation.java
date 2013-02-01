@@ -1,14 +1,17 @@
 package fr.affectation.domain.student;
 
-public class SimpleStudent {
+public class SimpleStudentWithValidation {
 	
 	private String login;
 	
 	private String name;
 	
-	public SimpleStudent(String login, String name){
+	private boolean validated;
+	
+	public SimpleStudentWithValidation(String login, String name, boolean validated){
 		this.name = name;
 		this.login = login;
+		this.validated = validated;
 	}
 
 	public String getLogin() {
@@ -25,6 +28,14 @@ public class SimpleStudent {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 
 }

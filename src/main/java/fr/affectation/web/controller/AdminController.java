@@ -85,7 +85,7 @@ public class AdminController {
 
 	@RequestMapping({ "/", "" })
 	public String redirect(Model mode) {
-		return configurationService.isRun() ? "redirect:/admin/statistics/synthese"
+		return configurationService.isRunning() ? "redirect:/admin/statistics/synthese"
 				: "redirect:/admin/config";
 	}
 
@@ -248,7 +248,7 @@ public class AdminController {
 		model.addAttribute("specialization", specializationService
 				.getImprovementCourseByAbbreviation(abbreviation));
 		model.addAttribute("alreadyExists", true);
-		model.addAttribute("state", configurationService.isRun() ? "run"
+		model.addAttribute("state", configurationService.isRunning() ? "run"
 				: "config");
 		return "admin/edit-specialization";
 	}
@@ -258,7 +258,7 @@ public class AdminController {
 		model.addAttribute("specialization",
 				specializationService.getJobSectorByAbbreviation(abbreviation));
 		model.addAttribute("alreadyExists", true);
-		model.addAttribute("state", configurationService.isRun() ? "run"
+		model.addAttribute("state", configurationService.isRunning() ? "run"
 				: "config");
 		return "admin/edit-specialization";
 	}
@@ -311,12 +311,12 @@ public class AdminController {
 		}
 
 		if (result.hasErrors()) {
-			model.addAttribute("state", configurationService.isRun() ? "run"
+			model.addAttribute("state", configurationService.isRunning() ? "run"
 					: "config");
 			return "admin/edit-specialization";
 		}
 		specializationService.save(specialization);
-		return configurationService.isRun() ? "redirect:/admin/config/ic"
+		return configurationService.isRunning() ? "redirect:/admin/config/ic"
 				: "redirect:/admin/config";
 	}
 
@@ -351,12 +351,12 @@ public class AdminController {
 			result.addError(fieldError);
 		}
 		if (result.hasErrors()) {
-			model.addAttribute("state", configurationService.isRun() ? "run"
+			model.addAttribute("state", configurationService.isRunning() ? "run"
 					: "config");
 			return "admin/edit-specialization";
 		}
 		specializationService.save(specialization);
-		return configurationService.isRun() ? "redirect:/admin/config/js"
+		return configurationService.isRunning() ? "redirect:/admin/config/js"
 				: "redirect:/admin/config";
 	}
 
@@ -364,7 +364,7 @@ public class AdminController {
 	public String configurePa(Model model) {
 		model.addAttribute("paAvailable",
 				specializationService.findAllImprovementCourse());
-		if (configurationService.isRun()) {
+		if (configurationService.isRunning()) {
 			model.addAttribute("state", "run");
 		} else {
 			model.addAttribute("state", "config");
@@ -376,7 +376,7 @@ public class AdminController {
 	public String configureFm(Model model) {
 		model.addAttribute("fmAvailable",
 				specializationService.findAllJobSector());
-		if (configurationService.isRun()) {
+		if (configurationService.isRunning()) {
 			model.addAttribute("state", "run");
 		} else {
 			model.addAttribute("state", "config");
@@ -510,91 +510,62 @@ public class AdminController {
 		return "admin/statistics-synthese";
 	}
 
+	//OK
 	@RequestMapping("/parcours/synthese/choix{order}")
-	public String showAllResultsPa(@PathVariable int order, Model model) {
-		agapService.generateRanking();
-		agapService.generateUeCode();
-		List<ImprovementCourse> allIc = specializationService
-				.findAllImprovementCourse();
-		List<List<Student>> allStudentsForSpec = new ArrayList<List<Student>>();
-
-		for (ImprovementCourse improvementCourse : allIc) {
-			allStudentsForSpec.add(choiceService
-					.getStudentsByOrderChoiceAndSpecialization(order,
-							improvementCourse));
-		}
-
+	public String allResultsIc(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
-		model.addAttribute("allPa", allIc);
-		model.addAttribute("allFm", specializationService.findAllJobSector());
-		model.addAttribute("allStudents", allStudentsForSpec);
-		model.addAttribute("rankingTotal", agapService.getRanking().size());
-		return "admin/choix-pa-synthese";
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
+		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
+		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllIcByOrder(order) :
+				studentService.findSimpleStudentsForAllIcByOrder(order));
+		return "admin/choix/parcours/synthese";
+	}
+	
+	//OK
+	@RequestMapping("/filieres/synthese/choix{order}")
+	public String allResultsJs(@PathVariable int order, Model model) {
+		model.addAttribute("order", order);
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
+		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
+		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllJsByOrder(order) :
+			studentService.findSimpleStudentsForAllJsByOrder(order));
+		return "admin/choix/filieres/synthese";
 	}
 
+	//OK
 	@RequestMapping("/parcours/details/{abbreviation}/choix{order}")
-	public String showAllResultsPaDetails(@PathVariable String abbreviation,
+	public String resultsIcDetails(@PathVariable String abbreviation,
 			@PathVariable int order, Model model) {
-		agapService.generateRanking();
-		agapService.generateUeCode();
-		List<Student> allStudents;
 		ImprovementCourse improvementCourse = specializationService
 				.getImprovementCourseByAbbreviation(abbreviation);
-		allStudents = choiceService.getStudentsByOrderChoiceAndSpecialization(
-				order, improvementCourse);
 		model.addAttribute("order", order);
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
+		model.addAttribute("allJs", specializationService.findAllJobSector());
 		model.addAttribute("abbreviation", abbreviation);
 		model.addAttribute("specialization", improvementCourse);
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
-		model.addAttribute("allStudents", allStudents);
-		model.addAttribute("rankingTotal", agapService.getRanking().size());
-		return "admin/choix-pa-details";
+		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, improvementCourse) :
+			studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, improvementCourse));
+		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
+		return "admin/choix/parcours/details";
 	}
 
-	@RequestMapping("/filieres/synthese/choix{order}")
-	public String showAllResultsFm(@PathVariable int order, Model model) {
-		agapService.generateRanking();
-		agapService.generateUeCode();
-		List<JobSector> allJs = specializationService.findAllJobSector();
-		List<List<Student>> allStudentsForSpec = new ArrayList<List<Student>>();
-
-		for (JobSector jobSector : allJs) {
-			allStudentsForSpec
-					.add(choiceService
-							.getStudentsByOrderChoiceAndSpecialization(order,
-									jobSector));
-		}
-
-		model.addAttribute("order", order);
-		model.addAttribute("allPa",
-				specializationService.findAllImprovementCourse());
-		model.addAttribute("allFm", allJs);
-		model.addAttribute("allStudents", allStudentsForSpec);
-		model.addAttribute("rankingTotal", agapService.getRanking().size());
-		return "admin/choix-fm-synthese";
-	}
-
+	//OK
 	@RequestMapping("/filieres/details/{abbreviation}/choix{order}")
-	public String showAllResultsFmDetails(@PathVariable String abbreviation,
+	public String resultsJsDetails(@PathVariable String abbreviation,
 			@PathVariable int order, Model model) {
-		agapService.generateRanking();
-		agapService.generateUeCode();
-		List<Student> allStudents;
 		JobSector jobSector = specializationService
 				.getJobSectorByAbbreviation(abbreviation);
-		allStudents = choiceService.getStudentsByOrderChoiceAndSpecialization(
-				order, jobSector);
 		model.addAttribute("order", order);
+		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
+		model.addAttribute("allJs", specializationService.findAllJobSector());
 		model.addAttribute("abbreviation", abbreviation);
 		model.addAttribute("specialization", jobSector);
-		model.addAttribute("allIc",
-				specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
-		model.addAttribute("allStudents", allStudents);
-		model.addAttribute("rankingTotal", agapService.getRanking().size());
-		return "admin/choix-fm-details";
+		model.addAttribute("allStudents", configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, jobSector) :
+			studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, jobSector));
+		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
+		return "admin/choix/filieres/details";
 	}
 
 	@RequestMapping("/statistics/eleves/{category}")

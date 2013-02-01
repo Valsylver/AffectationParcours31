@@ -22,9 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import fr.affectation.domain.comparator.ComparatorSimpleStudent;
+import fr.affectation.domain.comparator.ComparatorSimpleStudentWithValidation;
+import fr.affectation.domain.specialization.ImprovementCourse;
+import fr.affectation.domain.specialization.JobSector;
+import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
+import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.StudentToExclude;
+import fr.affectation.domain.student.StudentValidation;
 import fr.affectation.service.agap.AgapService;
+import fr.affectation.service.choice.ChoiceService;
+import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.validation.ValidationService;
 
 @Service
@@ -38,6 +46,12 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Inject
 	private ValidationService validationService;
+	
+	@Inject
+	private ChoiceService choiceService;
+	
+	@Inject
+	private SpecializationService specializationService;
 
 	@Override
 	@Transactional
@@ -142,8 +156,9 @@ public class StudentServiceImpl implements StudentService {
 	public List<SimpleStudent> findAllStudentsConcerned(){
 		List<SimpleStudent> allStudents = agapService.findAllStudentsConcerned();
 		List<SimpleStudent> allStudentsConcerned = new ArrayList<SimpleStudent>();
+		List<String> allStudentsExcludedLogin = findAllStudentToExcludeLogin();
 		for (SimpleStudent student : allStudents){
-			if (!isExcluded(student)){
+			if (!allStudentsExcludedLogin.contains(student.getLogin())){
 				allStudentsConcerned.add(student);
 			}
 		}
@@ -197,4 +212,90 @@ public class StudentServiceImpl implements StudentService {
 		query.executeUpdate();
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<SimpleStudentWithValidation> findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(
+			int orderChoice, Specialization specialization) {
+		List<String> allLogins = choiceService.getLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
+		List<SimpleStudentWithValidation> allSimpleStudents = new ArrayList<SimpleStudentWithValidation>();
+		List<String> studentsToExcludeLogins = findAllStudentToExcludeLogin();
+		for (String login : allLogins){
+			if (!studentsToExcludeLogins.contains(login)){
+				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.getNameFromLogin(login), validationService.isValidated(login)));
+			}
+		}
+		Collections.sort(allSimpleStudents, new ComparatorSimpleStudentWithValidation());
+		return allSimpleStudents;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllIcByOrder(int order) {
+		List<ImprovementCourse> allIc = specializationService.findAllImprovementCourse();
+		List<List<SimpleStudentWithValidation>> allStudentsForAllIc = new ArrayList<List<SimpleStudentWithValidation>>();
+		for (ImprovementCourse improvementCourse : allIc) {
+			allStudentsForAllIc.add(findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, improvementCourse));
+		}
+		return allStudentsForAllIc;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<SimpleStudent> findSimpleStudentsByOrderChoiceAndSpecialization(
+			int orderChoice, Specialization specialization) {
+		List<String> allLogins = choiceService.getLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
+		List<SimpleStudent> allSimpleStudents = new ArrayList<SimpleStudent>();
+		List<String> studentsToExcludeLogins = findAllStudentToExcludeLogin();
+		for (String login : allLogins){
+			if (!studentsToExcludeLogins.contains(login)){
+				allSimpleStudents.add(new SimpleStudent(login, agapService.getNameFromLogin(login)));
+			}
+		}
+		Collections.sort(allSimpleStudents, new ComparatorSimpleStudent());
+		return allSimpleStudents;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<List<SimpleStudent>> findSimpleStudentsForAllIcByOrder(int order) {
+		List<ImprovementCourse> allIc = specializationService.findAllImprovementCourse();
+		List<List<SimpleStudent>> allStudentsForAllIc = new ArrayList<List<SimpleStudent>>();
+		for (ImprovementCourse improvementCourse : allIc) {
+			allStudentsForAllIc.add(findSimpleStudentsByOrderChoiceAndSpecialization(order, improvementCourse));
+		}
+		return allStudentsForAllIc;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<List<SimpleStudent>> findSimpleStudentsForAllJsByOrder(int order) {
+		List<JobSector> allJs = specializationService.findAllJobSector();
+		List<List<SimpleStudent>> allStudentsForAllJs = new ArrayList<List<SimpleStudent>>();
+		for (JobSector jobSector : allJs) {
+			allStudentsForAllJs.add(findSimpleStudentsByOrderChoiceAndSpecialization(order, jobSector));
+		}
+		return allStudentsForAllJs;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllJsByOrder(int order) {
+		List<JobSector> allJs = specializationService.findAllJobSector();
+		List<List<SimpleStudentWithValidation>> allStudentsWithValidationForAllJs = new ArrayList<List<SimpleStudentWithValidation>>();
+		for (JobSector jobSector : allJs) {
+			allStudentsWithValidationForAllJs.add(findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, jobSector));
+		}
+		return allStudentsWithValidationForAllJs;
+	}
+
+	@Override
+	@Transactional
+	public void populateValidation() {
+		validationService.deleteAllStudents();
+		List<String> allLoginsConcerned = findAllStudentsConcernedLogin();
+		for (String login : allLoginsConcerned){
+			validationService.saveStudentValidation(new StudentValidation(login, true));
+		}
+	}
+	
 }

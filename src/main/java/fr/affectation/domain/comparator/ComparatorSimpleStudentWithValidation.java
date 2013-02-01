@@ -4,11 +4,10 @@ import java.util.Comparator;
 
 import org.apache.commons.lang.StringUtils;
 
-import fr.affectation.domain.student.SimpleStudent;
+import fr.affectation.domain.student.SimpleStudentWithValidation;
 
-
-public class ComparatorSimpleStudent implements Comparator<SimpleStudent>{
-
+public class ComparatorSimpleStudentWithValidation implements Comparator<SimpleStudentWithValidation>{
+	
 	private String retrieveName(String fullName){
 		String[] fullNameList = StringUtils.split(fullName, " ");
 		if (fullNameList.length > 1){
@@ -30,7 +29,7 @@ public class ComparatorSimpleStudent implements Comparator<SimpleStudent>{
 	}
 
 	@Override
-	public int compare(SimpleStudent student0, SimpleStudent student1) {
+	public int compare(SimpleStudentWithValidation student0, SimpleStudentWithValidation student1) {
 		String name0 = retrieveName(student0.getName());
 		String name1 = retrieveName(student1.getName());
 		if (name0.compareTo(name1) == 0){

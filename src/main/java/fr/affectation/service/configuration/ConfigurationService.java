@@ -14,6 +14,7 @@ import org.springframework.scheduling.quartz.SimpleTriggerBean;
 import org.springframework.stereotype.Service;
 
 import fr.affectation.service.mail.MailService;
+import fr.affectation.service.student.StudentService;
 
 @Service
 public class ConfigurationService{
@@ -22,23 +23,18 @@ public class ConfigurationService{
 	private SchedulerFactoryBean schedulerFactoryBean;
 	
 	@Inject
+	private StudentService studentService;
+	
+	@Inject
 	private MailService mailService;
 	
 	private boolean submissionAvailable = false;
 	
-	private boolean run = false;
+	private boolean running = false;
 	
 	private boolean config = true;
 	
-	private boolean validation = false;
-	
-	public boolean isValidation() {
-		return validation;
-	}
-
-	public void setValidation(boolean validation) {
-		this.validation = validation;
-	}
+	private boolean validating = false;
 
 	private When when;
 	
@@ -59,7 +55,7 @@ public class ConfigurationService{
 		scheduler.scheduleJob((JobDetail) jobDetailEndSubmission.getObject(), triggerEndSubmission);
 		scheduler.scheduleJob((JobDetail) jobDetailEndValidation.getObject(), triggerEndValidation);
 		
-		run = true;
+		running = true;
 		config = false;
 		submissionAvailable = true;
 	}
@@ -71,7 +67,7 @@ public class ConfigurationService{
 		scheduler.deleteJob("jobDetailEndSubmission", "affectation");
 		this.when = null;
 		
-		run = false;
+		running = false;
 		config = true;
 		submissionAvailable = false;
 	}
@@ -86,16 +82,20 @@ public class ConfigurationService{
 	
 	public void endSubmission(){
 		submissionAvailable = false;
-		validation = true;
+		validating = true;
 		populateValidation();
 	}
 	
 	public void endValidation(){
-		validation = false;
+		validating = false;
 	}
 	
 	public void populateValidation(){
-		
+		studentService.populateValidation();
+	}
+	
+	public boolean isValidationForAdminAvailable(){
+		return running && !submissionAvailable;
 	}
 	
 	private MethodInvokingJobDetailFactoryBean createJobDetail(String method, String name) throws ClassNotFoundException, NoSuchMethodException{
@@ -128,12 +128,16 @@ public class ConfigurationService{
 		return when;
 	}
 
-	public boolean isRun() {
-		return run;
+	public boolean isRunning() {
+		return running;
+	}
+	
+	public boolean isValidating() {
+		return validating;
 	}
 
 	public void setRun(boolean run) {
-		this.run = run;
+		this.running = run;
 	}
 
 	public boolean isConfig() {

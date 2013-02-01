@@ -44,12 +44,6 @@
 
 	<bean class="fr.affectation.service.choice.ChoiceServiceImpl" />
 
-	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
-	
-	<bean class="fr.affectation.service.student.StudentServiceImpl" />
-	
-	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
-
 	<bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSourceAgap" />
 	</bean>

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
+import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.StudentToExclude;
 
 public interface StudentService {
@@ -36,5 +38,27 @@ public interface StudentService {
 	public boolean isStudentConcerned(String login);
 
 	public List<String> findAllStudentsConcernedLogin();
+	
+	//OK
+	public void populateValidation();
+	
+	//OK
+	public List<SimpleStudent> findSimpleStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
+	
+	//OK
+	public List<SimpleStudentWithValidation> findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
+	
+	//OK
+	public List<List<SimpleStudent>> findSimpleStudentsForAllIcByOrder(int order);
+
+	//OK
+	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllIcByOrder(int order);
+	
+	//OK
+	public List<List<SimpleStudent>> findSimpleStudentsForAllJsByOrder(int order);
+	
+	//OK
+	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllJsByOrder(int order);
+	
 
 }

@@ -61,5 +61,9 @@
   	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
   	
   	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
+  	
+  	<bean class="fr.affectation.service.choice.ChoiceServiceImpl" />
+  	
+  	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
 
 </beans>

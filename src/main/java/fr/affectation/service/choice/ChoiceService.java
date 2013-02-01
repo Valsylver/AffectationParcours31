@@ -22,6 +22,8 @@ public interface ChoiceService {
 	
 	public List<ImprovementCourseChoice> findAllImprovementCourseChoices();
 	
+	public List<Student> getSimpleStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
+	
 	public List<Student> getStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
 	
 	public List<String> getLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
