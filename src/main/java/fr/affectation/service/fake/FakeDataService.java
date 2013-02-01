@@ -12,13 +12,13 @@ import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.student.StudentService;
 import fr.affectation.service.superuser.SuperUserService;
+import fr.affectation.service.validation.ValidationService;
 
 @Service
 public class FakeDataService {
@@ -37,6 +37,9 @@ public class FakeDataService {
 	
 	@Inject
 	private SpecializationService specializationService;
+	
+	@Inject
+	private ValidationService validationService;
 	
 	public void createFakeChoices(){
 		List<String> liste = new ArrayList<String>();
@@ -227,6 +230,7 @@ public class FakeDataService {
 			choiceService.delete(jsc);
 		}
 		studentService.deleteAllStudentToExclude();
+		validationService.deleteAllStudents();
 	}
 	
 

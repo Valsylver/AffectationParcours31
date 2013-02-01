@@ -14,7 +14,7 @@
 <body>
 	<div class="container">
 		
-		<tags:headerResponsible title="${specialization.name} (${specialization.abbreviation})" />
+		<tags:headerResponsible title="${specialization.name} (${specialization.abbreviation}) PTDR" />
 		
 		<div class="row">
 			<div class="span2">
@@ -51,47 +51,17 @@
 									<th>Nom</th>
 								</tr>
 							</thead>
-							<c:choose>
-								<c:when test="${state == 'after'}">
-									<tbody>
-										<c:forEach var="student" items="${allStudents}">
-											<c:choose>
-												<c:when test="${student.validated}">
-													<tr class="success">
-														<td>${student.name}</td>
-													</tr>
-												</c:when>
-												<c:otherwise>
-													<tr class="error">
-														<td>${student.name}</td>
-													</tr>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</tbody>
-								</c:when>
-								<c:otherwise>
-									<tbody>
-										<c:forEach var="student" items="${allStudents}">
-											<tr>
-												<td>${student.name}</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</c:otherwise>
-							</c:choose>
+							<tbody>
+								<c:forEach var="student" items="${allStudents}">
+									<tr>
+										<td>${student.name}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
 						</table>
 					</c:when>
 					<c:otherwise>
-						<p>
-							<c:choose>
-								<c:when test="${specialization.type == 'ic'}">
-									Aucun elève n'a pour l'instant choisi ce parcours d'approfondissement en 
-								</c:when>
-								<c:otherwise>
-									Aucun elève n'a pour l'instant choisi cette filière métier en 
-								</c:otherwise>
-							</c:choose>
+						<p>Aucun elève n'a pour l'instant choisi cette filière métier en 
 							<c:choose>
 								<c:when test="${order == 1}">
 									1er choix

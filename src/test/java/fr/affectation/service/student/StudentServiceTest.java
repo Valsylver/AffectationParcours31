@@ -51,6 +51,13 @@ public class StudentServiceTest {
 		Assert.assertTrue(!studentService.findAllStudentToExcludeLogin().contains("login"));
 	}
 	
+	@Test
+	public void findByLogin(){
+		StudentToExclude student = new StudentToExclude("login");
+		studentService.saveStudentToExclude(student);
+		Assert.assertTrue(studentService.findByLogin("login") != null);
+	}
+	
 	@After
 	public void cleanDb() {
 		Session session = sessionFactory.openSession();

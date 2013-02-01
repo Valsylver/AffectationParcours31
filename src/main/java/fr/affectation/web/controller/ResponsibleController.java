@@ -1,7 +1,5 @@
 package fr.affectation.web.controller;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.springframework.security.core.Authentication;
@@ -12,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fr.affectation.domain.specialization.Specialization;
-import fr.affectation.domain.student.Student;
 import fr.affectation.service.agap.AgapService;
-import fr.affectation.service.choice.ChoiceService;
+import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.responsible.ResponsibleService;
 import fr.affectation.service.specialization.SpecializationService;
+import fr.affectation.service.student.StudentService;
 
 @Controller
 @RequestMapping("/responsable")
@@ -32,7 +30,10 @@ public class ResponsibleController {
 	private AgapService agapService;
 	
 	@Inject
-	private ChoiceService choiceService;
+	private StudentService studentService;
+	
+	@Inject
+	private ConfigurationService configurationService;
 	
 	@RequestMapping("/")
 	public String mainPage(Model model){
@@ -49,24 +50,26 @@ public class ResponsibleController {
 		agapService.generateRanking();
 		agapService.generateUeCode();
 		
-		List<Student> allStudents;
-		Specialization specialization;
+		Specialization specialization = responsibleService.forWhichSpecializationType(login).equals("ic") ?
+				specializationService.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 		
-		if (responsibleService.forWhichSpecializationType(login).equals("ic")){
-			specialization = specializationService.getImprovementCourseByAbbreviation(abbreviation);
-			allStudents = choiceService.getStudentsByOrderChoiceAndSpecialization(order, specialization);
+		if (configurationService.isSubmissionAvailable()){
+			model.addAttribute("allStudents", studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, specialization));
 		}
 		else{
-			specialization = specializationService.getJobSectorByAbbreviation(abbreviation);
-			allStudents = choiceService.getStudentsByOrderChoiceAndSpecialization(order, specialization);
+			model.addAttribute("allStudents", studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, specialization));
 		}
 		
 		model.addAttribute("order", order);
 		model.addAttribute("specialization", specialization);
-		model.addAttribute("allStudents", allStudents);
-		model.addAttribute("rankingTotal", agapService.getRanking().size());
 		
-		return "responsable/choix";
+		if (configurationService.isValidating()){
+			return "responsable/choix-validation";
+		}
+		else{
+			model.addAttribute("state", configurationService.isSubmissionAvailable() ? "before" : "after");
+			return "responsable/choix";
+		}
 	}
 
 }
