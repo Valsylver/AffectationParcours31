@@ -36,9 +36,8 @@
 						</c:choose>
 					</c:forEach>
 					
-					<li class="nav-header">Statistiques</li>
-					<li><a>Dates</a></li>
-					<li><a>Autres parcours</a></li>
+					<li class="nav-header">Synthese</li>
+					<li><a href="/responsable/statistics">Statistiques</a></li>
 				</ul>
 			</div>
 			
@@ -58,12 +57,12 @@
 											<c:choose>
 												<c:when test="${student.validated}">
 													<tr class="success">
-														<td>${student.name}</td>
+														<td><a href="/responsable/student/${student.login}">${student.name}</a></td>
 													</tr>
 												</c:when>
 												<c:otherwise>
 													<tr class="error">
-														<td>${student.name}</td>
+														<td><a href="/responsable/student/${student.login}">${student.name}</a></td>
 													</tr>
 												</c:otherwise>
 											</c:choose>
@@ -74,7 +73,7 @@
 									<tbody>
 										<c:forEach var="student" items="${allStudents}">
 											<tr>
-												<td>${student.name}</td>
+												<td><a href="/responsable/student/${student.login}">${student.name}</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>

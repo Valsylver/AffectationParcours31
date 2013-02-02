@@ -34,8 +34,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 	@Transactional(readOnly = true)
 	public JobSectorChoice getJobSectorChoicesByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
-		JobSectorChoice choices = (JobSectorChoice) session.get(
-				JobSectorChoice.class, login);
+		JobSectorChoice choices = (JobSectorChoice) session.get(JobSectorChoice.class, login);
 		if (choices == null) {
 			return new JobSectorChoice();
 		} else {
@@ -45,11 +44,9 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ImprovementCourseChoice getImprovementCourseChoicesByLogin(
-			String login) {
+	public ImprovementCourseChoice getImprovementCourseChoicesByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
-		ImprovementCourseChoice choices = (ImprovementCourseChoice) session
-				.get(ImprovementCourseChoice.class, login);
+		ImprovementCourseChoice choices = (ImprovementCourseChoice) session.get(ImprovementCourseChoice.class, login);
 		if (choices == null) {
 			return new ImprovementCourseChoice();
 		} else {
@@ -77,11 +74,9 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> getLoginsByOrderChoiceAndSpecialization(
-			int orderChoice, Specialization specialization) {
+	public List<String> getLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
 		String querySpecialization = "from ";
-		querySpecialization += specialization.getType().equals("JobSector") ? "JobSectorChoice"
-				: "ImprovementCourseChoice";
+		querySpecialization += specialization.getType().equals("JobSector") ? "JobSectorChoice" : "ImprovementCourseChoice";
 		querySpecialization += " where choice" + orderChoice + "=:abbreviation";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(querySpecialization);
@@ -95,21 +90,6 @@ public class ChoiceServiceImpl implements ChoiceService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Student> getStudentsByOrderChoiceAndSpecialization(
-			int orderChoice, Specialization specialization) {
-		List<String> allLogin = getLoginsByOrderChoiceAndSpecialization(
-				orderChoice, specialization);
-		List<Student> allStudent = new ArrayList<Student>();
-		for (String login : allLogin) {
-			Student student = new Student();
-			//student.setImprovementCourseChoice(getImprovementCourseChoicesByLogin(login));
-			allStudent.add(student);
-		}
-		return allStudent;
-	}
-
-	@Override
 	@Transactional
 	public void delete(Choice choice) {
 		Session session = sessionFactory.getCurrentSession();
@@ -119,8 +99,13 @@ public class ChoiceServiceImpl implements ChoiceService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Integer> getElementNotFilledImprovementCourse(String login) {
-		Choice choice = getImprovementCourseChoicesByLogin(login);
+		Choice choice = findIcChoicesByLogin(login);
 		List<Integer> notFilled = new ArrayList<Integer>();
+		if (choice == null){
+			for (int i=1; i<6; i++){
+				notFilled.add(i);
+			}
+		}
 		if (choice.getChoice1() == null) {
 			notFilled.add(1);
 		}
@@ -142,22 +127,29 @@ public class ChoiceServiceImpl implements ChoiceService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Integer> getElementNotFilledJobSector(String login) {
-		Choice choice = getJobSectorChoicesByLogin(login);
+		Choice choice = findJsChoicesByLogin(login);
 		List<Integer> notFilled = new ArrayList<Integer>();
-		if (choice.getChoice1() == null) {
-			notFilled.add(1);
+		if (choice == null){
+			for (int i=1; i<6; i++){
+				notFilled.add(i);
+			}
 		}
-		if (choice.getChoice2() == null) {
-			notFilled.add(2);
-		}
-		if (choice.getChoice3() == null) {
-			notFilled.add(3);
-		}
-		if (choice.getChoice4() == null) {
-			notFilled.add(4);
-		}
-		if (choice.getChoice5() == null) {
-			notFilled.add(5);
+		else{
+			if (choice.getChoice1() == null) {
+				notFilled.add(1);
+			}
+			if (choice.getChoice2() == null) {
+				notFilled.add(2);
+			}
+			if (choice.getChoice3() == null) {
+				notFilled.add(3);
+			}
+			if (choice.getChoice4() == null) {
+				notFilled.add(4);
+			}
+			if (choice.getChoice5() == null) {
+				notFilled.add(5);
+			}
 		}
 		return notFilled;
 	}
@@ -165,15 +157,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 	@Override
 	@Transactional(readOnly = true)
 	public boolean hasFilledAll(String login) {
-		return (getElementNotFilledImprovementCourse(login).size() == 0)
-				&& (getElementNotFilledJobSector(login).size() == 0);
-	}
-
-	@Override
-	public List<Student> getSimpleStudentsByOrderChoiceAndSpecialization(
-			int orderChoice, Specialization specialization) {
-		// TODO Auto-generated method stub
-		return null;
+		return (getElementNotFilledImprovementCourse(login).size() == 0) && (getElementNotFilledJobSector(login).size() == 0);
 	}
 
 	@Override

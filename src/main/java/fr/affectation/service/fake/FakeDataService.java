@@ -15,6 +15,7 @@ import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
+import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.student.StudentService;
 import fr.affectation.service.superuser.SuperUserService;
@@ -40,6 +41,9 @@ public class FakeDataService {
 	
 	@Inject
 	private ValidationService validationService;
+	
+	@Inject
+	private ExclusionService exclusionService;
 	
 	public void createFakeChoices(){
 		List<String> liste = new ArrayList<String>();
@@ -208,20 +212,20 @@ public class FakeDataService {
 	
 	public void deleteAll(){
 		for (ImprovementCourse ic : specializationService
-				.findAllImprovementCourse()) {
+				.findImprovementCourses()) {
 			specializationService.delete(ic);
 		}
 		for (ImprovementCourseChoice icc : choiceService
 				.findAllImprovementCourseChoices()) {
 			choiceService.delete(icc);
 		}
-		for (JobSector js : specializationService.findAllJobSector()) {
+		for (JobSector js : specializationService.findJobSectors()) {
 			specializationService.delete(js);
 		}
 		for (JobSectorChoice jsc : choiceService.findAllJobSectorChoices()) {
 			choiceService.delete(jsc);
 		}
-		studentService.deleteAllStudentToExclude();
+		exclusionService.deleteAllStudentsToExclude();
 		validationService.deleteAllStudents();
 	}
 	

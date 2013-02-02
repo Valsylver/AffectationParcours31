@@ -9,35 +9,12 @@ import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
-import fr.affectation.domain.student.StudentToExclude;
 
 public interface StudentService {
-
-	public void saveStudentToExclude(StudentToExclude student);
-
-	public void deleteAllStudentToExclude();
-
-	public List<StudentToExclude> findAllStudentToExclude();
-
-	public List<String> findAllStudentToExcludeLogin();
-	
-	public List<String> findStudentsToExcludeName();
-
-	public boolean populateStudentToExcludeFromFile(MultipartFile file);
-
-	public List<SimpleStudent> findAllStudentsToExclude();
-
-	public StudentToExclude findByLogin(String login);
-
-	public boolean isExcluded(SimpleStudent student);
 
 	public List<SimpleStudent> findAllStudentsConcerned();
 
 	public int findNecessarySizeForStudentExclusion();
-
-	public void removeStudentByLogin(String login);
-
-	public boolean isExcluded(String login);
 
 	public boolean isStudentConcerned(String login);
 
@@ -64,5 +41,11 @@ public interface StudentService {
 	public List<Integer> findSizeOfCategories(String path);
 
 	public Student retrieveStudentByLogin(String login, String realPath);
+
+	public List<SimpleStudent> findAllStudentsToExclude();
+
+	public List<String> findStudentsToExcludeName();
+
+	public boolean populateStudentToExcludeFromFile(MultipartFile file);
 
 }

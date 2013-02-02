@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import junit.framework.Assert;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
 import org.junit.Test;
-
-import junit.framework.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,7 +21,6 @@ import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
-import fr.affectation.service.choice.ChoiceService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -247,6 +246,38 @@ public class ChoiceServiceTest {
 		choiceService.save(choice);
 		choiceService.delete(choice);
 		Assert.assertTrue(choiceService.findAllImprovementCourseChoices().size() == 0);
+	}
+	
+	@Test
+	public void elementsNotFilledJs(){
+		Choice choice = new JobSectorChoice();
+		choice.setLogin("login");
+		choice.setChoice1("AAA");
+		choice.setChoice4("BBB");
+		choiceService.save(choice);
+		List<Integer> notFilled = choiceService.getElementNotFilledJobSector("login");
+		Assert.assertTrue(notFilled.size() == 3);
+		Assert.assertTrue(notFilled.contains(2));
+		Assert.assertTrue(notFilled.contains(3));
+		Assert.assertTrue(notFilled.contains(5));
+		Assert.assertFalse(notFilled.contains(1));
+		Assert.assertFalse(notFilled.contains(4));
+	}
+	
+	@Test
+	public void elementsNotFilledIc(){
+		Choice choice = new ImprovementCourseChoice();
+		choice.setLogin("login");
+		choice.setChoice1("AAA");
+		choice.setChoice4("BBB");
+		choiceService.save(choice);
+		List<Integer> notFilled = choiceService.getElementNotFilledImprovementCourse("login");
+		Assert.assertTrue(notFilled.size() == 3);
+		Assert.assertTrue(notFilled.contains(2));
+		Assert.assertTrue(notFilled.contains(3));
+		Assert.assertTrue(notFilled.contains(5));
+		Assert.assertFalse(notFilled.contains(1));
+		Assert.assertFalse(notFilled.contains(4));
 	}
 	
 	@Test

@@ -163,8 +163,8 @@ public class StudentController {
 			model.addAttribute("choiceIc", choiceIc);
 			model.addAttribute("choiceJs", choiceJs);
 		    model.addAttribute("fullChoice", new FullChoice());
-		    model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
-		    model.addAttribute("fmAvailable", specializationService.findAllJobSector());
+		    model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+		    model.addAttribute("fmAvailable", specializationService.findJobSectors());
 		    return "eleve/form";
 		}
 		else{

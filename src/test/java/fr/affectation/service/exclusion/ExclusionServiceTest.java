@@ -1,4 +1,4 @@
-package fr.affectation.service.student;
+package fr.affectation.service.exclusion;
 
 import javax.inject.Inject;
 
@@ -17,10 +17,10 @@ import fr.affectation.domain.student.StudentToExclude;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class StudentServiceTest {
+public class ExclusionServiceTest {
 	
 	@Inject
-	private StudentService studentService;
+	private ExclusionService exclusionService;
 	
 	@Inject
 	private SessionFactory sessionFactory;
@@ -28,34 +28,34 @@ public class StudentServiceTest {
 	@Test
 	public void saveStudentToExclude(){
 		StudentToExclude student = new StudentToExclude("login");
-		studentService.saveStudentToExclude(student);
+		exclusionService.save(student);
 	}
 	
 	@Test
 	public void isStudentToExcludeSaved(){
 		StudentToExclude student = new StudentToExclude("login");
-		studentService.saveStudentToExclude(student);
-		Assert.assertTrue(studentService.findAllStudentToExcludeLogin().contains("login"));
+		exclusionService.save(student);
+		Assert.assertTrue(exclusionService.findStudentToExcludeLogins().contains("login"));
 	}
 	
 	@Test
 	public void deleteAllStudentToExclude(){
-		studentService.deleteAllStudentToExclude();
+		exclusionService.deleteAllStudentsToExclude();
 	}
 	
 	@Test
 	public void deleteStudent(){
 		StudentToExclude student = new StudentToExclude("login");
-		studentService.saveStudentToExclude(student);
-		studentService.removeStudentByLogin("login");
-		Assert.assertTrue(!studentService.findAllStudentToExcludeLogin().contains("login"));
+		exclusionService.save(student);
+		exclusionService.removeStudentByLogin("login");
+		Assert.assertTrue(!exclusionService.findStudentToExcludeLogins().contains("login"));
 	}
 	
 	@Test
 	public void findByLogin(){
 		StudentToExclude student = new StudentToExclude("login");
-		studentService.saveStudentToExclude(student);
-		Assert.assertTrue(studentService.findByLogin("login") != null);
+		exclusionService.save(student);
+		Assert.assertTrue(exclusionService.findByLogin("login") != null);
 	}
 	
 	@After

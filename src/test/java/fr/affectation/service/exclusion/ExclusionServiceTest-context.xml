@@ -33,7 +33,7 @@
 		<property name="packagesToScan" value="fr.affectation.domain.student" />
 	</bean>
 	
-	<bean class="fr.affectation.service.student.StudentServiceImpl" />
+	<bean class="fr.affectation.service.exclusion.ExclusionServiceImpl" />
 	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
@@ -57,15 +57,5 @@
   	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
      	<constructor-arg ref="dataSourceAgap" />
   	</bean>
-  	
-  	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
-  	
-  	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
-  	
-  	<bean class="fr.affectation.service.choice.ChoiceServiceImpl" />
-  	
-  	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
-  	
-  	<bean class="fr.affectation.service.documents.DocumentServiceImpl" />
 
 </beans>

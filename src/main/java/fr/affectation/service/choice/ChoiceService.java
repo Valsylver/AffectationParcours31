@@ -6,7 +6,6 @@ import fr.affectation.domain.choice.Choice;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.Specialization;
-import fr.affectation.domain.student.Student;
 
 public interface ChoiceService {
 	
@@ -21,10 +20,6 @@ public interface ChoiceService {
 	public List<JobSectorChoice> findAllJobSectorChoices();
 	
 	public List<ImprovementCourseChoice> findAllImprovementCourseChoices();
-	
-	public List<Student> getSimpleStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
-	
-	public List<Student> getStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
 	
 	public List<String> getLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
 	

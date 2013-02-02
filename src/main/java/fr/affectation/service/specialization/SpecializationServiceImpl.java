@@ -47,7 +47,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<JobSector> findAllJobSector() {
+	public List<JobSector> findJobSectors() {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from JobSector");
 		List<JobSector> allJs = (List<JobSector>) query.list();
@@ -58,7 +58,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<ImprovementCourse> findAllImprovementCourse() {
+	public List<ImprovementCourse> findImprovementCourses() {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from ImprovementCourse");
 		List<ImprovementCourse> allIc = (List<ImprovementCourse>) query.list();
@@ -68,9 +68,9 @@ public class SpecializationServiceImpl implements SpecializationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> findAllJobSectorAbbreviation() {
+	public List<String> findJobSectorAbbreviations() {
 		List<String> allJSAbb = new ArrayList<String>();
-		for (JobSector jobSector : findAllJobSector()){
+		for (JobSector jobSector : findJobSectors()){
 			allJSAbb.add(jobSector.getAbbreviation());
 		}
 		return allJSAbb;
@@ -78,9 +78,9 @@ public class SpecializationServiceImpl implements SpecializationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> findAllImprovementCourseAbbreviation() {
+	public List<String> findImprovementCourseAbbreviations() {
 		List<String> allICAbb = new ArrayList<String>();
-		for (ImprovementCourse improvementCourse : findAllImprovementCourse()){
+		for (ImprovementCourse improvementCourse : findImprovementCourses()){
 			allICAbb.add(improvementCourse.getAbbreviation());
 		}
 		return allICAbb;
@@ -95,8 +95,8 @@ public class SpecializationServiceImpl implements SpecializationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> findAllImprovementCourseForForm() {
-		List<ImprovementCourse> allIc = findAllImprovementCourse();
+	public List<String> findImprovementCourseStringsForForm() {
+		List<ImprovementCourse> allIc = findImprovementCourses();
 		List<String> allIcForForm = new ArrayList<String>();
 		String icForForm;
 		for (ImprovementCourse ic : allIc){
@@ -109,8 +109,8 @@ public class SpecializationServiceImpl implements SpecializationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> findAllJobSectorForForm() {
-		List<JobSector> allJs = findAllJobSector();
+	public List<String> findJobSectorStringsForForm() {
+		List<JobSector> allJs = findJobSectors();
 		List<String> allJsForForm = new ArrayList<String>();
 		String jsForForm;
 		for (JobSector js : allJs){
@@ -132,6 +132,22 @@ public class SpecializationServiceImpl implements SpecializationService {
 		else{
 			return null;
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public String findNameFromIcAbbreviation(String abbreviation) {
+		Session session = sessionFactory.getCurrentSession();
+		ImprovementCourse ic = (ImprovementCourse) session.get(ImprovementCourse.class, abbreviation);
+		return ic == null ? "" : ic.getName();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public String findNameFromJsAbbreviation(String abbreviation) {
+		Session session = sessionFactory.getCurrentSession();
+		JobSector js = (JobSector) session.get(JobSector.class, abbreviation);
+		return js == null ? "" : js.getName();
 	}
 
 }

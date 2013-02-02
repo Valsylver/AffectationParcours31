@@ -36,8 +36,8 @@
 						</c:choose>
 					</c:forEach>
 
-					<li class="nav-header">Statistiques</li>
-					<li><a>Dates</a></li>
+					<li class="nav-header">Synthese</li>
+					<li><a href="/responsable/statistics">Statistiques</a></li>
 					<li><a>Autres parcours</a></li>
 				</ul>
 			</div>
@@ -69,7 +69,7 @@
 									<c:forEach var="student" items="${allStudents}"
 										varStatus="status">
 										<tr>
-											<td>${student.name}</td>
+											<td><a href="/responsable/student/${student.login}">${student.name}</a></td>
 											<td><form:checkbox path="validated[${status.index}]"></form:checkbox></td>
 										</tr>
 									</c:forEach>

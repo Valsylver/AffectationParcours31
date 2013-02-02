@@ -16,19 +16,23 @@ public interface SpecializationService {
 	
 	public ImprovementCourse getImprovementCourseByAbbreviation(String abbreviation);
 
-	public List<String> findAllJobSectorAbbreviation();
+	public List<String> findJobSectorAbbreviations();
 
-	public List<String> findAllImprovementCourseAbbreviation();
+	public List<String> findImprovementCourseAbbreviations();
 
-	public List<JobSector> findAllJobSector();
+	public List<JobSector> findJobSectors();
 
-	public List<ImprovementCourse> findAllImprovementCourse();
+	public List<ImprovementCourse> findImprovementCourses();
 	
-	public List<String> findAllJobSectorForForm();
+	public List<String> findJobSectorStringsForForm();
 	
-	public List<String> findAllImprovementCourseForForm();
+	public List<String> findImprovementCourseStringsForForm();
 
 	public String getAbbreviationFromStringForForm(String forForm);
+	
+	public String findNameFromIcAbbreviation(String abbreviation);
+	
+	public String findNameFromJsAbbreviation(String abbreviation);
 
 }
 

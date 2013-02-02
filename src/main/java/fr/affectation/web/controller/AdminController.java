@@ -37,6 +37,7 @@ import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
+import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.fake.FakeDataService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
@@ -52,6 +53,9 @@ public class AdminController {
 
 	@Inject
 	private StudentService studentService;
+	
+	@Inject
+	private ExclusionService exclusionService;
 
 	@Inject
 	private SuperUserService superUserService;
@@ -78,8 +82,8 @@ public class AdminController {
 
 	@RequestMapping("/administration/specialization")
 	public String manageSpecialization(Model model) {
-		model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
-		model.addAttribute("fmAvailable", specializationService.findAllJobSector());
+		model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+		model.addAttribute("fmAvailable", specializationService.findJobSectors());
 		return "admin/administration/specialization";
 	}
 
@@ -100,7 +104,7 @@ public class AdminController {
 	@RequestMapping(value = "/run/edit-exclusion", method = RequestMethod.POST)
 	public String editExclusion(StudentsExclusion studentExclusion) {
 		List<String> newExcluded = new ArrayList<String>();
-		List<String> oldExcluded = studentService.findAllStudentToExcludeLogin();
+		List<String> oldExcluded = exclusionService.findStudentToExcludeLogins();
 		for (String login : studentExclusion.getExcluded()) {
 			if (!login.equals("")) {
 				newExcluded.add(login);
@@ -108,12 +112,12 @@ public class AdminController {
 		}
 		for (String login : newExcluded) {
 			if (!oldExcluded.contains(login)) {
-				studentService.saveStudentToExclude(new StudentToExclude(login));
+				exclusionService.save(new StudentToExclude(login));
 			}
 		}
 		for (String login : oldExcluded) {
 			if (!newExcluded.contains(login)) {
-				studentService.removeStudentByLogin(login);
+				exclusionService.removeStudentByLogin(login);
 			}
 		}
 		return "redirect:/admin/administration/students";
@@ -158,16 +162,16 @@ public class AdminController {
 	@RequestMapping("/student/{login}")
 	public String displayStudent(@PathVariable String login, Model model, HttpServletRequest request) {
 		model.addAttribute("student", studentService.retrieveStudentByLogin(login, request.getSession().getServletContext().getRealPath("/")));
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		return "admin/student";
 	}
 
 	@RequestMapping("/config")
 	public String configurationIndex(Model model) {
 		model.addAttribute("when", new When());
-		model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
-		model.addAttribute("fmAvailable", specializationService.findAllJobSector());
+		model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+		model.addAttribute("fmAvailable", specializationService.findJobSectors());
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		model.addAttribute("now", dateFormat.format(date));
@@ -257,8 +261,8 @@ public class AdminController {
 			result.addError(fieldError);
 		}
 		if (result.hasErrors()) {
-			model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
-			model.addAttribute("fmAvailable", specializationService.findAllJobSector());
+			model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+			model.addAttribute("fmAvailable", specializationService.findJobSectors());
 			return "admin/configure-index";
 		} else {
 			List<Date> allDates = new ArrayList<Date>();
@@ -275,8 +279,8 @@ public class AdminController {
 				}
 			}
 			if (!areDatesSuccessive) {
-				model.addAttribute("paAvailable", specializationService.findAllImprovementCourse());
-				model.addAttribute("fmAvailable", specializationService.findAllJobSector());
+				model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+				model.addAttribute("fmAvailable", specializationService.findJobSectors());
 				model.addAttribute("alertMessage", "Les dates doivent êtres successives.");
 				return "admin/configure-index";
 			}
@@ -299,36 +303,45 @@ public class AdminController {
 
 	@RequestMapping("/parcours/statistics")
 	public String statisticsIc(Model model, HttpServletRequest request) {
-		statisticsService.generatePieChartIc(request.getSession().getServletContext().getRealPath("/"));
+		String path = request.getSession().getServletContext().getRealPath("/");
+		statisticsService.generatePieChartIc(path);
+		statisticsService.generateBarChartIc(path);
 		model.addAttribute("type", 1);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("specForStats", statisticsService.findSimpleIcStats());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		return "admin/statistics";
 	}
 
 	@RequestMapping("/filieres/statistics")
 	public String statisticsSynthese(Model model, HttpServletRequest request) {
-		statisticsService.generatePieChartJs(request.getSession().getServletContext().getRealPath("/"));
+		String path = request.getSession().getServletContext().getRealPath("/");
+		statisticsService.generatePieChartJs(path);
+		statisticsService.generateBarChartJs(path);
 		model.addAttribute("type", 2);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("specForStats", statisticsService.findSimpleJsStats());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		return "admin/statistics";
 	}
 
 	@RequestMapping("/statistics/synthese")
 	public String statisticsJs(Model model, HttpServletRequest request) {
-		statisticsService.generatePieChartJs(request.getSession().getServletContext().getRealPath("/"));
-		statisticsService.generatePieChartIc(request.getSession().getServletContext().getRealPath("/"));
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		String path = request.getSession().getServletContext().getRealPath("/");
+		statisticsService.generatePieChartJs(path);
+		statisticsService.generatePieChartIc(path);
+		statisticsService.generateBarChartIc(path);
+		statisticsService.generateBarChartJs(path);
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		return "admin/statistics-synthese";
 	}
 
 	@RequestMapping("/parcours/synthese/choix{order}")
 	public String allResultsIc(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
 		model.addAttribute(
 				"allStudents",
@@ -340,8 +353,8 @@ public class AdminController {
 	@RequestMapping("/filieres/synthese/choix{order}")
 	public String allResultsJs(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
 		model.addAttribute(
 				"allStudents",
@@ -354,8 +367,8 @@ public class AdminController {
 	public String resultsIcDetails(@PathVariable String abbreviation, @PathVariable int order, Model model) {
 		ImprovementCourse improvementCourse = specializationService.getImprovementCourseByAbbreviation(abbreviation);
 		model.addAttribute("order", order);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		model.addAttribute("abbreviation", abbreviation);
 		model.addAttribute("specialization", improvementCourse);
 		model.addAttribute(
@@ -370,8 +383,8 @@ public class AdminController {
 	public String resultsJsDetails(@PathVariable String abbreviation, @PathVariable int order, Model model) {
 		JobSector jobSector = specializationService.getJobSectorByAbbreviation(abbreviation);
 		model.addAttribute("order", order);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 		model.addAttribute("abbreviation", abbreviation);
 		model.addAttribute("specialization", jobSector);
 		model.addAttribute(
@@ -392,8 +405,8 @@ public class AdminController {
 		model.addAttribute("nbreNo", numbersForCategories.get(2));
 		model.addAttribute("category", category);
 		model.addAttribute("results", results);
-		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
-		model.addAttribute("allJs", specializationService.findAllJobSector());
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
 
 		return "admin/eleves-synthese";
 	}

@@ -43,15 +43,18 @@
 					Parcours d'approfondissement
 				</legend>
 				<img src="/img/jspchart/piechartPa.png">
-				
+				<br />
+				<img src="/img/jspchart/barchartPa.png">
 				<br />
 				
 				<legend>
 					Filières métier
 				</legend>
 				<img src="/img/jspchart/piechartFm.png">
+				<br />
+				<img src="/img/jspchart/barchartFm.png">
 			</div>
-			<div class="span3">
+			<div class="span2">
 				<tags:rightColumnAdmin />
 			</div>
 		</div>

@@ -135,5 +135,11 @@ public class Choice {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Choice [login=" + login + ", choice1=" + choice1 + ", choice2=" + choice2 + ", choice3=" + choice3 + ", choice4=" + choice4 + ", choice5="
+				+ choice5 + "]";
+	}
+
 }
 
