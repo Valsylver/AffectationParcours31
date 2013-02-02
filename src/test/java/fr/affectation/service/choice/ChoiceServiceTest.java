@@ -44,6 +44,48 @@ public class ChoiceServiceTest {
 	}
 	
 	@Test
+	public void findJsChoicesByLogin(){
+		Choice jobSectorChoices = new JobSectorChoice();
+		jobSectorChoices.setLogin("login");
+		jobSectorChoices.setChoice1("AAA");
+		jobSectorChoices.setChoice5("BBB");
+		choiceService.save(jobSectorChoices);
+		JobSectorChoice jsChoice = choiceService.findJsChoicesByLogin("login");
+		Assert.assertTrue(jsChoice.getChoice1().equals("AAA"));
+		Assert.assertTrue(jsChoice.getChoice5().equals("BBB"));
+		Assert.assertTrue(jsChoice.getChoice2() == null);
+		Assert.assertTrue(jsChoice.getChoice3() == null);
+		Assert.assertTrue(jsChoice.getChoice4() == null);
+	}
+	
+	@Test
+	public void findIcChoicesByLogin(){
+		Choice improvementCourseChoices = new ImprovementCourseChoice();
+		improvementCourseChoices.setLogin("login");
+		improvementCourseChoices.setChoice1("AAA");
+		improvementCourseChoices.setChoice5("BBB");
+		choiceService.save(improvementCourseChoices);
+		ImprovementCourseChoice icChoice = choiceService.findIcChoicesByLogin("login");
+		Assert.assertTrue(icChoice.getChoice1().equals("AAA"));
+		Assert.assertTrue(icChoice.getChoice5().equals("BBB"));
+		Assert.assertTrue(icChoice.getChoice2() == null);
+		Assert.assertTrue(icChoice.getChoice3() == null);
+		Assert.assertTrue(icChoice.getChoice4() == null);
+	}
+	
+	@Test
+	public void findIcChoicesByLoginWhenNotInDb(){
+		ImprovementCourseChoice icChoice = choiceService.findIcChoicesByLogin("login");
+		Assert.assertTrue(icChoice == null);
+	}
+	
+	@Test
+	public void findJsChoicesByLoginWhenNotInDb(){
+		JobSectorChoice jsChoice = choiceService.findJsChoicesByLogin("login");
+		Assert.assertTrue(jsChoice == null);
+	}
+	
+	@Test
 	public void saveEmptyJobSectorChoices(){
 		Choice jobSectorChoices = new JobSectorChoice();
 		jobSectorChoices.setLogin("login");
@@ -71,7 +113,7 @@ public class ChoiceServiceTest {
 	
 	public Choice createFullChoices(String type){
 		Choice choices;
-		if (type == "ImprovementCourse"){
+		if (type.equals("ImprovementCourse")){
 			choices = new ImprovementCourseChoice();
 		}
 		else{

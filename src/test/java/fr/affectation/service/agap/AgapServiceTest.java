@@ -85,7 +85,7 @@ public class AgapServiceTest {
 	public void nameFromLogin(){
 		if (agapService.getAllStudentConcernedLogin().size() > 0){
 			for (int i=0; i<10; i++){
-				agapService.getNameFromLogin(chooseRandomLogin());
+				agapService.findNameFromLogin(chooseRandomLogin());
 			}
 		}
 	}

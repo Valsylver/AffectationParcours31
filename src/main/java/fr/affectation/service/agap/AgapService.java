@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import fr.affectation.domain.specialization.Specialization;
+import fr.affectation.domain.student.Contentious;
 import fr.affectation.domain.student.Result;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.student.StudentDetails;
+import fr.affectation.domain.student.UeResult;
 
 public interface AgapService {
 	
@@ -31,10 +33,6 @@ public interface AgapService {
 	
 	public List<Float> getMeans();
 	
-	public String getNameFromLogin(String login);
-	
-	public String getLoginFromName(String name);
-	
 	public Map<String, Float> getUeGrade(String login);
 
 	public Result getResultsFromLoginAndSpecialization(String login,
@@ -45,4 +43,12 @@ public interface AgapService {
 	public List<SimpleStudent> findAllStudentsConcerned();
 	
 	public boolean checkStudent(String login);
+	
+	public String findNameFromLogin(String login);
+	
+	public List<Contentious> findContentious(String login);
+	
+	public List<Float> findGpaMeans(String login);
+	
+	public List<UeResult> findUeResults(String login);
 }

@@ -32,6 +32,10 @@ public interface ChoiceService {
 	
 	public List<Integer> getElementNotFilledJobSector(String login);
 	
+	public ImprovementCourseChoice findIcChoicesByLogin(String login);
+	
+	public JobSectorChoice findJsChoicesByLogin(String login);
+	
 	public boolean hasFilledAll(String login);
 
 }

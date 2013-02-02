@@ -1,39 +1,110 @@
 package fr.affectation.domain.student;
 
+import java.util.List;
+
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 
 public class Student {
 
-	private StudentDetails details;
-	private Result results;
-	private JobSectorChoice jobSectorChoice;
-	private ImprovementCourseChoice improvementCourseChoice;
+	private String name;
 	
-	public Result getResults() {
+	private String login;
+	
+	private boolean hasFilledResume;
+	
+	private boolean hasFilledLetterIc;
+	
+	private boolean hasFilledLetterJs;
+	
+	private ImprovementCourseChoice icChoices;
+	
+	private JobSectorChoice jsChoices;
+	
+	private List<Contentious> contentious;
+	
+	private List<UeResult> results;
+	
+	private List<Float> gpaMeans;
+	
+	public ImprovementCourseChoice getIcChoices() {
+		return icChoices;
+	}
+
+	public void setIcChoices(ImprovementCourseChoice icChoices) {
+		this.icChoices = icChoices;
+	}
+
+	public JobSectorChoice getJsChoices() {
+		return jsChoices;
+	}
+
+	public void setJsChoices(JobSectorChoice jsChoices) {
+		this.jsChoices = jsChoices;
+	}
+
+	public boolean isHasFilledLetterJs() {
+		return hasFilledLetterJs;
+	}
+
+	public void setHasFilledLetterJs(boolean hasFilledLetterJs) {
+		this.hasFilledLetterJs = hasFilledLetterJs;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public boolean isHasFilledResume() {
+		return hasFilledResume;
+	}
+
+	public void setHasFilledResume(boolean hasFilledResume) {
+		this.hasFilledResume = hasFilledResume;
+	}
+
+	public boolean isHasFilledLetterIc() {
+		return hasFilledLetterIc;
+	}
+
+	public void setHasFilledLetterIc(boolean hasFilledLetterIc) {
+		this.hasFilledLetterIc = hasFilledLetterIc;
+	}
+
+	public List<Contentious> getContentious() {
+		return contentious;
+	}
+
+	public void setContentious(List<Contentious> contenious) {
+		this.contentious = contenious;
+	}
+
+	public List<UeResult> getResults() {
 		return results;
 	}
-	public void setResults(Result results) {
+
+	public void setResults(List<UeResult> results) {
 		this.results = results;
 	}
-	public JobSectorChoice getJobSectorChoice() {
-		return jobSectorChoice;
+
+	public List<Float> getGpaMeans() {
+		return gpaMeans;
 	}
-	public void setJobSectorChoice(JobSectorChoice jobSectorChoice) {
-		this.jobSectorChoice = jobSectorChoice;
-	}
-	public ImprovementCourseChoice getImprovementCourseChoice() {
-		return improvementCourseChoice;
-	}
-	public void setImprovementCourseChoice(
-			ImprovementCourseChoice improvementCourseChoice) {
-		this.improvementCourseChoice = improvementCourseChoice;
-	}
-	public StudentDetails getDetails() {
-		return details;
-	}
-	public void setDetails(StudentDetails details) {
-		this.details = details;
+
+	public void setGpaMeans(List<Float> gpaMeans) {
+		this.gpaMeans = gpaMeans;
 	}
 
 }

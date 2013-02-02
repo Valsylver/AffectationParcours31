@@ -21,6 +21,7 @@ import fr.affectation.domain.student.Result;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.student.StudentDetails;
+import fr.affectation.domain.student.UeResult;
 
 @Service
 public class AgapServiceImpl implements AgapService {
@@ -42,15 +43,13 @@ public class AgapServiceImpl implements AgapService {
 		String queryStudents = "SELECT * FROM eleves WHERE personne_id=:login";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
-		List<Map<String, Object>> allContentiousMap = namedParameterjdbcTemplate
-				.queryForList(queryStudents, namedParameter);
+		List<Map<String, Object>> allContentiousMap = namedParameterjdbcTemplate.queryForList(queryStudents, namedParameter);
 		List<StudentDetails> allStudentDetails = new ArrayList<StudentDetails>();
 		for (Map<String, Object> map : allContentiousMap) {
 			StudentDetails studentDetails = new StudentDetails();
 			studentDetails.setBacCode((String) map.get("bac_code"));
 			studentDetails.setBacMention((String) map.get("bac_mention"));
-			studentDetails.setCivility(convertCivilityToString((Integer) map
-					.get("civil")));
+			studentDetails.setCivility(convertCivilityToString((Integer) map.get("civil")));
 			studentDetails.setEntreeFil((String) map.get("entree_fil"));
 			studentDetails.setEntreePrep((String) map.get("entree_prep"));
 			studentDetails.setFullName((String) map.get("nom"));
@@ -75,9 +74,8 @@ public class AgapServiceImpl implements AgapService {
 		List<String> allLogin = getAllStudentConcernedLogin();
 		List<Gpa> allGpa = new ArrayList<Gpa>();
 		for (String login : allLogin) {
-			List<Float> gpaAllSemester = findGpa(login);
-			Float mean = (gpaAllSemester.get(0) + gpaAllSemester.get(1) + gpaAllSemester
-					.get(2)) / 3;
+			List<Float> gpaAllSemester = findGpaMeans(login);
+			Float mean = (gpaAllSemester.get(0) + gpaAllSemester.get(1) + gpaAllSemester.get(2)) / 3;
 			allGpa.add(new Gpa(login, mean));
 		}
 		Collections.sort(allGpa, new ComparatorGpa());
@@ -119,7 +117,7 @@ public class AgapServiceImpl implements AgapService {
 	@Override
 	public Result getResultsFromLogin(String login) {
 		Result result = new Result();
-		List<Float> gpaMeanList = findGpa(login);
+		List<Float> gpaMeanList = findGpaMeans(login);
 		result.setGpaMeanS5(gpaMeanList.get(0));
 		result.setGpaMeanS6(gpaMeanList.get(1));
 		result.setGpaMeanS7(gpaMeanList.get(2));
@@ -130,10 +128,9 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public Result getResultsFromLoginAndSpecialization(String login,
-			Specialization specialization) {
+	public Result getResultsFromLoginAndSpecialization(String login, Specialization specialization) {
 		Result result = new Result();
-		List<Float> gpaMeanList = findGpa(login);
+		List<Float> gpaMeanList = findGpaMeans(login);
 		result.setGpaMeanS5(gpaMeanList.get(0));
 		result.setGpaMeanS6(gpaMeanList.get(1));
 		result.setGpaMeanS7(gpaMeanList.get(2));
@@ -145,12 +142,11 @@ public class AgapServiceImpl implements AgapService {
 		return result;
 	}
 
-	public List<Float> findGpa(String login) {
+	public List<Float> findGpaMeans(String login) {
 		String requeteEleves = "SELECT * FROM gpa WHERE nom IN (SELECT nom FROM eleves WHERE personne_id=:login) and sem IN ('SEM-5', 'SEM-6', 'SEM-7')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
-		List<Map<String, Object>> gpaMap = namedParameterjdbcTemplate
-				.queryForList(requeteEleves, namedParameter);
+		List<Map<String, Object>> gpaMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
 		Map<String, List<Float>> gpaValues = new HashMap<String, List<Float>>();
 		for (Map<String, Object> map : gpaMap) {
 			String semester = (String) map.get("sem");
@@ -185,8 +181,7 @@ public class AgapServiceImpl implements AgapService {
 		String queryContentious = "SELECT * FROM contentieux WHERE nom IN (SELECT nom FROM eleves WHERE personne_id=:login)";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
-		List<Map<String, Object>> allContentiousMap = namedParameterjdbcTemplate
-				.queryForList(queryContentious, namedParameter);
+		List<Map<String, Object>> allContentiousMap = namedParameterjdbcTemplate.queryForList(queryContentious, namedParameter);
 		List<Contentious> allContentious = new ArrayList<Contentious>();
 		for (Map<String, Object> map : allContentiousMap) {
 			Contentious contentious = new Contentious();
@@ -210,8 +205,7 @@ public class AgapServiceImpl implements AgapService {
 				+ "(SELECT nom FROM notes_details WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('etranger')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("cycle", cycle);
-		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate
-				.queryForList(requeteEleves, namedParameter);
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
 		List<String> allStudentLogin = new ArrayList<String>();
 		for (Map<String, Object> map : studentMap) {
 			String login = (String) map.get("personne_id");
@@ -226,8 +220,7 @@ public class AgapServiceImpl implements AgapService {
 		String queryGradeGpa = "SELECT * FROM notes_details WHERE nom IN (SELECT nom FROM eleves WHERE personne_id=:login)";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
-		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate
-				.queryForList(queryGradeGpa, namedParameter);
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter);
 		Map<String, Float> gpaByUeCode = new HashMap<String, Float>();
 		for (Map<String, Object> map : studentMap) {
 			String codeUe = (String) map.get("code_ue");
@@ -281,8 +274,7 @@ public class AgapServiceImpl implements AgapService {
 			namedParameter.put("cycle", getLastCycle());
 		}
 		namedParameter.put("semester", semester);
-		List<Map<String, Object>> ueCodeMap = namedParameterjdbcTemplate
-				.queryForList(queryUeCode, namedParameter);
+		List<Map<String, Object>> ueCodeMap = namedParameterjdbcTemplate.queryForList(queryUeCode, namedParameter);
 		List<String> ueCode = new ArrayList<String>();
 		for (Map<String, Object> map : ueCodeMap) {
 			ueCode.add((String) map.get("code_ue"));
@@ -300,8 +292,8 @@ public class AgapServiceImpl implements AgapService {
 		generateRanking();
 		generateUeCode();
 		Student student = new Student();
-		student.setDetails(getStudentDetailsFromLogin(login));
-		student.setResults(getResultsFromLogin(login));
+		// student.setDetails(getStudentDetailsFromLogin(login));
+		// student.setResults(getResultsFromLogin(login));
 		return student;
 	}
 
@@ -311,16 +303,14 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public String getNameFromLogin(String login) {
+	public String findNameFromLogin(String login) {
 		String queryGradeGpa = "SELECT nom FROM eleves WHERE personne_id=:login";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
-		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate
-				.queryForList(queryGradeGpa, namedParameter);
-		if (studentMap.size() == 0){
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter);
+		if (studentMap.size() == 0) {
 			return login;
-		}
-		else{
+		} else {
 			String name = login;
 			for (Map<String, Object> map : studentMap) {
 				name = (String) map.get("nom");
@@ -332,47 +322,51 @@ public class AgapServiceImpl implements AgapService {
 	@Override
 	public List<String> getAllStudentConcernedName() {
 		List<String> allStudentConcernedName = new ArrayList<String>();
-		for (String login : getAllStudentConcernedLogin()){
-			allStudentConcernedName.add(getNameFromLogin(login));
+		for (String login : getAllStudentConcernedLogin()) {
+			allStudentConcernedName.add(findNameFromLogin(login));
 		}
 		Collections.sort(allStudentConcernedName, new ComparatorName());
 		return allStudentConcernedName;
 	}
 
 	@Override
-	public String getLoginFromName(String name) {
-		String queryGradeGpa = "SELECT personne_id FROM eleves WHERE nom=:nom";
-		Map<String, String> namedParameter = new HashMap<String, String>();
-		namedParameter.put("nom", name);
-		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate
-				.queryForList(queryGradeGpa, namedParameter);
-		if (studentMap.size() == 0){
-			return name;
-		}
-		else{
-			String login = name;
-			for (Map<String, Object> map : studentMap) {
-				name = (String) map.get("personne_id");
-			}
-			return login;
-		}
-	}
-
-	@Override
 	public List<SimpleStudent> findAllStudentsConcerned() {
 		List<SimpleStudent> studentsConcerned = new ArrayList<SimpleStudent>();
 		List<String> allLogin = getAllStudentConcernedLogin();
-		for (String login : allLogin){
-			SimpleStudent student = new SimpleStudent(login, getNameFromLogin(login));
+		for (String login : allLogin) {
+			SimpleStudent student = new SimpleStudent(login, findNameFromLogin(login));
 			studentsConcerned.add(student);
 		}
 		Collections.sort(studentsConcerned, new ComparatorSimpleStudent());
 		return studentsConcerned;
 	}
-	
+
 	@Override
-	public boolean checkStudent(String login){
-		return !getNameFromLogin(login).equals(login);
+	public boolean checkStudent(String login) {
+		return !findNameFromLogin(login).equals(login);
+	}
+
+	@Override
+	public List<UeResult> findUeResults(String login) {
+		String queryGradeGpa = "SELECT * FROM notes_details WHERE nom IN (SELECT nom FROM eleves WHERE personne_id=:login)";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("login", login);
+		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter);
+		List<UeResult> results = new ArrayList<UeResult>();
+		for (Map<String, Object> map : resultsMap) {
+			Integer creditsEcts = (Integer) map.get("credits_ects");
+			if ((creditsEcts != null) && (creditsEcts != 0)) {
+				UeResult result = new UeResult();
+				result.setCode((String) map.get("code_ue"));
+				result.setGpa((Float) map.get("grade_gpa"));
+				result.setSession((Integer) map.get("session"));
+				result.setSemester((String) map.get("sem"));
+				result.setEcts((String) map.get("grade_ects"));
+				result.setCycle((String) map.get("cycle"));
+				results.add(result);
+			}
+		}
+		return results;
 	}
 
 }

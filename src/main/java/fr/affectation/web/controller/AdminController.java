@@ -5,9 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,19 +31,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import fr.affectation.domain.choice.ImprovementCourseChoice;
-import fr.affectation.domain.choice.JobSectorChoice;
-import fr.affectation.domain.comparator.ComparatorName;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.student.Student;
 import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.util.StudentsExclusion;
-import fr.affectation.service.agap.AgapService;
-import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
-import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.fake.FakeDataService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
@@ -57,19 +48,10 @@ import fr.affectation.service.superuser.SuperUserService;
 public class AdminController {
 
 	@Inject
-	private ChoiceService choiceService;
-
-	@Inject
 	private SpecializationService specializationService;
 
 	@Inject
 	private StudentService studentService;
-
-	@Inject
-	private DocumentService documentService;
-
-	@Inject
-	private AgapService agapService;
 
 	@Inject
 	private SuperUserService superUserService;
@@ -139,19 +121,8 @@ public class AdminController {
 
 	@RequestMapping("/exclude")
 	public String excludeStudent(Model model) {
-		List<String> studentsName = findAllStudentsToExcludeName();
-		model.addAttribute("studentsToExclude", studentsName);
+		model.addAttribute("studentsToExclude", studentService.findStudentsToExcludeName());
 		return "admin/exclude-students";
-	}
-
-	public List<String> findAllStudentsToExcludeName() {
-		List<String> studentsLogin = studentService.findAllStudentToExcludeLogin();
-		List<String> studentsName = new ArrayList<String>();
-		for (String login : studentsLogin) {
-			studentsName.add(agapService.getNameFromLogin(login));
-		}
-		Collections.sort(studentsName, new ComparatorName());
-		return studentsName;
 	}
 
 	@RequestMapping(value = "/excludeProcess", method = RequestMethod.POST)
@@ -186,22 +157,7 @@ public class AdminController {
 
 	@RequestMapping("/student/{login}")
 	public String displayStudent(@PathVariable String login, Model model, HttpServletRequest request) {
-		agapService.generateRanking();
-		agapService.generateUeCode();
-		Student student = new Student();
-		student.setDetails(agapService.getStudentDetailsFromLogin(login));
-		ImprovementCourseChoice icChoice = (ImprovementCourseChoice) choiceService.getImprovementCourseChoicesByLogin(login);
-		student.setImprovementCourseChoice(icChoice);
-		JobSectorChoice jsChoice = (JobSectorChoice) choiceService.getJobSectorChoicesByLogin(login);
-		student.setJobSectorChoice(jsChoice);
-		student.setResults(agapService.getResultsFromLogin(login));
-		model.addAttribute("student", student);
-
-		String path = request.getSession().getServletContext().getRealPath("/");
-		model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
-		model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
-		model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
-
+		model.addAttribute("student", studentService.retrieveStudentByLogin(login, request.getSession().getServletContext().getRealPath("/")));
 		model.addAttribute("allIc", specializationService.findAllImprovementCourse());
 		model.addAttribute("allJs", specializationService.findAllJobSector());
 		return "admin/student";
@@ -428,57 +384,12 @@ public class AdminController {
 
 	@RequestMapping("/statistics/eleves/{category}")
 	public String studentSynthese(@PathVariable String category, HttpServletRequest request, Model model) {
-		List<String> logins = agapService.getAllStudentConcernedLogin();
-		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-
 		String path = request.getSession().getServletContext().getRealPath("/");
-
-		Map<String, Object> map;
-		boolean filledDoc = false;
-		boolean filledChoices = false;
-		int nbreAll = 0;
-		int nbrePartial = 0;
-		int nbreNo = 0;
-
-		for (String login : logins) {
-			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
-					&& documentService.hasFilledResume(path, login);
-			filledChoices = (choiceService.getElementNotFilledImprovementCourse(login).size() == 0)
-					&& (choiceService.getElementNotFilledJobSector(login).size() == 0);
-
-			if ((filledDoc) && (filledChoices)) {
-				if (category.equals("all")) {
-					map = new HashMap<String, Object>();
-					map.put("name", agapService.getNameFromLogin(login));
-					map.put("login", login);
-					results.add(map);
-				}
-				nbreAll += 1;
-			} else {
-				if ((!filledDoc) && (!filledChoices)) {
-					if (category.equals("no")) {
-						map = new HashMap<String, Object>();
-						map.put("name", agapService.getNameFromLogin(login));
-						map.put("login", login);
-						results.add(map);
-					}
-					nbreNo += 1;
-				} else {
-					if (category.equals("partial")) {
-						map = new HashMap<String, Object>();
-						map.put("name", agapService.getNameFromLogin(login));
-						map.put("login", login);
-						results.add(map);
-					}
-					nbrePartial += 1;
-				}
-			}
-
-		}
-
-		model.addAttribute("nbreAll", nbreAll);
-		model.addAttribute("nbrePartial", nbrePartial);
-		model.addAttribute("nbreNo", nbreNo);
+		List<Map<String, Object>> results = studentService.findStudentsForCategorySynthese(category, path);
+		List<Integer> numbersForCategories = studentService.findSizeOfCategories(path);
+		model.addAttribute("nbreAll", numbersForCategories.get(0));
+		model.addAttribute("nbrePartial", numbersForCategories.get(1));
+		model.addAttribute("nbreNo", numbersForCategories.get(2));
 		model.addAttribute("category", category);
 		model.addAttribute("results", results);
 		model.addAttribute("allIc", specializationService.findAllImprovementCourse());

@@ -103,7 +103,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 		List<Student> allStudent = new ArrayList<Student>();
 		for (String login : allLogin) {
 			Student student = new Student();
-			student.setImprovementCourseChoice(getImprovementCourseChoicesByLogin(login));
+			//student.setImprovementCourseChoice(getImprovementCourseChoicesByLogin(login));
 			allStudent.add(student);
 		}
 		return allStudent;
@@ -174,6 +174,22 @@ public class ChoiceServiceImpl implements ChoiceService {
 			int orderChoice, Specialization specialization) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ImprovementCourseChoice findIcChoicesByLogin(String login) {
+		Session session = sessionFactory.getCurrentSession();
+		ImprovementCourseChoice choice = (ImprovementCourseChoice) session.get(ImprovementCourseChoice.class, login);
+		return choice;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public JobSectorChoice findJsChoicesByLogin(String login) {
+		Session session = sessionFactory.getCurrentSession();
+		JobSectorChoice choice = (JobSectorChoice) session.get(JobSectorChoice.class, login);
+		return choice;
 	}
 
 }
