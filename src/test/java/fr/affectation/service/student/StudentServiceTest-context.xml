@@ -65,5 +65,7 @@
   	<bean class="fr.affectation.service.choice.ChoiceServiceImpl" />
   	
   	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
+  	
+  	<bean class="fr.affectation.service.documents.DocumentServiceImpl" />
 
 </beans>

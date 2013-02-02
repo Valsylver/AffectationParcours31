@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Affectation parcours/filière 3ème année Centrale
-	Marseille</title>
+<title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <!-- Bootstrap -->
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
@@ -25,22 +24,20 @@
 					<li class="nav-header">Parcours</li>
 					<li><a href="/admin/parcours/synthese/choix1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allIc}">
-						<li><a
-							href="/admin/parcours/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
+						<li><a href="/admin/parcours/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
 					</c:forEach>
 
 					<li class="nav-header">Filières</li>
 					<li><a href="/admin/filieres/synthese/choix1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allJs}" varStatus="status">
-						<li><a
-							href="/admin/filieres/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
+						<li><a href="/admin/filieres/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
 
 			<div class="span7">
 				<h3>
-					<legend>${student.details.fullName}</legend>
+					<legend>${student.name}</legend>
 				</h3>
 				<h4>Voeux</h4>
 				<table class="table table-bordered table-striped table-condensed">
@@ -54,35 +51,35 @@
 					<tbody>
 						<tr>
 							<td><b>Choix 1</b>
-							<td>${student.improvementCourseChoice.choice1}</td>
-							<td>${student.jobSectorChoice.choice1}</td>
+							<td>${student.icChoices.choice1}</td>
+							<td>${student.jsChoices.choice1}</td>
 						</tr>
 						<tr>
 							<td><b>Choix 2</b>
-							<td>${student.improvementCourseChoice.choice2}</td>
-							<td>${student.jobSectorChoice.choice2}</td>
+							<td>${student.icChoices.choice2}</td>
+							<td>${student.jsChoices.choice2}</td>
 						</tr>
 						<tr>
 							<td><b>Choix 3</b>
-							<td>${student.improvementCourseChoice.choice3}</td>
-							<td>${student.jobSectorChoice.choice3}</td>
+							<td>${student.icChoices.choice3}</td>
+							<td>${student.jsChoices.choice3}</td>
 						</tr>
 						<tr>
 							<td><b>Choix 4</b>
-							<td>${student.improvementCourseChoice.choice4}</td>
-							<td>${student.jobSectorChoice.choice4}</td>
+							<td>${student.icChoices.choice4}</td>
+							<td>${student.jsChoices.choice4}</td>
 						</tr>
 						<tr>
 							<td><b>Choix 5</b>
-							<td>${student.improvementCourseChoice.choice5}</td>
-							<td>${student.jobSectorChoice.choice5}</td>
+							<td>${student.icChoices.choice5}</td>
+							<td>${student.jsChoices.choice5}</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<h4>Documents</h4>
 				<c:choose>
-					<c:when test="${hasFilledResume}">
+					<c:when test="${student.hasFilledResume}">
 						<a href="/resources/cv/cv_${student.details.login}.pdf">CV</a>
 					</c:when>
 					<c:otherwise>
@@ -92,10 +89,8 @@
 				<br />
 
 				<c:choose>
-					<c:when test="${hasFilledLetterIc}">
-						<a
-							href="/resources/lettres/parcours/lettre_parcours_${student.details.login}.pdf">Lettre
-							parcours</a>
+					<c:when test="${student.hasFilledLetterIc}">
+						<a href="/resources/lettres/parcours/lettre_parcours_${student.details.login}.pdf">Lettre parcours</a>
 					</c:when>
 					<c:otherwise>
 						Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
@@ -104,10 +99,8 @@
 				<br />
 
 				<c:choose>
-					<c:when test="${hasFilledLetterJs}">
-						<a
-							href="/resources/lettres/filieres/lettre_filiere_${student.details.login}.pdf">Lettre
-							filière</a>
+					<c:when test="${student.hasFilledLetterJs}">
+						<a href="/resources/lettres/filieres/lettre_filiere_${student.details.login}.pdf">Lettre filière</a>
 					</c:when>
 					<c:otherwise>
 						Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.
@@ -120,7 +113,7 @@
 					<h5>Contentieux</h5>
 				</div>
 				<c:choose>
-					<c:when test="${fn:length(student.results.contentious) > 0 }">
+					<c:when test="${fn:length(student.contentious) > 0 }">
 						<table class="table table-bordered table-striped table-condensed">
 							<thead>
 								<tr>
@@ -130,8 +123,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="contentious"
-									items="${student.results.contentious}">
+								<c:forEach var="contentious" items="${student.contentious}">
 									<tr>
 										<td>${contentious.cycle}</td>
 										<td>${contentious.semester}</td>
@@ -157,21 +149,48 @@
 					<tbody>
 						<tr>
 							<td>5</td>
-							<td>${student.results.gpaMeanS5}</td>
+							<td>${student.gpaMeans[0]}</td>
 						</tr>
 						<tr>
 							<td>6</td>
-							<td>${student.results.gpaMeanS6}</td>
+							<td>${student.gpaMeans[1]}</td>
 						</tr>
 						<tr>
 							<td>7</td>
-							<td>${student.results.gpaMeanS7}</td>
+							<td>${student.gpaMeans[2]}</td>
 						</tr>
 					</tbody>
 				</table>
-				
 				<br />
-				<br />
+				<div class="marge">
+					<h5>Résultats par UE</h5>
+				</div>
+				<table class="table-bordered table-striped table-condensed">
+					<thead>
+						<tr>
+							<th>Semestre</th>
+							<th>Cycle</th>
+							<th>Code UE</th>
+							<th>Grade GPA</th>
+							<th>Grade ECTS</th>
+							<th>Session</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="result" items="${student.results}">
+							<tr>
+								<td>${result.semester}</td>
+								<td>${result.cycle}</td>
+								<td>${result.code}</td>
+								<td>${result.gpa}</td>
+								<td>${result.ects}</td>
+								<td>${result.session}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+
+				<br /> <br />
 			</div>
 
 			<tags:rightColumnAdmin />
