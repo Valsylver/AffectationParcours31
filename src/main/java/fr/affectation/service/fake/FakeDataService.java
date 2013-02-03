@@ -210,6 +210,21 @@ public class FakeDataService {
 		return liste.get(i);
 	}
 	
+	public void fakeValidation(){
+		for (String login :validationService.findLoginsValidatedIc()){
+			int willSwitch = (int) (Math.random() * 10);
+			if (willSwitch>8){
+				validationService.updateIcValidation(login, false);
+			}
+		}
+		for (String login :validationService.findLoginsValidatedJs()){
+			int willSwitch = (int) (Math.random() * 10);
+			if (willSwitch>8){
+				validationService.updateJsValidation(login, false);
+			}
+		}
+	}
+	
 	public void deleteAll(){
 		for (ImprovementCourse ic : specializationService
 				.findImprovementCourses()) {

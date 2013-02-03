@@ -432,6 +432,12 @@ public class AdminController {
 		fakeData.createFakeChoices();
 		return "redirect:/admin/statistics/synthese";
 	}
+	
+	@RequestMapping("/fake2")
+	public String fakeValidation() {
+		fakeData.fakeValidation();
+		return "redirect:/admin/statistics/synthese";
+	}
 
 	@PreDestroy
 	public void deleteFake() {
