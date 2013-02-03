@@ -27,6 +27,7 @@
 					<li><a href="/admin/administration/specialization">Spécialisations</a></li>
 					<li><a href="/admin/administration/students">Elèves</a></li>
 					<li class="active"><a href="/admin/administration/process">Processus</a></li>
+					<li><a href="/admin/administration/export">Export</a></li>
 				</ul>
 			</div>
 		

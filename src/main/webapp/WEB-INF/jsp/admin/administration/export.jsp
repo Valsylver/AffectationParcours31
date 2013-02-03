@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
@@ -23,45 +24,19 @@
 		<div class="row">
 			<div class="span2">
 				<ul class="nav nav-list">
-					<li class="active"><a href="/admin/administration/specialization">Spécialisations</a></li>
+					<li><a href="/admin/administration/specialization">Spécialisations</a></li>
 					<li><a href="/admin/administration/students">Elèves</a></li>
 					<li><a href="/admin/administration/process">Processus</a></li>
-					<li><a href="/admin/administration/export">Export</a></li>
+					<li class="active"><a href="/admin/administration/export">Export</a></li>
 				</ul>
 			</div>
 
-			<div class="span4">
-				<h2>
-					Parcours
-				</h2>
-				<br />
-
-				<c:forEach var="pa" items="${paAvailable}">
-					${pa.stringForForm}
-					<br />
-					<a href="/admin/config/modif/parcours/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
-					<br />
-					<br />
-				</c:forEach>
+			<div class="span7">
+				<a href="/pdf/resultats_affectation.pdf" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en pdf</a> <br />
 			</div>
-			<div class="span4">
-				<h2>
-					Filières
-				</h2>
-				<br />
-
-				<c:forEach var="fm" items="${fmAvailable}">
-					${fm.stringForForm}
-					<br />
-					<a href="/admin/config/modif/filieres/${fm.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
-					<br />
-					<br />
-				</c:forEach>
-			</div>
-
-			<tags:rightColumnAdmin />
 		</div>
 	</div>
 
 </body>
+<script src="/js/students-exclusion.js" type="text/javascript"></script>
 </html>

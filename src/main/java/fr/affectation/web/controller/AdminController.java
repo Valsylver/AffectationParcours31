@@ -38,6 +38,7 @@ import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
 import fr.affectation.service.exclusion.ExclusionService;
+import fr.affectation.service.export.ExportService;
 import fr.affectation.service.fake.FakeDataService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
@@ -65,6 +66,9 @@ public class AdminController {
 
 	@Inject
 	private ConfigurationService configurationService;
+	
+	@Inject 
+	private ExportService exportService;
 
 	@Inject
 	private FakeDataService fakeData;
@@ -99,6 +103,12 @@ public class AdminController {
 		model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
 		model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
 		return "admin/administration/students";
+	}
+	
+	@RequestMapping("/administration/export")
+	public String exportResults(Model model, HttpServletRequest request) {
+		exportService.generatePdfResults(request.getSession().getServletContext().getRealPath("/"));
+		return "admin/administration/export";
 	}
 
 	@RequestMapping(value = "/run/edit-exclusion", method = RequestMethod.POST)
