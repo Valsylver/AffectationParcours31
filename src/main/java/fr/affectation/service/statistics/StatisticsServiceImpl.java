@@ -101,7 +101,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		for (String key : icStats.keySet()){
 			data.addValue(icStats.get(key), "Parcours", key);
 		}
-		JFreeChart chart = ChartFactory.createBarChart(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
+		JFreeChart chart = ChartFactory.createBarChart3D(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
 		chart.setBackgroundPaint(Color.white);
 		chart.getCategoryPlot().setRenderer(new ColorsRenderer()); 
 		File file = new File(path + "/img/jspchart/barchartPa.png");
@@ -124,7 +124,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		for (String key : jsStats.keySet()){
 			data.addValue(jsStats.get(key), "Parcours", key);
 		}
-		JFreeChart chart = ChartFactory.createBarChart(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
+		JFreeChart chart = ChartFactory.createBarChart3D(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
 		chart.setBackgroundPaint(Color.white);
 		chart.getCategoryPlot().setRenderer(new ColorsRenderer()); 
 		File file = new File(path + "/img/jspchart/barchartFm.png");

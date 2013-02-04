@@ -15,7 +15,6 @@ import fr.affectation.domain.choice.Choice;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.Specialization;
-import fr.affectation.domain.student.Student;
 
 @Service
 public class ChoiceServiceImpl implements ChoiceService {
@@ -106,20 +105,22 @@ public class ChoiceServiceImpl implements ChoiceService {
 				notFilled.add(i);
 			}
 		}
-		if (choice.getChoice1() == null) {
-			notFilled.add(1);
-		}
-		if (choice.getChoice2() == null) {
-			notFilled.add(2);
-		}
-		if (choice.getChoice3() == null) {
-			notFilled.add(3);
-		}
-		if (choice.getChoice4() == null) {
-			notFilled.add(4);
-		}
-		if (choice.getChoice5() == null) {
-			notFilled.add(5);
+		else{
+			if (choice.getChoice1() == null) {
+				notFilled.add(1);
+			}
+			if (choice.getChoice2() == null) {
+				notFilled.add(2);
+			}
+			if (choice.getChoice3() == null) {
+				notFilled.add(3);
+			}
+			if (choice.getChoice4() == null) {
+				notFilled.add(4);
+			}
+			if (choice.getChoice5() == null) {
+				notFilled.add(5);
+			}
 		}
 		return notFilled;
 	}

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
@@ -87,12 +88,13 @@ public class ResponsibleController {
 	}
 
 	@RequestMapping(value = "/edit-validation", method = RequestMethod.POST)
-	public String editExclusion(StudentValidationList studentsValidation) {
+	public String editExclusion(StudentValidationList studentsValidation, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String login = auth.getName();
 
 		String type = responsibleService.forWhichSpecializationType(login).equals("ic") ? "ImprovementCourse" : "JobSector";
 		studentService.updateValidation(studentsValidation.getStudents(), studentsValidation.getValidated(), type);
+		redirectAttributes.addFlashAttribute("successMessage", "Les changements ont bien été sauvegardés.");
 		return "redirect:/responsable/1";
 	}
 

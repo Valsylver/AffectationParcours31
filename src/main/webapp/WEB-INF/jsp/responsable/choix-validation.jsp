@@ -52,6 +52,10 @@
 							</button>
 							<br />
 							<br />
+							<c:if test="${not empty successMessage}">
+								<div class="alert alert-success">${successMessage}</div>
+							</c:if>
+							<br />
 							<c:forEach var="student" items="${allStudents}"
 								varStatus="status">
 								<form:input path="students[${status.index}]"
