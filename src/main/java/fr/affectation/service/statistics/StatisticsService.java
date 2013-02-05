@@ -17,5 +17,7 @@ public interface StatisticsService {
 	public List<SimpleSpecialization> findSimpleIcStats();
 
 	public List<SimpleSpecialization> findSimpleJsStats();
+	
+	public String getLink();
 
 }

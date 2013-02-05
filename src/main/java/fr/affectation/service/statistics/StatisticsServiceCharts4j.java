@@ -1,6 +1,5 @@
 package fr.affectation.service.statistics;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +19,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.stereotype.Service;
 
+import com.googlecode.charts4j.Color;
+import com.googlecode.charts4j.GCharts;
+import com.googlecode.charts4j.PieChart;
+import com.googlecode.charts4j.Slice;
+
 import fr.affectation.domain.comparator.ComparatorSimpleSpecialization;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
@@ -27,9 +31,14 @@ import fr.affectation.domain.specialization.SimpleSpecialization;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.student.StudentService;
 
-@Service
-public class StatisticsServiceImpl implements StatisticsService {
+
+//@Service
+public class StatisticsServiceCharts4j implements StatisticsService {
 	
+	public static final Color[] colors = {Color.FORESTGREEN, Color.RED, Color.SKYBLUE, Color.CHOCOLATE, Color.ORANGE, Color.GRAY,
+		Color.PURPLE, Color.YELLOW, Color.TEAL, Color.TAN, Color.SIENNA, Color.BROWN};
+	public static String link;
+ 	
 	@Inject
 	private StudentService studentService;
 	
@@ -38,8 +47,25 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	@Override
 	public void generatePieChartIc(String path) {
-		DefaultPieDataset data = new DefaultPieDataset();
 		Map<String, Integer> icStats = findIcStats();
+		List<Slice> slices = new ArrayList<Slice>();
+		int indexColor = 0;
+		for (String key : icStats.keySet()){
+			//slices.add(Slice.newSlice(icStats.get(key), colors[indexColor], key));
+			slices.add(Slice.newSlice(icStats.get(key), key));
+			System.out.println("keyyyyy " + key);
+			indexColor += 1;
+			if (indexColor == colors.length){
+				indexColor = 0;
+			}
+		}
+		
+        PieChart chart2 = GCharts.newPieChart(slices);
+        chart2.setSize(600, 400);
+        chart2.setThreeD(true);
+        link = chart2.toURLString();
+        
+        DefaultPieDataset data = new DefaultPieDataset();
 		for (String key : icStats.keySet()){
 			data.setValue(key, icStats.get(key));
 		}
@@ -47,7 +73,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		File file = new File(path + "/img/jspchart/piechartPa.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 		try{
-			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);
+			ChartUtilities.saveChartAsPNG(file, chart, 800, 600, info);
 		}
 		catch (Exception e){
 			System.out.println(e);
@@ -86,8 +112,25 @@ public class StatisticsServiceImpl implements StatisticsService {
 	public Map<String, Integer> findIcStats(){
 		List<ImprovementCourse> allIc = specializationService.findImprovementCourses();
 		Map<String, Integer> icStats = new HashMap<String, Integer>();
+		int sum = 0;
 		for (ImprovementCourse improvementCourse : allIc){
-			icStats.put(improvementCourse.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(1, improvementCourse).size());
+			int number = studentService.findSimpleStudentsByOrderChoiceAndSpecialization(1, improvementCourse).size();
+			icStats.put(improvementCourse.getAbbreviation(), number);
+			sum += number;
+		}
+		for (String key : icStats.keySet()){
+			float lol = (float) sum;
+			System.out.println("float(sum) : " + lol);
+			float value = (float) icStats.get(key);
+			System.out.println("1 : " + value);
+			float value2 = (value/((float) sum));
+			System.out.println("2 : " + value2);
+			int value3 = (int) (100*value2);
+			System.out.println("3 : " + value3);
+			//int valueIntDivBySum = (int) (value / (float) sum); 
+			//System.out.println("3 : " + valueIntDivBySum);
+			//System.out.println(key + " : " + valueIntDivBySum);
+			icStats.put(key, value3); 
 		}
 		return icStats;
 	}
@@ -102,7 +145,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 			data.addValue(icStats.get(key), "Parcours", key);
 		}
 		JFreeChart chart = ChartFactory.createBarChart3D(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
-		chart.setBackgroundPaint(Color.white);
 		chart.getCategoryPlot().setRenderer(new ColorsRenderer()); 
 		File file = new File(path + "/img/jspchart/barchartPa.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
@@ -125,7 +167,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 			data.addValue(jsStats.get(key), "Parcours", key);
 		}
 		JFreeChart chart = ChartFactory.createBarChart3D(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
-		chart.setBackgroundPaint(Color.white);
 		chart.getCategoryPlot().setRenderer(new ColorsRenderer()); 
 		File file = new File(path + "/img/jspchart/barchartFm.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
@@ -175,8 +216,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	@Override
 	public String getLink() {
-		// TODO Auto-generated method stub
-		return null;
+		return link;
 	}
 
 }
