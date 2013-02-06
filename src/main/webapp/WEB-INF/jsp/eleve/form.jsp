@@ -25,7 +25,7 @@
 										String strIdPa = "selectPa" + i;  %>
 										<label path="<%=strChPa%>"><%=strAttrPa %></label>
 			         					<form:select id="<%=strIdPa %>" path="<%=strChPa %>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-			         						<option></option>
+			         						<option>   </option>
 			         						<c:forEach var="pa" items="${paAvailable}">
 			         							<option>${pa.stringForForm}</option>
 			         						</c:forEach>
@@ -64,7 +64,7 @@
 											<c:when test="${abb == null}">
 												<label path="<%=strChPa%>"><%=strAttrPa %></label>
 					         					<form:select id="<%=strIdPa %>" path="<%=strChPa %>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-					         						<option></option>
+					         						<option>   </option>
 					         						<c:forEach var="pa" items="${paAvailable}">
 					         							<option>${pa.stringForForm}</option>
 					         						</c:forEach>
@@ -75,7 +75,7 @@
 					         				<c:otherwise>
 					         					<label path="<%=strChPa%>"><%=strAttrPa %></label>
 					         					<form:select id="<%=strIdPa %>" path="<%=strChPa %>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-					         						<option></option>
+					         						<option>   </option>
 					         						<c:forEach var="pa" items="${paAvailable}">
 					         							<c:choose>
 					         								<c:when test="${pa.abbreviation == abb}">
@@ -103,7 +103,7 @@
 										String strIdFm = "selectFm" + i; %>
 										<label path="<%=strChFm%>"><%=strAttrFm %></label>
 			         					<form:select id="<%=strIdFm %>" path="<%=strChFm %>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-			         						<option></option>
+			         						<option>   </option>
 			         						<c:forEach var="fm" items="${fmAvailable}">
 			         							<option>${fm.stringForForm}</option>
 			         						</c:forEach>
@@ -137,7 +137,7 @@
 											<c:when test="${abb == null}">
 												<label path="<%=strChFm%>"><%=strAttrFm %></label>
 					         					<form:select id="<%=strIdFm %>" path="<%=strChFm %>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-					         						<option></option>
+					         						<option>   </option>
 					         						<c:forEach var="fm" items="${fmAvailable}">
 					         							<option>${fm.stringForForm}</option>
 					         						</c:forEach>
@@ -148,7 +148,7 @@
 					         				<c:otherwise>
 					         					<label path="<%=strChFm%>"><%=strAttrFm %></label>
 					         					<form:select id="<%=strIdFm %>" path="<%=strChFm %>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-					         						<option></option>
+					         						<option>   </option>
 					         						<c:forEach var="fm" items="${fmAvailable}">
 					         							<c:choose>
 					         								<c:when test="${fm.abbreviation == abb}">
@@ -270,7 +270,8 @@
 				
 				<br />
 				
-				<span id="blocResultat"></span>
+				<span id="blocResultat">
+				</span>
 			</div>
 	            
 			<div class="span2">

@@ -143,11 +143,19 @@ public class StatisticsServiceImpl implements StatisticsService {
 	public List<SimpleSpecialization> findSimpleIcStats() {
 		Map<String, Integer> icMap = findIcStats();
 		List<SimpleSpecialization> specializations = new ArrayList<SimpleSpecialization>();
+		int sum = 0;
+		for (String abbreviation : icMap.keySet()){
+			sum += icMap.get(abbreviation);
+		}
 		for (String abbreviation : icMap.keySet()){
 			SimpleSpecialization specialization = new SimpleSpecialization();
 			specialization.setAbbreviation(abbreviation);
 			specialization.setName(specializationService.findNameFromIcAbbreviation(abbreviation));
 			specialization.setNumber(icMap.get(abbreviation));
+			float value = (float) icMap.get(abbreviation);
+			float value2 = (value/((float) sum));
+			specialization.setPercentage(Math.round(value2*100.0));
+			System.out.println("The value " + Math.round(value2*100.0));
 			specializations.add(specialization);
 		}
 		Collections.sort(specializations, new ComparatorSimpleSpecialization()); 

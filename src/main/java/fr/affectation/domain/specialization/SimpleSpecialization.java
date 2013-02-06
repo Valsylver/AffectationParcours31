@@ -7,7 +7,25 @@ public class SimpleSpecialization {
 	private String name;
 
 	private int number;
+	
+	private double percentage;
+	
+	public SimpleSpecialization(String abbreviation, String name, int number){
+		this.abbreviation = abbreviation;
+		this.name = name;
+		this.number = number;
+	}
 
+	public double getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(double percentage) {
+		this.percentage = percentage;
+	}
+
+	public SimpleSpecialization(){}
+	
 	public String getAbbreviation() {
 		return abbreviation;
 	}

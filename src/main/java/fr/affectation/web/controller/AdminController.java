@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
+import fr.affectation.domain.specialization.SimpleSpecialization;
 import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.configuration.ConfigurationService;
@@ -342,6 +344,7 @@ public class AdminController {
 		statisticsService.generatePieChartIc(path);
 		statisticsService.generateBarChartIc(path);
 		statisticsService.generateBarChartJs(path);
+		model.addAttribute("theList", statisticsService.findSimpleIcStats());
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
 		model.addAttribute("allJs", specializationService.findJobSectors());
 		return "admin/statistics-synthese";

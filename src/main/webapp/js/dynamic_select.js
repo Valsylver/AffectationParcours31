@@ -108,6 +108,7 @@ $(document).ready(function() {
 	updateFmSelect(fm3.options[fm3.selectedIndex].text, 'selectFm3');
 	updateFmSelect(fm4.options[fm4.selectedIndex].text, 'selectFm4');
 	updateFmSelect(fm5.options[fm5.selectedIndex].text, 'selectFm5');
+	
 });
 
 function updatePaSelect(value, id) {
@@ -192,8 +193,8 @@ function updatePaSelect(value, id) {
 					document.getElementById("selectPa" + i).add(opt, select_other.options[where]);
 				}
 			}
-			var blocListe = document.getElementById('blocResultat');
-			blocListe.innerHTML = texte;
+//			var blocListe = document.getElementById('blocResultat');
+//			blocListe.innerHTML = description;
 		}
 	} else {
 		var texte = "mort de rire je passe la";

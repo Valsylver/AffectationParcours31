@@ -58,6 +58,9 @@ public class ExportServiceImpl implements ExportService {
 			document.open();
 			document.add(new Paragraph("Affectation parcours/filières 3ème année Centrale Marseille", FontFactory.getFont(FontFactory.COURIER, 20, Font.BOLD,
 					new CMYKColor(0, 255, 0, 0))));
+			Image logo = Image.getInstance(path + "/img/logo_ecm.png");
+			logo.scaleAbsolute(100f, 100f);
+			document.add(logo);
 
 			document.newPage();
 			Paragraph title1 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLDITALIC, new CMYKColor(0, 255, 255, 17)));
