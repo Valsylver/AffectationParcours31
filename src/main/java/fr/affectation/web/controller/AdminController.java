@@ -339,12 +339,13 @@ public class AdminController {
 
 	@RequestMapping("/statistics/synthese")
 	public String statisticsJs(Model model, HttpServletRequest request) {
-		String path = request.getSession().getServletContext().getRealPath("/");
-		statisticsService.generatePieChartJs(path);
-		statisticsService.generatePieChartIc(path);
-		statisticsService.generateBarChartIc(path);
-		statisticsService.generateBarChartJs(path);
-		model.addAttribute("theList", statisticsService.findSimpleIcStats());
+//		String path = request.getSession().getServletContext().getRealPath("/");
+//		statisticsService.generatePieChartJs(path);
+//		statisticsService.generatePieChartIc(path);
+//		statisticsService.generateBarChartIc(path);
+//		statisticsService.generateBarChartJs(path);
+		model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats());
+		model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats());
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
 		model.addAttribute("allJs", specializationService.findJobSectors());
 		return "admin/statistics-synthese";

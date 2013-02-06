@@ -47,18 +47,23 @@
 				</ul>
 			</div>
 			<div class="span7">
-				<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-				<legend> Filières métier </legend>
-				<img src="/img/jspchart/piechartFm.png"> <br /> <img
-					src="/img/jspchart/barchartFm.png">
+				<div id="containerPieChartIc" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+				<legend></legend>
+				<div id="containerPieChartJs" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 			</div>
 			<div class="span2">
 				<tags:rightColumnAdmin />
-				<div id="hiddenBloc">haha</div>
 			</div>
-			<div id="inputs">
-				<c:forEach var="parcours" items="${theList}" varStatus="status">
-					<input id="input${status.index}" value="${parcours.abbreviation};${parcours.number};${parcours.name}"
+			<div id="inputsIc">
+				<c:forEach var="improvementCourse" items="${simpleImprovementCourses}" varStatus="status">
+					<input id="ic${status.index}" value="${improvementCourse.abbreviation};${improvementCourse.number};${improvementCourse.name}"
+						style="display: none">
+				</c:forEach>
+			</div>
+			
+			<div id="inputsJs">
+				<c:forEach var="jobSector" items="${simpleJobSectors}" varStatus="status">
+					<input id="js${status.index}" value="${jobSector.abbreviation};${jobSector.number};${jobSector.name}"
 						style="display: none">
 				</c:forEach>
 			</div>
