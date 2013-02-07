@@ -1,5 +1,4 @@
 $(function () {
-    var chart;
     $(document).ready(function() {
     	generatePieChart('Ic');
     	generatePieChart('Js');
@@ -39,6 +38,10 @@ function generatePieChart(type) {
 	for (var inputIndex = 0; inputIndex < elements.length; inputIndex++){
 		dataV[inputIndex] = [nameV[inputIndex], number[inputIndex]];
 	}
+	
+	//Highcharts.setOptions({
+	//	 colors: ['#f49d55', '#9982b4', '#c35f5b', '#5d8bc0', '#a2be67', '#55afc7', '#cee3ab', '#bd9695', '#FF9655', '#FFF263', '#6AF9C4']
+	//	});
 
     chart = new Highcharts.Chart({
         chart: {
@@ -52,7 +55,7 @@ function generatePieChart(type) {
         },
         tooltip: {
         	formatter: function() {
-                return '<b>' + this.point.name.split(";")[0] + '</b><br />Elèves : <b>' + this.point.y + '</b><br />' + 'Proportion : <b>' + Math.round(this.point.percentage*100)/100 + '</b>%<br />';
+                return '<b>' + this.point.name.split(";")[0] + "</b><br />Nombre d'élèves : <b>" + this.point.y + '</b><br />' + 'Proportion : <b>' + Math.round(this.point.percentage*100)/100 + '</b>%<br />';
             }
         },
         plotOptions: {

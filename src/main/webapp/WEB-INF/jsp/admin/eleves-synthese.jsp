@@ -44,6 +44,7 @@
 
 			<div class="span7">
 				<ul class="nav nav-pills">
+					<li><a href="/admin/statistics/eleves/lol/pie-chart">Statistiques</a></li>
 					<c:choose>
 						<c:when test="${category == 'all'}">
 							<li class="active"><a href="/admin/statistics/eleves/all">Dossiers

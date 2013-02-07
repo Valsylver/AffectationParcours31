@@ -326,7 +326,7 @@ public class AdminController {
 	}
 
 	@RequestMapping("/filieres/statistics")
-	public String statisticsSynthese(Model model, HttpServletRequest request) {
+	public String statisticsJs(Model model, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("/");
 		statisticsService.generatePieChartJs(path);
 		statisticsService.generateBarChartJs(path);
@@ -337,13 +337,9 @@ public class AdminController {
 		return "admin/statistics";
 	}
 
+
 	@RequestMapping("/statistics/synthese")
-	public String statisticsJs(Model model, HttpServletRequest request) {
-//		String path = request.getSession().getServletContext().getRealPath("/");
-//		statisticsService.generatePieChartJs(path);
-//		statisticsService.generatePieChartIc(path);
-//		statisticsService.generateBarChartIc(path);
-//		statisticsService.generateBarChartJs(path);
+	public String statisticsSynthese(Model model, HttpServletRequest request) {
 		model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats());
 		model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats());
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
@@ -421,8 +417,19 @@ public class AdminController {
 		model.addAttribute("results", results);
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
 		model.addAttribute("allJs", specializationService.findJobSectors());
-
 		return "admin/eleves-synthese";
+	}
+	
+	@RequestMapping("/statistics/eleves/lol/pie-chart")
+	public String studentSyntheseStats(HttpServletRequest request, Model model) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		List<Integer> numbersForCategories = studentService.findSizeOfCategories(path);
+		model.addAttribute("nbreAll", numbersForCategories.get(0));
+		model.addAttribute("nbrePartial", numbersForCategories.get(1));
+		model.addAttribute("nbreNo", numbersForCategories.get(2));
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
+		return "admin/eleves-synthese-pie-chart";
 	}
 
 	@PostConstruct

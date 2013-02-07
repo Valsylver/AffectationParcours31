@@ -45,9 +45,13 @@
 				</ul>
 			</div>
 			<div class="span7">
-				<div id="containerPieChartIc" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+				<ul class="nav nav-pills">
+					<li><a href="/admin/statistics/synthese">Diagrammes circulaires</a></li>
+					<li class="active"><a href="/admin/statistics/synthese/bar-chart">Histogrammes</a></li>
+				</ul>
+				<div id="containerBarChartIc" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 				<legend></legend>
-				<div id="containerPieChartJs" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+				<div id="containerBarChartJs" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 			</div>
 			<div class="span2">
 				<tags:rightColumnAdmin />
@@ -68,7 +72,7 @@
 	</div>
 
 	<script type="text/javascript" src="/js/jquery/jquery-latest.js"></script>
-	<script src="/js/high-chart.js" type="text/javascript"></script>
+	<script src="/js/high-chart-bar.js" type="text/javascript"></script>
 
 </body>
 </html>
