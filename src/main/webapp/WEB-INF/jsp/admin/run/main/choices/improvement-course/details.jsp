@@ -79,7 +79,7 @@
 									<tbody>
 										<c:forEach var="student" items="${allStudents}">
 											<tr>
-												<td><a href="/admin/student/${student.login}">${student.name}</a></td>
+												<td><a href="/admin/run/main/student/${student.login}">${student.name}</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -96,14 +96,14 @@
 												<c:when test="${student.validated}">
 													<tr class="success">
 														<td>
-															<a href="/admin/student/${student.login}">${student.name}</a>
+															<a href="/admin/run/main/student/${student.login}">${student.name}</a>
 														</td>
 													</tr>
 												</c:when>
 												<c:otherwise>
 													<tr class="error">
 														<td>
-															<a href="/admin/student/${student.login}">${student.name}</a>
+															<a href="/admin/run/main/student/${student.login}">${student.name}</a>
 														</td>
 													</tr>
 												</c:otherwise>

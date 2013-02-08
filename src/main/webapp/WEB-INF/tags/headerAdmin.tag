@@ -9,14 +9,13 @@
 			<ul class="nav">
 				<c:choose>
 					<c:when test="${run}">
-						<li><a href="/admin/administration/specialization">Administration</a></li>
+						<li><a href="/admin/run/settings/students">Administration</a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="/admin/exclude">Elèves</a></li>
 					</c:otherwise>
 				</c:choose>
-				<li><a href="/logout"><i class="icon-white icon-off"></i>
-						Deconnexion</a></li>
+				<li><a href="/logout">Deconnexion</a></li>
 			</ul>
 		</div>
 	</div>

@@ -84,28 +84,6 @@ public class AdminController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormatter, true));
 	}
 
-	@RequestMapping("/administration/specialization")
-	public String manageSpecialization(Model model) {
-		model.addAttribute("paAvailable", specializationService.findImprovementCourses());
-		model.addAttribute("fmAvailable", specializationService.findJobSectors());
-		return "admin/administration/specialization";
-	}
-
-	@RequestMapping("/administration/students")
-	public String manageStudents(Model model) {
-		model.addAttribute("studentsConcerned", studentService.findAllStudentsConcerned());
-		model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
-		model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
-		model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
-		return "admin/administration/students";
-	}
-	
-	@RequestMapping("/administration/export")
-	public String exportResults(Model model, HttpServletRequest request) {
-		exportService.generatePdfResults(request.getSession().getServletContext().getRealPath("/"));
-		return "admin/administration/export";
-	}
-
 	@RequestMapping(value = "/run/edit-exclusion", method = RequestMethod.POST)
 	public String editExclusion(StudentsExclusion studentExclusion) {
 		List<String> newExcluded = new ArrayList<String>();
@@ -154,14 +132,6 @@ public class AdminController {
 		return "redirect:/admin/exclude";
 	}
 
-	@RequestMapping("/student/{login}")
-	public String displayStudent(@PathVariable String login, Model model, HttpServletRequest request) {
-		model.addAttribute("student", studentService.retrieveStudentByLogin(login, request.getSession().getServletContext().getRealPath("/")));
-		model.addAttribute("allIc", specializationService.findImprovementCourses());
-		model.addAttribute("allJs", specializationService.findJobSectors());
-		return "admin/student";
-	}
-
 	@RequestMapping("/config")
 	public String configurationIndex(Model model) {
 		model.addAttribute("when", new When());
@@ -170,71 +140,71 @@ public class AdminController {
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		model.addAttribute("now", dateFormat.format(date));
-		return "admin/configuration/index";
+		return "admin/config/index";
 	}
 
-	@RequestMapping("/config/modif/parcours/{abbreviation}")
-	public String modifyIc(@PathVariable String abbreviation, Model model) {
+	@RequestMapping("/common/edit/ic/{abbreviation}")
+	public String editIc(@PathVariable String abbreviation, Model model) {
 		model.addAttribute("specialization", specializationService.getImprovementCourseByAbbreviation(abbreviation));
 		model.addAttribute("alreadyExists", true);
 		model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
-		return "admin/configuration/edit-specialization";
+		return "admin/common/edit-specialization";
+	}
+	
+	@RequestMapping(value = "/common/process-edition/ic", method = RequestMethod.POST)
+	public String saveImprovementCourse(@ModelAttribute("specialization") @Valid ImprovementCourse specialization, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
+			return "admin/common/edit-specialization";
+		}
+		specializationService.save(specialization);
+		return configurationService.isRunning() ? "redirect:/admin/run/settings/specializations" : "redirect:/admin/";
 	}
 
-	@RequestMapping("/config/modif/filieres/{abbreviation}")
-	public String modifyJs(@PathVariable String abbreviation, Model model) {
+	@RequestMapping("/common/edit/js/{abbreviation}")
+	public String editJs(@PathVariable String abbreviation, Model model) {
 		model.addAttribute("specialization", specializationService.getJobSectorByAbbreviation(abbreviation));
 		model.addAttribute("alreadyExists", true);
 		model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
-		return "admin/configuration/edit-specialization";
+		return "admin/common/edit-specialization";
+	}
+	
+	@RequestMapping(value = "/common/process-edition/js", method = RequestMethod.POST)
+	public String saveJobSector(@ModelAttribute("specialization") @Valid JobSector specialization, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
+			return "admin/common/edit-specialization";
+		}
+		specializationService.save(specialization);
+		return configurationService.isRunning() ? "redirect:/admin/run/settings/specializations" : "redirect:/admin/";
 	}
 
-	@RequestMapping(value = "/config/modif/new/filieres", method = RequestMethod.GET)
+	@RequestMapping(value = "/config/new/job-sector", method = RequestMethod.GET)
 	public String addNewJobSector(Model model) {
 		model.addAttribute("specialization", new JobSector());
 		model.addAttribute("alreadyExists", false);
 		model.addAttribute("state", "config");
-		return "admin/configuration/edit-specialization";
+		return "admin/common/edit-specialization";
 	}
 
-	@RequestMapping(value = "/config/modif/new/parcours", method = RequestMethod.GET)
+	@RequestMapping(value = "/config/new/improvement-course", method = RequestMethod.GET)
 	public String addNewImprovementCourse(Model model) {
 		model.addAttribute("specialization", new ImprovementCourse());
 		model.addAttribute("alreadyExists", false);
 		model.addAttribute("state", "config");
-		return "admin/configuration/edit-specialization";
+		return "admin/common/edit-specialization";
 	}
 
-	@RequestMapping(value = "/config/edit/ic", method = RequestMethod.POST)
-	public String saveImprovementCourse(@ModelAttribute("specialization") @Valid ImprovementCourse specialization, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
-			return "admin/configuration/edit-specialization";
-		}
-		specializationService.save(specialization);
-		return configurationService.isRunning() ? "redirect:/admin/administration/specialization" : "redirect:/admin/config";
-	}
-
-	@RequestMapping(value = "/config/edit/js", method = RequestMethod.POST)
-	public String saveJobSector(@ModelAttribute("specialization") @Valid JobSector specialization, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
-			return "admin/configuration/edit-specialization";
-		}
-		specializationService.save(specialization);
-		return configurationService.isRunning() ? "redirect:/admin/administration/specialization" : "redirect:/admin/config";
-	}
-
-	@RequestMapping("/config/delete/filieres/{abbreviation}")
+	@RequestMapping("/config/delete/job-sector/{abbreviation}")
 	public String deleteJobSector(@PathVariable String abbreviation) {
 		specializationService.delete(specializationService.getJobSectorByAbbreviation(abbreviation));
-		return "redirect:/admin/config";
+		return "redirect:/admin/";
 	}
 
-	@RequestMapping("/config/delete/parcours/{abbreviation}")
+	@RequestMapping("/config/delete/improvement-course/{abbreviation}")
 	public String deleteImprovementCourse(@PathVariable String abbreviation) {
 		specializationService.delete(specializationService.getImprovementCourseByAbbreviation(abbreviation));
-		return "redirect:/admin/config";
+		return "redirect:/admin/";
 	}
 
 	@RequestMapping(value = "/save-config", method = RequestMethod.POST)
@@ -296,7 +266,15 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
-	@RequestMapping("/administration/process")
+	@RequestMapping("/run/main/student/{login}")
+	public String displayStudent(@PathVariable String login, Model model, HttpServletRequest request) {
+		model.addAttribute("student", studentService.retrieveStudentByLogin(login, request.getSession().getServletContext().getRealPath("/")));
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
+		return "admin/student";
+	}
+	
+	@RequestMapping("/run/settings/process")
 	public String manageProcess(Model model) {
 		When whenToModify = configurationService.getWhen();
 		Calendar calendar = Calendar.getInstance();
@@ -320,6 +298,28 @@ public class AdminController {
 		model.addAttribute("endValidation", dateFormat.format(whenToModify.getEndValidation()));
 		model.addAttribute("when", new When());
 		return "admin/run/settings/process";
+	}
+	
+	@RequestMapping("/run/settings/specializations")
+	public String manageSpecialization(Model model) {
+		model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+		model.addAttribute("fmAvailable", specializationService.findJobSectors());
+		return "admin/run/settings/specializations";
+	}
+
+	@RequestMapping("/run/settings/students")
+	public String manageStudents(Model model) {
+		model.addAttribute("studentsConcerned", studentService.findAllStudentsConcerned());
+		model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
+		model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
+		model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
+		return "admin/run/settings/students";
+	}
+	
+	@RequestMapping("/run/settings/export")
+	public String exportResults(Model model, HttpServletRequest request) {
+		exportService.generatePdfResults(request.getSession().getServletContext().getRealPath("/"));
+		return "admin/run/settings/export";
 	}
 	
 	@RequestMapping(value = "/run/settings/edit-process", method = RequestMethod.POST)
