@@ -1,7 +1,3 @@
-<%@ tag language="java" pageEncoding="UTF-8"%>
-
 <li class="nav-header">Statistiques</li>
-<li><a href="/admin/statistics/synthese">Synthèse</a></li>
-<li><a href="/admin/parcours/statistics">Parcours</a></li>
-<li><a href="/admin/filieres/statistics">Filières</a></li>
-<li><a href="/admin/statistics/eleves/all">Elèves</a></li>
+<li><a href="/admin/run/main/statistics/choice1">Choix</a></li>
+<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>

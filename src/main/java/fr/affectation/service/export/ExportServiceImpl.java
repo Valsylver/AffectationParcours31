@@ -204,7 +204,7 @@ public class ExportServiceImpl implements ExportService {
 		table.setSpacingBefore(25);
 		table.setSpacingAfter(25);
 
-		List<SimpleSpecialization> results = type.equals("ic") ? statisticsService.findSimpleIcStats() : statisticsService.findSimpleJsStats();
+		List<SimpleSpecialization> results = type.equals("ic") ? statisticsService.findSimpleIcStats(1) : statisticsService.findSimpleJsStats(1);
 
 		PdfPCell c1 = new PdfPCell(new Phrase(type.equals("ic") ? "Parcours" : "Filières"));
 		table.addCell(c1);

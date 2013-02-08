@@ -18,6 +18,8 @@ public class When {
 	@NotNull
 	private Date endValidation;
 	
+	private int number;
+	
 	public Date getEndValidation() {
 		return endValidation;
 	}
@@ -48,6 +50,14 @@ public class When {
 
 	public Date getEndSubmission() {
 		return endSubmission;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 }

@@ -31,7 +31,6 @@
 	<div class="container">
 		<tags:headerAdmin run="<%=false%>" />
 
-
 		<form:form action="/admin/save-config" method="POST"
 			commandName="when">
 			<center>

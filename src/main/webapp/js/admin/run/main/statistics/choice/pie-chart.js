@@ -39,9 +39,9 @@ function generatePieChart(type) {
 		dataV[inputIndex] = [nameV[inputIndex], number[inputIndex]];
 	}
 	
-	//Highcharts.setOptions({
-	//	 colors: ['#f49d55', '#9982b4', '#c35f5b', '#5d8bc0', '#a2be67', '#55afc7', '#cee3ab', '#bd9695', '#FF9655', '#FFF263', '#6AF9C4']
-	//	});
+	Highcharts.setOptions({
+		 colors: ['#4571a7', '#aa4543', '#89a54d', '#80699b', '#3c96ae', '#db843c', '#92a8cd', '#a47d7b', '#b5ca92', '#5b2c12', '#4571a7', '#aa4543', '#89a54d']
+		});
 
     chart = new Highcharts.Chart({
         chart: {

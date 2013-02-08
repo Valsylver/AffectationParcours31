@@ -59,6 +59,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Inject
 	private ExclusionService exclusionService;
+	
+	private Map<String, Integer> sizeOfCategories;
 
 	@Override
 	public boolean populateStudentToExcludeFromFile(MultipartFile file) {
@@ -229,6 +231,9 @@ public class StudentServiceImpl implements StudentService {
 		Map<String, Object> map;
 		boolean filledDoc = false;
 		boolean filledChoices = false;
+		int nbreAll = 0;
+		int nbrePartial = 0;
+		int nbreNo = 0;
 
 		for (String login : logins) {
 			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
@@ -244,6 +249,7 @@ public class StudentServiceImpl implements StudentService {
 					map.put("login", login);
 					results.add(map);
 				}
+				nbreAll += 1;
 			} else {
 				if ((!filledDoc) && (!filledChoices)) {
 					if (category.equals("no")) {
@@ -252,6 +258,7 @@ public class StudentServiceImpl implements StudentService {
 						map.put("login", login);
 						results.add(map);
 					}
+					nbreNo += 1;
 				} else {
 					if (category.equals("partial")) {
 						map = new HashMap<String, Object>();
@@ -259,10 +266,17 @@ public class StudentServiceImpl implements StudentService {
 						map.put("login", login);
 						results.add(map);
 					}
+					nbrePartial += 1;
 				}
 			}
 
 		}
+		
+		sizeOfCategories = new HashMap<String, Integer>();
+		sizeOfCategories.put("total", nbreAll);
+		sizeOfCategories.put("partial", nbrePartial);
+		sizeOfCategories.put("empty", nbreNo);
+		
 		return results;
 	}
 
@@ -272,9 +286,9 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public List<Integer> findSizeOfCategories(String path) {
+	public Map<String, Integer> findSizeOfCategories(String path) {
 		List<String> logins = findAllStudentsConcernedLogin();
-		List<Integer> results = new ArrayList<Integer>();
+		Map<String, Integer> results = new HashMap<String, Integer>();
 		boolean filledDoc = false;
 		boolean filledChoices = false;
 		int nbreAll = 0;
@@ -297,9 +311,9 @@ public class StudentServiceImpl implements StudentService {
 				}
 			}
 		}
-		results.add(nbreAll);
-		results.add(nbrePartial);
-		results.add(nbreNo);
+		results.put("total", nbreAll);
+		results.put("partial", nbrePartial);
+		results.put("empty", nbreNo);
 		return results;
 	}
 
@@ -340,6 +354,11 @@ public class StudentServiceImpl implements StudentService {
 		}
 		Collections.sort(studentsToExclude, new ComparatorSimpleStudent());
 		return studentsToExclude;
+	}
+
+	@Override
+	public Map<String, Integer> getSizeOfCategories(String path) {
+		return sizeOfCategories;
 	}
 
 }

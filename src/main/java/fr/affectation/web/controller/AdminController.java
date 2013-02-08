@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.specialization.SimpleSpecialization;
 import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.configuration.ConfigurationService;
@@ -77,7 +75,7 @@ public class AdminController {
 
 	@RequestMapping({ "/", "" })
 	public String redirect(Model mode) {
-		return configurationService.isRunning() ? "redirect:/admin/statistics/synthese" : "redirect:/admin/config";
+		return configurationService.isRunning() ? "redirect:/admin/run/main/statistics/choice1" : "redirect:/admin/config";
 	}
 
 	@InitBinder
@@ -91,11 +89,6 @@ public class AdminController {
 		model.addAttribute("paAvailable", specializationService.findImprovementCourses());
 		model.addAttribute("fmAvailable", specializationService.findJobSectors());
 		return "admin/administration/specialization";
-	}
-
-	@RequestMapping("/administration/process")
-	public String manageProcess(Model model) {
-		return "admin/administration/process";
 	}
 
 	@RequestMapping("/administration/students")
@@ -159,16 +152,6 @@ public class AdminController {
 			}
 		}
 		return "redirect:/admin/exclude";
-	}
-
-	@RequestMapping("/stop-process")
-	public String stopProcess() {
-		try {
-			configurationService.stopProcess();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}
-		return "redirect:/admin";
 	}
 
 	@RequestMapping("/student/{login}")
@@ -312,42 +295,170 @@ public class AdminController {
 
 		return "redirect:/admin";
 	}
-
-	@RequestMapping("/parcours/statistics")
-	public String statisticsIc(Model model, HttpServletRequest request) {
-		String path = request.getSession().getServletContext().getRealPath("/");
-		statisticsService.generatePieChartIc(path);
-		statisticsService.generateBarChartIc(path);
-		model.addAttribute("type", 1);
-		model.addAttribute("specForStats", statisticsService.findSimpleIcStats());
-		model.addAttribute("allIc", specializationService.findImprovementCourses());
-		model.addAttribute("allJs", specializationService.findJobSectors());
-		return "admin/statistics";
+	
+	@RequestMapping("/administration/process")
+	public String manageProcess(Model model) {
+		When whenToModify = configurationService.getWhen();
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR, 1);
+		Calendar calendarFirstEmail = Calendar.getInstance();
+		calendarFirstEmail.setTime(whenToModify.getFirstEmail());
+		Calendar calendarSecondEmail = Calendar.getInstance();
+		calendarSecondEmail.setTime(whenToModify.getSecondEmail());
+		Calendar calendarEndSubmission = Calendar.getInstance();
+		calendarEndSubmission.setTime(whenToModify.getEndSubmission());
+		Calendar calendarEndValidation = Calendar.getInstance();
+		calendarEndValidation.setTime(whenToModify.getEndValidation());
+		model.addAttribute("modifyFirstEmail", calendar.before(calendarFirstEmail));
+		model.addAttribute("modifySecondEmail", calendar.before(calendarSecondEmail));
+		model.addAttribute("modifyEndSubmission", calendar.before(calendarEndSubmission));
+		model.addAttribute("modifyEndValidation", calendar.before(calendarEndValidation));
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		model.addAttribute("firstEmail", dateFormat.format(whenToModify.getFirstEmail()));
+		model.addAttribute("secondEmail", dateFormat.format(whenToModify.getSecondEmail()));
+		model.addAttribute("endSubmission", dateFormat.format(whenToModify.getEndSubmission()));
+		model.addAttribute("endValidation", dateFormat.format(whenToModify.getEndValidation()));
+		model.addAttribute("when", new When());
+		return "admin/run/settings/process";
+	}
+	
+	@RequestMapping(value = "/run/settings/edit-process", method = RequestMethod.POST)
+	public String editProcess(@ModelAttribute When when, BindingResult result, Model model) {
+		if ((when.getNumber() == 1) && (when.getEndValidation() == null)){
+			FieldError fieldError = new FieldError("when", "endValidation", "lol");
+			result.addError(fieldError);
+		}
+		if (when.getNumber() == 2){
+			if (when.getEndSubmission() == null){
+				FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+				result.addError(fieldError);
+			}
+			if (when.getEndValidation() == null){
+				FieldError fieldError = new FieldError("when", "endValidation", "lol");
+				result.addError(fieldError);
+			}
+		}
+		if (when.getNumber() == 3){
+			if (when.getSecondEmail() == null){
+				FieldError fieldError = new FieldError("when", "secondEmail", "lol");
+				result.addError(fieldError);
+			}
+			if (when.getEndSubmission() == null){
+				FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+				result.addError(fieldError);
+			}
+			if (when.getEndValidation() == null){
+				FieldError fieldError = new FieldError("when", "endValidation", "lol");
+				result.addError(fieldError);
+			}
+		}
+		if (when.getNumber() == 4){
+			if (when.getFirstEmail() == null){
+				FieldError fieldError = new FieldError("when", "firstEmail", "lol");
+				result.addError(fieldError);
+			}
+			if (when.getSecondEmail() == null){
+				FieldError fieldError = new FieldError("when", "secondEmail", "lol");
+				result.addError(fieldError);
+			}
+			if (when.getEndSubmission() == null){
+				FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+				result.addError(fieldError);
+			}
+			if (when.getEndValidation() == null){
+				FieldError fieldError = new FieldError("when", "endValidation", "lol");
+				result.addError(fieldError);
+			}
+		}
+		if (result.hasErrors()) {
+			When whenToModify = configurationService.getWhen();
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.HOUR, 1);
+			Calendar calendarFirstEmail = Calendar.getInstance();
+			calendarFirstEmail.setTime(whenToModify.getFirstEmail());
+			Calendar calendarSecondEmail = Calendar.getInstance();
+			calendarSecondEmail.setTime(whenToModify.getSecondEmail());
+			Calendar calendarEndSubmission = Calendar.getInstance();
+			calendarEndSubmission.setTime(whenToModify.getEndSubmission());
+			Calendar calendarEndValidation = Calendar.getInstance();
+			calendarEndValidation.setTime(whenToModify.getEndValidation());
+			model.addAttribute("modifyFirstEmail", calendar.before(calendarFirstEmail));
+			model.addAttribute("modifySecondEmail", calendar.before(calendarSecondEmail));
+			model.addAttribute("modifyEndSubmission", calendar.before(calendarEndSubmission));
+			model.addAttribute("modifyEndValidation", calendar.before(calendarEndValidation));
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			model.addAttribute("firstEmail", dateFormat.format(whenToModify.getFirstEmail()));
+			model.addAttribute("secondEmail", dateFormat.format(whenToModify.getSecondEmail()));
+			model.addAttribute("endSubmission", dateFormat.format(whenToModify.getEndSubmission()));
+			model.addAttribute("endValidation", dateFormat.format(whenToModify.getEndValidation()));
+			model.addAttribute("when", new When());
+			return "admin/run/settings/process";
+		} else {
+			List<Date> allDates = new ArrayList<Date>();
+			allDates.add(when.getFirstEmail());
+			allDates.add(when.getSecondEmail());
+			allDates.add(when.getEndSubmission());
+			allDates.add(when.getEndValidation());
+			boolean areDatesSuccessive = true;
+			for (int i = 0; i < allDates.size() - 1; i++) {
+				Date date1 = allDates.get(i);
+				Date date2 = allDates.get(i + 1);
+				if (!date1.before(date2)) {
+					areDatesSuccessive = false;
+				}
+			}
+			if (!areDatesSuccessive) {
+				model.addAttribute("alertMessage", "Les dates doivent êtres successives.");
+				When whenToModify = configurationService.getWhen();
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.HOUR, 1);
+				Calendar calendarFirstEmail = Calendar.getInstance();
+				calendarFirstEmail.setTime(whenToModify.getFirstEmail());
+				Calendar calendarSecondEmail = Calendar.getInstance();
+				calendarSecondEmail.setTime(whenToModify.getSecondEmail());
+				Calendar calendarEndSubmission = Calendar.getInstance();
+				calendarEndSubmission.setTime(whenToModify.getEndSubmission());
+				Calendar calendarEndValidation = Calendar.getInstance();
+				calendarEndValidation.setTime(whenToModify.getEndValidation());
+				model.addAttribute("modifyFirstEmail", calendar.before(calendarFirstEmail));
+				model.addAttribute("modifySecondEmail", calendar.before(calendarSecondEmail));
+				model.addAttribute("modifyEndSubmission", calendar.before(calendarEndSubmission));
+				model.addAttribute("modifyEndValidation", calendar.before(calendarEndValidation));
+				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				model.addAttribute("firstEmail", dateFormat.format(whenToModify.getFirstEmail()));
+				model.addAttribute("secondEmail", dateFormat.format(whenToModify.getSecondEmail()));
+				model.addAttribute("endSubmission", dateFormat.format(whenToModify.getEndSubmission()));
+				model.addAttribute("endValidation", dateFormat.format(whenToModify.getEndValidation()));
+				model.addAttribute("when", new When());
+				return "admin/run/settings/process";
+			}
+		}
+		try {
+			configurationService.updateWhen(when);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("successMessage", "Les modifications ont bien été prises en compte");
+		return "redirect:/admin/administration/process";
+	}
+	
+	@RequestMapping("/run/settings/stop-process")
+	public String stopProcess() {
+		try {
+			configurationService.stopProcess();
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/admin";
 	}
 
-	@RequestMapping("/filieres/statistics")
-	public String statisticsJs(Model model, HttpServletRequest request) {
-		String path = request.getSession().getServletContext().getRealPath("/");
-		statisticsService.generatePieChartJs(path);
-		statisticsService.generateBarChartJs(path);
-		model.addAttribute("type", 2);
-		model.addAttribute("specForStats", statisticsService.findSimpleJsStats());
-		model.addAttribute("allIc", specializationService.findImprovementCourses());
-		model.addAttribute("allJs", specializationService.findJobSectors());
-		return "admin/statistics";
-	}
-
-
-	@RequestMapping("/statistics/synthese")
-	public String statisticsSynthese(Model model, HttpServletRequest request) {
-		model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats());
-		model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats());
-		model.addAttribute("allIc", specializationService.findImprovementCourses());
-		model.addAttribute("allJs", specializationService.findJobSectors());
-		return "admin/statistics-synthese";
-	}
-
-	@RequestMapping("/parcours/synthese/choix{order}")
+	@RequestMapping("/run/main/choices/improvement-course/synthese/choice{order}")
 	public String allResultsIc(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
@@ -357,10 +468,10 @@ public class AdminController {
 				"allStudents",
 				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllIcByOrder(order) : studentService
 						.findSimpleStudentsForAllIcByOrder(order));
-		return "admin/choix/parcours/synthese";
+		return "admin/run/main/choices/improvement-course/synthese";
 	}
 
-	@RequestMapping("/filieres/synthese/choix{order}")
+	@RequestMapping("/run/main/choices/job-sector/synthese/choice{order}")
 	public String allResultsJs(@PathVariable int order, Model model) {
 		model.addAttribute("order", order);
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
@@ -370,10 +481,10 @@ public class AdminController {
 				"allStudents",
 				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationForAllJsByOrder(order) : studentService
 						.findSimpleStudentsForAllJsByOrder(order));
-		return "admin/choix/filieres/synthese";
+		return "admin/run/main/choices/job-sector/synthese";
 	}
 
-	@RequestMapping("/parcours/details/{abbreviation}/choix{order}")
+	@RequestMapping("/run/main/choices/improvement-course/details/{abbreviation}/choice{order}")
 	public String resultsIcDetails(@PathVariable String abbreviation, @PathVariable int order, Model model) {
 		ImprovementCourse improvementCourse = specializationService.getImprovementCourseByAbbreviation(abbreviation);
 		model.addAttribute("order", order);
@@ -386,10 +497,10 @@ public class AdminController {
 				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order,
 						improvementCourse) : studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, improvementCourse));
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
-		return "admin/choix/parcours/details";
+		return "admin/run/main/choices/improvement-course/details";
 	}
 
-	@RequestMapping("/filieres/details/{abbreviation}/choix{order}")
+	@RequestMapping("/run/main/choices/job-sector/details/{abbreviation}/choice{order}")
 	public String resultsJsDetails(@PathVariable String abbreviation, @PathVariable int order, Model model) {
 		JobSector jobSector = specializationService.getJobSectorByAbbreviation(abbreviation);
 		model.addAttribute("order", order);
@@ -402,34 +513,44 @@ public class AdminController {
 				configurationService.isValidationForAdminAvailable() ? studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order,
 						jobSector) : studentService.findSimpleStudentsByOrderChoiceAndSpecialization(order, jobSector));
 		model.addAttribute("running", !configurationService.isValidationForAdminAvailable());
-		return "admin/choix/filieres/details";
+		return "admin/run/main/choices/job-sector/details";
 	}
 
-	@RequestMapping("/statistics/eleves/{category}")
-	public String studentSynthese(@PathVariable String category, HttpServletRequest request, Model model) {
+	@RequestMapping("/run/main/statistics/choice{choice}")
+	public String pieChartsForChoice(@PathVariable int choice, Model model){
+		model.addAttribute("choiceNumber", choice);
+		model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats(choice));
+		model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats(choice));
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
+		return "admin/run/main/statistics/choice";
+	}
+	
+	@RequestMapping("/run/main/statistics/form/synthese")
+	public String pieChartsForForms(HttpServletRequest request, Model model){
+		String path = request.getSession().getServletContext().getRealPath("/");
+		Map<String, Integer> numbersForCategories = studentService.findSizeOfCategories(path);
+		model.addAttribute("nbreAll", numbersForCategories.get("total"));
+		model.addAttribute("nbrePartial", numbersForCategories.get("partial"));
+		model.addAttribute("nbreNo", numbersForCategories.get("empty"));
+		model.addAttribute("allIc", specializationService.findImprovementCourses());
+		model.addAttribute("allJs", specializationService.findJobSectors());
+		return "admin/run/main/statistics/form-synthese";
+	}
+	
+	@RequestMapping("/run/main/statistics/form/details/{category}")
+	public String detailsForForms(HttpServletRequest request, @PathVariable String category, Model model){
 		String path = request.getSession().getServletContext().getRealPath("/");
 		List<Map<String, Object>> results = studentService.findStudentsForCategorySynthese(category, path);
-		List<Integer> numbersForCategories = studentService.findSizeOfCategories(path);
-		model.addAttribute("nbreAll", numbersForCategories.get(0));
-		model.addAttribute("nbrePartial", numbersForCategories.get(1));
-		model.addAttribute("nbreNo", numbersForCategories.get(2));
+		Map<String, Integer> numbersForCategories = studentService.getSizeOfCategories(path);
+		model.addAttribute("nbreAll", numbersForCategories.get("total"));
+		model.addAttribute("nbrePartial", numbersForCategories.get("partial"));
+		model.addAttribute("nbreNo", numbersForCategories.get("empty"));
 		model.addAttribute("category", category);
 		model.addAttribute("results", results);
 		model.addAttribute("allIc", specializationService.findImprovementCourses());
 		model.addAttribute("allJs", specializationService.findJobSectors());
-		return "admin/eleves-synthese";
-	}
-	
-	@RequestMapping("/statistics/eleves/lol/pie-chart")
-	public String studentSyntheseStats(HttpServletRequest request, Model model) {
-		String path = request.getSession().getServletContext().getRealPath("/");
-		List<Integer> numbersForCategories = studentService.findSizeOfCategories(path);
-		model.addAttribute("nbreAll", numbersForCategories.get(0));
-		model.addAttribute("nbrePartial", numbersForCategories.get(1));
-		model.addAttribute("nbreNo", numbersForCategories.get(2));
-		model.addAttribute("allIc", specializationService.findImprovementCourses());
-		model.addAttribute("allJs", specializationService.findJobSectors());
-		return "admin/eleves-synthese-pie-chart";
+		return "admin/run/main/statistics/form-details";
 	}
 
 	@PostConstruct
@@ -441,13 +562,13 @@ public class AdminController {
 	@RequestMapping("/fake")
 	public String populateResults() {
 		fakeData.createFakeChoices();
-		return "redirect:/admin/statistics/synthese";
+		return "redirect:/admin/";
 	}
 	
 	@RequestMapping("/fake2")
 	public String fakeValidation() {
 		fakeData.fakeValidation();
-		return "redirect:/admin/statistics/synthese";
+		return "redirect:/admin/";
 	}
 
 	@PreDestroy

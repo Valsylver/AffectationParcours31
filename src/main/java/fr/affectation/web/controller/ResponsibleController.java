@@ -122,7 +122,7 @@ public class ResponsibleController {
 		model.addAttribute("specialization", specialization);
 		String path = request.getSession().getServletContext().getRealPath("/");
 		model.addAttribute("specForStats",
-				specialization.getType().equals("ImprovementCourse") ? statisticsService.findSimpleIcStats() : statisticsService.findSimpleJsStats());
+				specialization.getType().equals("ImprovementCourse") ? statisticsService.findSimpleIcStats(1) : statisticsService.findSimpleJsStats(1));
 		model.addAttribute("type", specialization.getType().equals("ImprovementCourse") ? 1 : 2);
 		statisticsService.generateBarChartIc(path);
 		statisticsService.generatePieChartIc(path);

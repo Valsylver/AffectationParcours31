@@ -21,30 +21,28 @@
 					<tags:leftColumnAdmin />
 
 					<li class="nav-header">Parcours</li>
-					<li class="active"><a href="/admin/parcours/synthese/choix1">Synthèse</a></li>
-					<c:forEach var="spec" items="${allIc}" varStatus="status">
-						<li><a
-							href="/admin/parcours/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
+					<li class="active"><a href="/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
+					<c:forEach var="spec" items="${allIc}">
+						<li><a href="/admin/run/main/choices/improvement-course/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
 					</c:forEach>
 
 					<li class="nav-header">Filières</li>
-					<li><a href="/admin/filieres/synthese/choix1">Synthèse</a></li>
+					<li><a href="/admin/run/main/choices/job-sector/synthese/choice1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allJs}" varStatus="status">
-						<li><a
-							href="/admin/filieres/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
+						<li><a href="/admin/run/main/choices/job-sector/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
-			<div class="span7">
+			<div class="span8">
 				<ul class="nav nav-pills">
 					<c:forEach var="i" begin="1" end="5" step="1">
 						<c:choose>
 							<c:when test="${i == order}">
 								<li class="active"><a
-									href="/admin/parcours/synthese/choix${i}">Choix ${i}</a></li>
+									href="/admin/run/main/choices/improvement-course/synthese/choice${order}">Choix ${i}</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="/admin/parcours/synthese/choix${i}">Choix
+								<li><a href="/admin/run/main/choices/improvement-course/synthese/choice${i}">Choix
 										${i}</a></li>
 							</c:otherwise>
 						</c:choose>
@@ -122,7 +120,9 @@
 					</c:choose>
 				</c:forEach>
 			</div>
-			<tags:rightColumnAdmin />
+			<div class="span2">
+				<tags:rightColumnAdmin />
+			</div>
 		</div>
 	</div>
 </body>

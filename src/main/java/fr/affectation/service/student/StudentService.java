@@ -38,7 +38,9 @@ public interface StudentService {
 
 	public List<Map<String, Object>> findStudentsForCategorySynthese(String category, String path);
 
-	public List<Integer> findSizeOfCategories(String path);
+	public Map<String, Integer> findSizeOfCategories(String path);
+	
+	public Map<String, Integer> getSizeOfCategories(String path);
 
 	public Student retrieveStudentByLogin(String login, String realPath);
 

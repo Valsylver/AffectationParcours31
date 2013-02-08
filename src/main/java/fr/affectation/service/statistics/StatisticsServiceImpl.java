@@ -39,7 +39,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public void generatePieChartIc(String path) {
 		DefaultPieDataset data = new DefaultPieDataset();
-		Map<String, Integer> icStats = findIcStats();
+		Map<String, Integer> icStats = findIcStats(1);
 		for (String key : icStats.keySet()){
 			data.setValue(key, icStats.get(key));
 		}
@@ -59,7 +59,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public void generatePieChartJs(String path) {
 		DefaultPieDataset data = new DefaultPieDataset();
-		Map<String, Integer> icStats = findJsStats();
+		Map<String, Integer> icStats = findJsStats(1);
 		for (String key : icStats.keySet()){
 			data.setValue(key, icStats.get(key));
 		}
@@ -74,20 +74,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 	
-	public Map<String, Integer> findJsStats(){
+	public Map<String, Integer> findJsStats(int choice){
 		List<JobSector> allJs = specializationService.findJobSectors();
 		Map<String, Integer> jsStats = new HashMap<String, Integer>();
 		for (JobSector jobSector : allJs){
-			jsStats.put(jobSector.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(1, jobSector).size());
+			jsStats.put(jobSector.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(choice, jobSector).size());
 		}
 		return jsStats;
 	}
 	
-	public Map<String, Integer> findIcStats(){
+	public Map<String, Integer> findIcStats(int choice){
 		List<ImprovementCourse> allIc = specializationService.findImprovementCourses();
 		Map<String, Integer> icStats = new HashMap<String, Integer>();
 		for (ImprovementCourse improvementCourse : allIc){
-			icStats.put(improvementCourse.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(1, improvementCourse).size());
+			icStats.put(improvementCourse.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(choice, improvementCourse).size());
 		}
 		return icStats;
 	}
@@ -97,7 +97,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public void generateBarChartIc(String path) {
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
-		Map<String, Integer> icStats = findIcStats();
+		Map<String, Integer> icStats = findIcStats(1);
 		for (String key : icStats.keySet()){
 			data.addValue(icStats.get(key), "Parcours", key);
 		}
@@ -120,7 +120,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public void generateBarChartJs(String path) {
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
-		Map<String, Integer> jsStats = findJsStats();
+		Map<String, Integer> jsStats = findJsStats(1);
 		for (String key : jsStats.keySet()){
 			data.addValue(jsStats.get(key), "Parcours", key);
 		}
@@ -140,8 +140,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 
 	@Override
-	public List<SimpleSpecialization> findSimpleIcStats() {
-		Map<String, Integer> icMap = findIcStats();
+	public List<SimpleSpecialization> findSimpleIcStats(int choice) {
+		Map<String, Integer> icMap = findIcStats(choice);
 		List<SimpleSpecialization> specializations = new ArrayList<SimpleSpecialization>();
 		for (String abbreviation : icMap.keySet()){
 			SimpleSpecialization specialization = new SimpleSpecialization();
@@ -157,8 +157,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 
 	@Override
-	public List<SimpleSpecialization> findSimpleJsStats() {
-		Map<String, Integer> jsMap = findJsStats();
+	public List<SimpleSpecialization> findSimpleJsStats(int choice) {
+		Map<String, Integer> jsMap = findJsStats(choice);
 		List<SimpleSpecialization> specializations = new ArrayList<SimpleSpecialization>();
 		for (String abbreviation : jsMap.keySet()){
 			SimpleSpecialization specialization = new SimpleSpecialization();

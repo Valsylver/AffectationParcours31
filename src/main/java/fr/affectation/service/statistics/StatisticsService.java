@@ -14,9 +14,9 @@ public interface StatisticsService {
 	
 	public void generateBarChartJs(String path);
 
-	public List<SimpleSpecialization> findSimpleIcStats();
+	public List<SimpleSpecialization> findSimpleIcStats(int choice);
 
-	public List<SimpleSpecialization> findSimpleJsStats();
+	public List<SimpleSpecialization> findSimpleJsStats(int choice);
 	
 	public String getLink();
 
