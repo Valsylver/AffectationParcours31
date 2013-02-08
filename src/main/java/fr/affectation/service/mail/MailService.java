@@ -1,23 +1,17 @@
 package fr.affectation.service.mail;
 
-import javax.inject.Inject;
-
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
-@Service
-public class MailService {
+import fr.affectation.domain.util.Mail;
 
-	@Inject
-	private JavaMailSenderImpl mailSender;
+@Service
+public interface MailService {
 	
-	public void sendMail(String from, String to, String subject, String body) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom(from);
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(body);
-		mailSender.send(message);       
-	}
+	public void sendMail(String from, String to, String subject, String body);
+	
+	public Mail getFirstMail();
+	
+	public Mail getSecondMail();
+	
+	public void save(Mail mail);
 }
