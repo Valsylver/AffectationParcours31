@@ -7,7 +7,8 @@
 		<property name="host" value="smtp.centrale-marseille.fr"/>
 		<property name="port" value="587"/>
 		<property name="username" value="vmarmousez"/>
-		<property name="password" value="F7J2T5T4F4"/>
+		<!-- Password has to be changed -->
+		<property name="password" value=""/>
 		<property name="javaMailProperties">
 			<props>
 				<!-- Use SMTP transport protocol -->

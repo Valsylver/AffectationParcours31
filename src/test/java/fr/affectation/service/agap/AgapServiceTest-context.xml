@@ -8,13 +8,7 @@
    http://www.springframework.org/schema/tx
    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/affectation" />
-		<property name="username" value="root" />
-		<property name="password" value="lol" />
-	</bean>
+	<import resource="agap.xml" />
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
      	<constructor-arg ref="dataSource" />
