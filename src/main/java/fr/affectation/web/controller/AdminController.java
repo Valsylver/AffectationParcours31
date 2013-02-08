@@ -34,12 +34,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.student.StudentToExclude;
+import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
 import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.export.ExportService;
 import fr.affectation.service.fake.FakeDataService;
+import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
 import fr.affectation.service.student.StudentService;
@@ -72,6 +74,9 @@ public class AdminController {
 
 	@Inject
 	private FakeDataService fakeData;
+	
+	@Inject
+	private MailService mailService;
 
 	@RequestMapping({ "/", "" })
 	public String redirect(Model mode) {
@@ -320,6 +325,24 @@ public class AdminController {
 	public String exportResults(Model model, HttpServletRequest request) {
 		exportService.generatePdfResults(request.getSession().getServletContext().getRealPath("/"));
 		return "admin/run/settings/export";
+	}
+	
+	@RequestMapping("/run/settings/mail{number}")
+	public String editMails(Model model, HttpServletRequest request, @PathVariable int number) {
+		model.addAttribute("mail", number == 1 ? mailService.getFirstMail() : mailService.getSecondMail());
+		model.addAttribute("number", number);
+		return "admin/run/settings/mail";
+	}
+	
+	@RequestMapping(value = "/run/settings/process-mail-edition", method = RequestMethod.POST)
+	public String saveFirstMail(@ModelAttribute @Valid Mail mail, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+		if (result.hasErrors()){
+			model.addAttribute("number", (int) mail.getId());
+			return "admin/run/settings/mail";
+		}
+		mailService.save(mail);
+		redirectAttributes.addFlashAttribute("flashMessage", "Le mail a bien été modifié.");
+		return "redirect:/admin/run/settings/mail" + mail.getId();
 	}
 	
 	@RequestMapping(value = "/run/settings/edit-process", method = RequestMethod.POST)
