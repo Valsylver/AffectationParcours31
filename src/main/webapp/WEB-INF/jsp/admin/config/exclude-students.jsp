@@ -23,7 +23,7 @@
 
 			<div class="span7">
 				<span id="letterJs2"> <form:form
-						action="/admin/excludeProcess" method="POST"
+						action="/admin/config/process-students-exclusion" method="POST"
 						class="well form-horizontal" enctype="multipart/form-data">
 						<c:if test="${not empty alertMessage}">
 							<div class="alert alert-block">${alertMessage}</div>

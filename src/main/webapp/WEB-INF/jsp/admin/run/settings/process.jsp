@@ -34,6 +34,9 @@
 				<ul class="nav nav-list">
 					<li><a href="/admin/run/settings/students">Elèves</a></li>
 					<li><a href="/admin/run/settings/export">Export</a></li>
+					<li><a href="/admin/run/settings/mail1">Mail 1</a></li>
+					<li><a href="/admin/run/settings/mail2">Mail 2</a></li>
+					<li><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
 					<li class="active"><a href="/admin/run/settings/process">Processus</a></li>
 					<li><a href="/admin/run/settings/specializations">Spécialisations</a></li>
 				</ul>

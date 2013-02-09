@@ -68,7 +68,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</property>
 			</bean>
 		</property>
-		<property name="packagesToScan" value="fr.affectation.domain.specialization, fr.affectation.domain.superuser, fr.affectation.domain.choice, fr.affectation.domain.student" />
+		<property name="packagesToScan" value="fr.affectation.domain.specialization, fr.affectation.domain.superuser, fr.affectation.domain.choice, fr.affectation.domain.student, fr.affectation.domain.util" />
 	</bean>
 
 	<bean id="transactionManager"

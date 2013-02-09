@@ -22,15 +22,15 @@
 					<tags:leftColumnAdmin />
 
 					<li class="nav-header">Parcours</li>
-					<li><a href="/admin/parcours/synthese/choix1">Synthèse</a></li>
+					<li><a href="/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allIc}">
-						<li><a href="/admin/parcours/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
+						<li><a href="/admin/run/main/choices/improvement-course/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
 					</c:forEach>
 
 					<li class="nav-header">Filières</li>
-					<li><a href="/admin/filieres/synthese/choix1">Synthèse</a></li>
+					<li><a href="/admin/run/main/choices/job-sector/synthese/choice1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allJs}" varStatus="status">
-						<li><a href="/admin/filieres/details/${spec.abbreviation}/choix1">${spec.abbreviation}</a></li>
+						<li><a href="/admin/run/main/choices/job-sector/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -83,8 +83,8 @@
 						<a href="/resources/cv/cv_${student.details.login}.pdf">CV</a>
 					</c:when>
 					<c:otherwise>
-						Cet élève n'a pas encore déposé son CV.
-					</c:otherwise>
+Cet élève n'a pas encore déposé son CV.
+</c:otherwise>
 				</c:choose>
 				<br />
 
@@ -93,8 +93,8 @@
 						<a href="/resources/lettres/parcours/lettre_parcours_${student.details.login}.pdf">Lettre parcours</a>
 					</c:when>
 					<c:otherwise>
-						Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
-					</c:otherwise>
+Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
+</c:otherwise>
 				</c:choose>
 				<br />
 
@@ -103,8 +103,8 @@
 						<a href="/resources/lettres/filieres/lettre_filiere_${student.details.login}.pdf">Lettre filière</a>
 					</c:when>
 					<c:otherwise>
-						Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.
-					</c:otherwise>
+Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.
+</c:otherwise>
 				</c:choose>
 				<br /> <br />
 
@@ -133,8 +133,8 @@
 						</table>
 					</c:when>
 					<c:otherwise>
-						Cet élève n'a aucun contentieux.
-					</c:otherwise>
+Cet élève n'a aucun contentieux.
+</c:otherwise>
 				</c:choose>
 				<div class="marge">
 					<h5>Moyennes GPA</h5>

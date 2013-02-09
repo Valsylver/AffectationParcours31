@@ -8,8 +8,6 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<!-- Bootstrap -->
-
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -30,7 +28,7 @@
 		<tags:headerAdmin run="<%=false%>" />
 
 
-		<form:form action="/admin/save-config" method="POST" commandName="when">
+		<form:form action="/admin/config/process-config-saving" method="POST" commandName="when">
 			<center>
 				<button class="btn btn-success btn-large" name="commit" type="submit">
 					<i class="icon-white icon-play"></i><br /> Lancer le processus

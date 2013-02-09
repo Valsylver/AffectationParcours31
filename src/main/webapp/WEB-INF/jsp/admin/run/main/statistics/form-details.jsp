@@ -77,7 +77,7 @@
 				</c:if>
 
 				<c:forEach var="student" items="${results}">
-					<a href="/admin/student/${student['login']}">${student['name']}</a>
+					<a href="/admin/run/main/student/${student['login']}">${student['name']}</a>
 					<br />
 				</c:forEach>
 

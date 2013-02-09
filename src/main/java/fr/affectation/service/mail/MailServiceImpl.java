@@ -1,5 +1,7 @@
 package fr.affectation.service.mail;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.hibernate.Session;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.affectation.domain.util.Mail;
+import fr.affectation.domain.util.SimpleMail;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -51,6 +54,14 @@ public class MailServiceImpl implements MailService {
 	public void save(Mail mail) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(mail);
+	}
+
+	@Override
+	public void sendSimpleMail(SimpleMail mail, List<String> addressees) {
+		for (String login : addressees){
+			String address = login + "@centrale-marseille.fr";
+			//sendMail("valery.marmousez@centrale-marseille.fr", address, mail.getObject(), mail.getMessage());
+		}
 	}
 
 

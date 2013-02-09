@@ -1,40 +1,25 @@
 package fr.affectation.domain.util;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-@Entity
-@Table
-public class Mail {
+public class SimpleMail {
+
+	private String addressee;
 	
-	@Id 
-	private long id;
-	
-	@Column
 	@Size(min = 1, max = 255)
 	private String object;
 	
-	@Column
 	@Size(min = 1, max = 600)
 	private String message;
 	
-	public Mail(long id, String object, String message){
-		this.id = id;
-		this.object = object;
-		this.message = message;
-	}
-	
-	public Mail(){};
+	private boolean receiveACopy;
 
-	public long getId() {
-		return id;
+	public String getAddressee() {
+		return addressee;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setAddressee(String addressee) {
+		this.addressee = addressee;
 	}
 
 	public String getObject() {
@@ -53,4 +38,11 @@ public class Mail {
 		this.message = message;
 	}
 
+	public boolean isReceiveACopy() {
+		return receiveACopy;
+	}
+
+	public void setReceiveACopy(boolean receiveACopy) {
+		this.receiveACopy = receiveACopy;
+	}
 }

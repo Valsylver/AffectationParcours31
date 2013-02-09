@@ -35,6 +35,10 @@ public class ConfigurationService{
 	private boolean config = true;
 	
 	private boolean validating = false;
+	
+	private boolean firstMailActivated = true;
+	
+	private boolean secondMailActivated = true;
 
 	private When when;
 	
@@ -242,6 +246,22 @@ public class ConfigurationService{
 	
 	public void setWhen(When when){
 		this.when = when;
+	}
+
+	public boolean isFirstMailActivated() {
+		return firstMailActivated;
+	}
+
+	public void setFirstMailActivated(boolean firstMailActivated) {
+		this.firstMailActivated = firstMailActivated;
+	}
+
+	public boolean isSecondMailActivated() {
+		return secondMailActivated;
+	}
+
+	public void setSecondMailActivated(boolean secondMailActivated) {
+		this.secondMailActivated = secondMailActivated;
 	}
 	
 }

@@ -8,7 +8,7 @@
 		<property name="port" value="587"/>
 		<property name="username" value="vmarmousez"/>
 		<!-- Password has to be changed -->
-		<property name="password" value=""/>
+		<property name="password" value="F7J2T5T4F4"/>
 		<property name="javaMailProperties">
 			<props>
 				<!-- Use SMTP transport protocol -->
@@ -17,7 +17,7 @@
 				<prop key="mail.smtp.auth">true</prop>
 				<!-- Use TLS to encrypt communication with SMTP server -->
 				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">true</prop>
+				<prop key="mail.debug">false</prop>
 			</props>
 		</property>
 	</bean>

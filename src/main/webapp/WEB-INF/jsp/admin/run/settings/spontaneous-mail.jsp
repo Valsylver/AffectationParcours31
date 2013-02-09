@@ -23,46 +23,39 @@
 				<ul class="nav nav-list">
 					<li><a href="/admin/run/settings/students">Elèves</a></li>
 					<li><a href="/admin/run/settings/export">Export</a></li>
-					<c:choose>
-						<c:when test="${number == 1 }">
-							<li class="active"><a href="/admin/run/settings/mail1">Mail 1</a></li>
-							<li><a href="/admin/run/settings/mail2">Mail 2</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="/admin/run/settings/mail1">Mail 1</a></li>
-							<li class="active"><a href="/admin/run/settings/mail2">Mail 2</a></li>
-						</c:otherwise>
-					</c:choose>
-					<li><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
+					<li><a href="/admin/run/settings/mail1">Mail 1</a></li>
+					<li><a href="/admin/run/settings/mail2">Mail 2</a></li>
+					<li class="active"><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
 					<li><a href="/admin/run/settings/process">Processus</a></li>
 					<li><a href="/admin/run/settings/specializations">Spécialisations</a></li>
 				</ul>
 			</div>
 
 			<div class="span6">
-				<form:form action="/admin/run/settings/process-mail-edition" method="post" commandName="mail" class="well form-horizontal span6">
+				<form:form action="/admin/run/settings/process-spontaneous-mail" method="post" commandName="simpleMail" class="well form-horizontal span6">
 					<c:if test='${not empty flashMessage }'>
 						<div class="alert alert-success">
-							<h4>Sauvegarde</h4>
 							${flashMessage}
 						</div>
 					</c:if>
-					<c:choose>
-						<c:when test="${number == 1 }">
-							<h4>Premier mail de rappel</h4>
-						</c:when>
-						<c:otherwise>
-							<h4>Second mail de rappel</h4>
-						</c:otherwise>
-					</c:choose>
-
+					
+					<label for="addressees">
+						Destinataires
+					</label>
+					<form:select path="addressee" class="span4">
+						<option>Tous les élèves concernés par le processus</option>
+						<option>Elèves n'ayant pas terminé leur candidature</option>
+					</form:select>
+					
+					<br />
+					<br />
 					<label for="object">Objet <form:errors path="object">
 							<br />
 							<font color="red">L'objet ne doit pas être vide.</font>
 						</form:errors>
 					</label>
 					<form:input id="object" path="object" class="span4" />
-
+					
 					<br />
 					<br />
 					<label for="message">Message <form:errors path="message">
@@ -72,25 +65,12 @@
 					</label>
 					<form:textarea id="message" path="message" class="span6" />
 
-					<form:input path="id" style="display:none" value="${number}" />
-
 					<br />
 					<br />
 
 					<button class="btn btn-primary pull-right" name="commit" type="submit">
-						<i class="icon-white icon-ok"></i> Sauvegarder les modifications
+						<i class="icon-white icon-envelope"></i>  Envoyer
 					</button>
-
-					<c:choose>
-						<c:when test="${activated}">
-							<a class="btn btn-danger" href="/admin/run/settings/inverse-activation${number}"> <i class="icon-white icon-remove"></i> Désactiver
-							</a>
-						</c:when>
-						<c:otherwise>
-							<a class="btn btn-success" href="/admin/run/settings/inverse-activation${number}"> <i class="icon-white icon-ok"></i> Activer
-							</a>
-						</c:otherwise>
-					</c:choose>
 
 				</form:form>
 

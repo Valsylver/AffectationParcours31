@@ -32,10 +32,12 @@ import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.student.StudentValidation;
+import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
+import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.validation.ValidationService;
 
@@ -56,6 +58,9 @@ public class StudentServiceImpl implements StudentService {
 
 	@Inject
 	private DocumentService documentService;
+	
+	@Inject
+	private MailService mailService;
 
 	@Inject
 	private ExclusionService exclusionService;
@@ -359,6 +364,25 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public Map<String, Integer> getSizeOfCategories(String path) {
 		return sizeOfCategories;
+	}
+
+	@Override
+	public void sendSimpleMail(SimpleMail mail, String path) {
+		List<String> addressees = new ArrayList<String>();
+		if (mail.getAddressee().charAt(0) == 'E'){
+			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
+			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
+			for (Map<String, Object> map : partialMap){
+				addressees.add((String) map.get("login"));
+			}
+			for (Map<String, Object> map : noMap){
+				addressees.add((String) map.get("login"));
+			}
+		}
+		else{
+			addressees = findAllStudentsConcernedLogin();
+		}
+		mailService.sendSimpleMail(mail, addressees);
 	}
 
 }

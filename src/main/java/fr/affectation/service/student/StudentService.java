@@ -9,6 +9,7 @@ import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
+import fr.affectation.domain.util.SimpleMail;
 
 public interface StudentService {
 
@@ -49,5 +50,7 @@ public interface StudentService {
 	public List<String> findStudentsToExcludeName();
 
 	public boolean populateStudentToExcludeFromFile(MultipartFile file);
+	
+	public void sendSimpleMail(SimpleMail mail, String path);
 
 }

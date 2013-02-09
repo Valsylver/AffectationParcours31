@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-inverse">
 	<div class="navbar-inner">
-		<a href="/admin/" class="brand"> Affectation 3A </a>
+		<a href="/admin/" class="brand">Affectation 3A </a>
 		<div class="container pull-right">
 			<ul class="nav">
 				<c:choose>
@@ -12,7 +12,7 @@
 						<li><a href="/admin/run/settings/students">Administration</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="/admin/exclude">Elèves</a></li>
+						<li><a href="/admin/config/exclude">Elèves</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><a href="/logout">Deconnexion</a></li>
