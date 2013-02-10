@@ -9,6 +9,8 @@
     <http>
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/eleve/**" access="ROLE_ELEVE" />
+        <intercept-url pattern="/responsable/**" access="ROLE_RESPONSABLE" />
+        <intercept-url pattern="/resources/**" access="ROLE_ADMIN, ROLE_RESPONSABLE" />
         <form-login login-page="/login" 
         			authentication-success-handler-ref="authenticationSuccessHandler" />
         <logout logout-url="/logout" />
