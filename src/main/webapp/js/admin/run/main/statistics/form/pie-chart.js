@@ -13,7 +13,7 @@ function generatePieChart() {
 	var dataV = [['Dossiers vides', noSubmission], ['Dossiers incomplets', partialSubmission], ['Dossiers complets', totalSubmission]];
 	
 	Highcharts.setOptions({
-		 colors: ['#4571a7', '#aa4543', '#89a54d', '#80699b', '#3c96ae', '#db843c', '#92a8cd', '#a47d7b', '#b5ca92', '#5b2c12', '#4571a7', '#aa4543', '#89a54d']
+		 colors: ['#3c96ae', '#717589', '#bc9a73']
 		});
     
     var chart;
