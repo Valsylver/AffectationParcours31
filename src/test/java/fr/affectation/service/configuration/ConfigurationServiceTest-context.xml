@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
    http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
    http://www.springframework.org/schema/tx
    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
+		<property name="url" value="jdbc:derby:target/testdb;create=true" />
+		<property name="username" value="" />
+		<property name="password" value="" />
+	</bean>
+	
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="hibernateProperties">
@@ -21,36 +30,18 @@
 			</bean>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="fr.affectation.domain.superuser, fr.affectation.domain.specialization, fr.affectation.domain.student" />
-	</bean>
-
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
-		<property name="url" value="jdbc:derby:target/testdb;create=true" />
-		<property name="username" value="" />
-		<property name="password" value="" />
+		<property name="packagesToScan" value="fr.affectation.domain.configuration" />
 	</bean>
 	
 	<import resource="agap.xml" />
 	
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	
-	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
-	
-	<bean class="fr.affectation.service.superuser.SuperUserServiceImpl" />
-	
-	<bean class="fr.affectation.service.authentication.AuthenticationServiceImpl" />
-	
-	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
-	
-	<bean class="fr.affectation.service.mail.MailServiceImpl" />
-	
-	<bean class="fr.affectation.service.responsible.ResponsibleServiceImpl" />
+	<bean class="fr.affectation.service.configuration.ConfigurationServiceImpl" />
 	
 	<bean class="fr.affectation.service.student.StudentServiceImpl" />
 	
-	<bean class="fr.affectation.service.exclusion.ExclusionServiceImpl" />
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" /> 
+	
+	<bean class="fr.affectation.service.mail.MailServiceImpl" />
 	
 	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
 	
@@ -58,9 +49,18 @@
 	
 	<bean class="fr.affectation.service.documents.DocumentServiceImpl" />
 	
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-    	<property name="sessionFactory" ref="sessionFactory"/>
+	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
+	
+	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
+	
+	<bean class="fr.affectation.service.exclusion.ExclusionServiceImpl" />
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.centrale-marseille.fr"/>

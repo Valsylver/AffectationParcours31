@@ -46,7 +46,6 @@ import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
 import fr.affectation.service.student.StudentService;
-import fr.affectation.service.superuser.SuperUserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -60,9 +59,6 @@ public class AdminController {
 
 	@Inject
 	private ExclusionService exclusionService;
-
-	@Inject
-	private SuperUserService superUserService;
 
 	@Inject
 	private StatisticsService statisticsService;
@@ -740,6 +736,7 @@ public class AdminController {
 		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		mailService.save(first);
 		mailService.save(second);
+		configurationService.initializeFromDataBase();
 	}
 
 	@RequestMapping("/fake")
