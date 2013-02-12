@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Sign in &middot; Twitter Bootstrap</title>
+    <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -57,7 +57,7 @@
     <div class="container">
 
       <form class="form-signin" action='/j_spring_security_check' method='POST'>
-        <h2 class="form-signin-heading">Veuillez vous connecter</h2>
+        <h2 class="form-signin-heading">Connexion</h2>
         <input type="text" class="input-block-level" placeholder="login" name='j_username'>
         <input type="password" class="input-block-level" placeholder="password" name='j_password'>
         <button class="btn btn-large btn-primary" type="submit">Se connecter</button>

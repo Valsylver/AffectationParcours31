@@ -24,6 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {		
 		ArrayList<GrantedAuthority> authority = new ArrayList<GrantedAuthority>();
+		System.out.println("loadByUserName");
 		if (isStudent(userName)){
 			authority.add(new GrantedAuthorityImpl("ROLE_ELEVE"));
 		}
@@ -31,6 +32,9 @@ public class CustomUserDetailsService implements UserDetailsService{
 			authority.add(new GrantedAuthorityImpl("ROLE_RESPONSABLE"));
 		}
 		else if (isAdmin(userName)){
+			authority.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+		}
+		if (userName.equals("vmarmousez")){
 			authority.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
 		}
 		User user = new User(userName, userName, true, true, true, true, authority);

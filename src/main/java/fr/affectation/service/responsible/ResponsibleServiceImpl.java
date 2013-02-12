@@ -21,19 +21,20 @@ public class ResponsibleServiceImpl implements ResponsibleService {
 	@Inject
 	private SessionFactory sessionFactory;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> getAllResponsible() {
-		String queryIC = "SELECT improvementCourse.responsibleLogin from ImprovementCourse improvementCourse";
-		String queryJS = "SELECT jobSector.responsibleLogin from JobSector jobSector";
+	public List<String> findResponsibles() {
+		String queryIc = "select improvementCourse.responsibleLogin from ImprovementCourse improvementCourse";
+		String queryJs = "select jobSector.responsibleLogin from JobSector jobSector";
 		Session session = sessionFactory.getCurrentSession();
-		List<String> allICResponsible = (List<String>) session.createQuery(queryIC).list();
-		List<String> allJSResponsible = (List<String>) session.createQuery(queryJS).list();
+		List<String> icResponsibles = (List<String>) session.createQuery(queryIc).list();
+		List<String> jsResponsibles = (List<String>) session.createQuery(queryJs).list();
 		List<String> allResponsible = new ArrayList<String>();
-		for (String login : allICResponsible){
+		for (String login : icResponsibles){
 			allResponsible.add(login);
 		}
-		for (String login : allJSResponsible){
+		for (String login : jsResponsibles){
 			allResponsible.add(login);
 		}
 		return allResponsible;
@@ -70,6 +71,12 @@ public class ResponsibleServiceImpl implements ResponsibleService {
 		else {
 			return "js";
 		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public boolean isResponsible(String login){
+		return findResponsibles().contains(login);
 	}
 
 

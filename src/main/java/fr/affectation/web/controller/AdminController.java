@@ -37,6 +37,7 @@ import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.domain.util.StudentsExclusion;
+import fr.affectation.service.admin.AdminService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
 import fr.affectation.service.exclusion.ExclusionService;
@@ -74,6 +75,9 @@ public class AdminController {
 
 	@Inject
 	private MailService mailService;
+	
+	@Inject
+	private AdminService adminService;
 
 	@RequestMapping({ "/", "" })
 	public String redirect(Model mode) {
@@ -311,6 +315,15 @@ public class AdminController {
 			model.addAttribute("allIc", specializationService.findImprovementCourses());
 			model.addAttribute("allJs", specializationService.findJobSectors());
 			return "admin/run/main/student/student";
+		} else {
+			return "redirect:/admin";
+		}
+	}
+	
+	@RequestMapping("/run/settings/admins")
+	public String manageAdmins(Model model) {
+		if (configurationService.isRunning()) {
+			return "admin/run/settings/process";
 		} else {
 			return "redirect:/admin";
 		}

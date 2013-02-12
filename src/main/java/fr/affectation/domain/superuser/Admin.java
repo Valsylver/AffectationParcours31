@@ -5,11 +5,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "responsible")
+@Table
 public class Admin {
 	
 	@Id
 	private String login;
+	
+	public Admin(){}
+	
+	public Admin(String login){
+		this.login = login;
+	}
 
 	public String getLogin() {
 		return login;

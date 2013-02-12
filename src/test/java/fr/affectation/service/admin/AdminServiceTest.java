@@ -1,4 +1,4 @@
-package fr.affectation.service.superuser;
+package fr.affectation.service.admin;
 
 import javax.inject.Inject;
 
@@ -14,17 +14,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.affectation.domain.superuser.Admin;
+import fr.affectation.service.admin.AdminService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class SuperUserServiceTest {
+public class AdminServiceTest {
 	
 	@Inject
 	private SessionFactory sessionFactory;
 	
 	@Inject 
-	private SuperUserService superUserService;
+	private AdminService adminService;
 
 	@After
 	public void cleanDb() {
@@ -39,35 +40,50 @@ public class SuperUserServiceTest {
 	public void saveAdmin(){
 		Admin admin = new Admin();
 		admin.setLogin("admin");
-		superUserService.saveAdmin(admin);
+		adminService.saveAdmin(admin);
+		Assert.assertEquals(1, adminService.findAdmins().size());
+	}
+	
+	@Test
+	public void saveAdminByLogin(){
+		adminService.saveAdmin("admin");
+		Assert.assertEquals(1, adminService.findAdmins().size());
 	}
 	
 	@Test
 	public void saveMultipleSameAdmin(){
 		Admin admin = new Admin();
 		admin.setLogin("admin");
-		superUserService.saveAdmin(admin);
-		superUserService.saveAdmin(admin);
-		Assert.assertEquals(1, superUserService.findAllAdmin().size());
+		adminService.saveAdmin(admin);
+		adminService.saveAdmin(admin);
+		Assert.assertEquals(1, adminService.findAdmins().size());
 	}
 	
 	@Test
 	public void saveMultipleAdmin(){
 		Admin admin = new Admin();
 		admin.setLogin("admin");
-		superUserService.saveAdmin(admin);
+		adminService.saveAdmin(admin);
 		admin.setLogin("admin2");
-		superUserService.saveAdmin(admin);
-		Assert.assertEquals(2, superUserService.findAllAdmin().size());
+		adminService.saveAdmin(admin);
+		Assert.assertEquals(2, adminService.findAdmins().size());
 	}
 	
 	@Test
 	public void deleteAdmin(){
 		Admin admin = new Admin();
 		admin.setLogin("admin");
-		superUserService.saveAdmin(admin);
-		superUserService.deleteAdmin("admin");
-		Assert.assertEquals(0, superUserService.findAllAdmin().size());
+		adminService.saveAdmin(admin);
+		adminService.deleteAdmin("admin");
+		Assert.assertEquals(0, adminService.findAdmins().size());
+	}
+	
+	@Test 
+	public void isAdmin(){
+		Admin admin = new Admin();
+		admin.setLogin("admin");
+		adminService.saveAdmin(admin);
+		Assert.assertTrue(adminService.isAdmin("admin"));
 	}
 	
 

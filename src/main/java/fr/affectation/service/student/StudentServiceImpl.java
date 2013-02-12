@@ -110,7 +110,7 @@ public class StudentServiceImpl implements StudentService {
 				allStudentsConcerned.add(student);
 			}
 		}
-		Collections.sort(allStudentsConcerned, new ComparatorSimpleStudent());
+		Collections.sort(allStudentsConcerned);
 		return allStudentsConcerned;
 	}
 

@@ -42,12 +42,12 @@ public class ResponsibleServiceTest {
 	}
 	
 	@Test
-	public void getAllResponsible(){
+	public void findResponsibles(){
 		for (int i=0; i<10; i++){
 			createAndSaveSpecialization("JobSector", "responsibleJS" + i, "abbJs" + i);
 			createAndSaveSpecialization("ImprovementCourse", "responsibleIC" + i, "abbIc" + i);
 		}
-		Assert.assertEquals(20, responsibleService.getAllResponsible().size());
+		Assert.assertEquals(20, responsibleService.findResponsibles().size());
 	}
 	
 	@Test
@@ -58,8 +58,32 @@ public class ResponsibleServiceTest {
 		Assert.assertEquals("abbIc", responsibleService.forWhichSpecialization("responsibleIC"));
 	}
 	
+	@Test
+	public void forWhichSpecializationTypeJs(){
+		createAndSaveSpecialization("JobSector", "resp", "abb");
+		Assert.assertTrue(responsibleService.forWhichSpecializationType("resp").equals("js"));
+	}
+	
+	@Test
+	public void isResponsibleJs(){
+		createAndSaveSpecialization("JobSector", "resp", "abb");
+		Assert.assertTrue(responsibleService.isResponsible("resp"));
+	}
+	
+	@Test
+	public void forWhichSpecializationTypeIc(){
+		createAndSaveSpecialization("ImprovementCourse", "resp", "abb");
+		Assert.assertTrue(responsibleService.forWhichSpecializationType("resp").equals("ic"));
+	}
+	
+	@Test
+	public void isResponsibleIc(){
+		createAndSaveSpecialization("ImprovementCourse", "resp", "abb");
+		Assert.assertTrue(responsibleService.isResponsible("resp"));
+	}
+	
 	public void createAndSaveSpecialization(String type, String loginResponsible, String abbreviation){
-		Specialization specialization = (type == "JobSector") ? new JobSector() : new ImprovementCourse();
+		Specialization specialization = (type.equals("JobSector")) ? new JobSector() : new ImprovementCourse();
 		specialization.setResponsibleLogin(loginResponsible);
 		specialization.setAbbreviation(abbreviation);
 		specializationService.save(specialization);

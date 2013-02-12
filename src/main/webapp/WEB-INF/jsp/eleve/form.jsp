@@ -6,7 +6,6 @@
 <html>
 <head>
     <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
-    <!-- Bootstrap -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/select2.css" rel="stylesheet">
 </head>

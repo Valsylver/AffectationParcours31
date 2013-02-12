@@ -34,9 +34,7 @@
 	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
-	
-	<bean class="fr.affectation.service.superuser.SuperUserServiceImpl" />
+	<bean class="fr.affectation.service.admin.AdminServiceImpl" />
 	
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
     	<property name="sessionFactory" ref="sessionFactory"/>

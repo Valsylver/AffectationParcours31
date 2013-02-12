@@ -1,4 +1,4 @@
-package fr.affectation.service.superuser;
+package fr.affectation.service.admin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.affectation.domain.superuser.Admin;
 
 @Service
-public class SuperUserServiceImpl implements SuperUserService {
+public class AdminServiceImpl implements AdminService {
 	
 	@Inject
 	private SessionFactory sessionFactory;
+	
+	@Override
+	@Transactional
+	public void saveAdmin(String login) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(new Admin(login));
+	}
 
 	@Override
 	@Transactional
@@ -26,9 +33,10 @@ public class SuperUserServiceImpl implements SuperUserService {
 		session.saveOrUpdate(admin);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<Admin> findAllAdmin() {
+	public List<Admin> findAdmins() {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Admin");
 		List<Admin> allAdmin = (List<Admin>) query.list();
@@ -37,8 +45,8 @@ public class SuperUserServiceImpl implements SuperUserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> findAllAdminLogin() {
-		List<Admin> allAdmin = findAllAdmin();
+	public List<String> findAdminLogins() {
+		List<Admin> allAdmin = findAdmins();
 		List<String> allAdminLogin = new ArrayList<String>();
 		for (Admin admin : allAdmin){
 			allAdminLogin.add(admin.getLogin());
@@ -53,6 +61,12 @@ public class SuperUserServiceImpl implements SuperUserService {
 		Query query = session.createQuery("delete from Admin where login= :login");
 		query.setParameter("login", login);
 		query.executeUpdate();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public boolean isAdmin(String login){
+		return findAdminLogins().contains(login);
 	}
 
 }

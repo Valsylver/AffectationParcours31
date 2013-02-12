@@ -1,14 +1,12 @@
 package fr.affectation.service.authentication;
 
-
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import fr.affectation.domain.student.SimpleStudent;
+import fr.affectation.service.admin.AdminService;
 import fr.affectation.service.responsible.ResponsibleService;
 import fr.affectation.service.student.StudentService;
-import fr.affectation.service.superuser.SuperUserService;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
@@ -20,7 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 	private ResponsibleService responsibleService;
 	
 	@Inject
-	private SuperUserService superUserService;
+	private AdminService adminService;
 
 	@Override
 	public boolean isStudent(String login) {
@@ -29,12 +27,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
 	@Override
 	public boolean isResponsible(String login) {
-		return responsibleService.getAllResponsible().contains(login);
+		return responsibleService.isResponsible(login);
 	}
 
 	@Override
 	public boolean isAdmin(String login) {
-		return superUserService.findAllAdminLogin().contains(login);
+		return adminService.isAdmin(login);
 	}
 
 }

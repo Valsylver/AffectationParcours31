@@ -1,6 +1,8 @@
 package fr.affectation.domain.student;
 
-public class SimpleStudent {
+import org.apache.commons.lang.StringUtils;
+
+public class SimpleStudent implements Comparable<SimpleStudent>{
 	
 	private String login;
 	
@@ -25,6 +27,38 @@ public class SimpleStudent {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(SimpleStudent other) {
+		String name = retrieveLastName(getName());
+		String otherName = retrieveLastName(other.getName());
+		if (name.compareTo(otherName) == 0){
+			String firstName = retrieveFirstName(getName());
+			String firstNameOther = retrieveFirstName(getName());
+			return firstName.compareTo(firstNameOther);
+		}
+		return name.compareTo(otherName);
+	}
+	
+	private String retrieveLastName(String fullName){
+		String[] fullNameList = StringUtils.split(fullName, " ");
+		if (fullNameList.length > 1){
+			return fullNameList[1];
+		}
+		else{
+			return fullName;
+		}
+	}
+	
+	private String retrieveFirstName(String fullName){
+		String[] fullNameList = StringUtils.split(fullName, " ");
+		if (fullNameList.length > 1){
+			return fullNameList[0];
+		}
+		else{
+			return fullName;
+		}
 	}
 
 }
