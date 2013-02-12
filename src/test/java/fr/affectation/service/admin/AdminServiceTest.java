@@ -8,13 +8,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.affectation.domain.superuser.Admin;
-import fr.affectation.service.admin.AdminService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,9 +26,18 @@ public class AdminServiceTest {
 	
 	@Inject 
 	private AdminService adminService;
+	
+	@Before
+	public void cleanDbBefore() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		session.createQuery("delete from Admin").executeUpdate();
+		transaction.commit();
+		session.close();
+	}
 
 	@After
-	public void cleanDb() {
+	public void cleanDbAfter() {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		session.createQuery("delete from Admin").executeUpdate();

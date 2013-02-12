@@ -21,6 +21,7 @@
 		<div class="row">
 			<div class="span2">
 				<ul class="nav nav-list">
+					<li><a href="/admin/run/settings/admins">Administrateurs</a></li>
 					<li><a href="/admin/run/settings/students">Elèves</a></li>
 					<li><a href="/admin/run/settings/export">Export</a></li>
 					<c:choose>

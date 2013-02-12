@@ -1,3 +1,4 @@
+<!-- 
 <beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -21,16 +22,6 @@
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider ref="casAuthenticationProvider" />
 	</authentication-manager>
-	
-	<!--  
-	<user-service id="userService">
-		<user name="student" password="student" authorities="ROLE_STUDENT" />
-		<user name="student2" password="student2" authorities="ROLE_STUDENT" />
-		<user name="responsible" password="responsible" authorities="ROLE_RESPONSIBLE" />
-		<user name="admin" password="admin" authorities="ROLE_ADMIN" />
-		<user name="vmarmousez" authorities="ROLE_ADMIN" />
-	</user-service>
-	-->
 	
 	<beans:bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
 		<beans:property name="userDetailsService" ref="userService"/>
@@ -57,5 +48,33 @@
 		<beans:property name="service" value="http://localhost:8080/j_spring_cas_security_check"/>
     	<beans:property name="sendRenew" value="false"/>
 	</beans:bean>
+
+</beans:beans>
+-->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+                  xmlns:beans="http://www.springframework.org/schema/beans"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <http>
+        <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/eleve/**" access="ROLE_ELEVE" />
+        <intercept-url pattern="/responsable/**" access="ROLE_RESPONSABLE" />
+        <intercept-url pattern="/resources/**" access="ROLE_ADMIN, ROLE_RESPONSABLE" />
+        <form-login login-page="/login"
+         authentication-success-handler-ref="authenticationSuccessHandler" />
+        <logout logout-url="/logout" />
+    </http>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userService">
+        </authentication-provider>
+    </authentication-manager>
+    
+    <beans:import resource="affectation-servlet.xml"/>
 
 </beans:beans>
