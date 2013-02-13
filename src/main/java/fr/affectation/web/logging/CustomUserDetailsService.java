@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,18 +24,15 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {		
 		ArrayList<GrantedAuthority> authority = new ArrayList<GrantedAuthority>();
-		System.out.println("loadByUserName");
 		if (isStudent(userName)){
-			authority.add(new GrantedAuthorityImpl("ROLE_ELEVE"));
+			authority.add(new SimpleGrantedAuthority("ROLE_ELEVE"));
+			System.out.println("eleve");
 		}
 		else if (isResponsible(userName)){
-			authority.add(new GrantedAuthorityImpl("ROLE_RESPONSABLE"));
+			authority.add(new SimpleGrantedAuthority("ROLE_RESPONSABLE"));
 		}
 		else if (isAdmin(userName)){
-			authority.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
-		}
-		if (userName.equals("vmarmousez")){
-			authority.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+			authority.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 		User user = new User(userName, userName, true, true, true, true, authority);
 		return user;

@@ -87,7 +87,7 @@ public class StudentServiceImpl implements StudentService {
 				if (cell != null) {
 					if (!cell.toString().equals("")) {
 						String login = cell.toString();
-						if ((!login.equals("")) && (agapService.checkStudent(login))) {
+						if ((!login.equals("")) && (agapService.isAnExcludableStudent(login))) {
 							StudentToExclude student = new StudentToExclude(login);
 							exclusionService.save(student);
 						}
@@ -131,7 +131,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudentWithValidation> findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
-		List<String> allLogins = choiceService.getLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
+		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		List<SimpleStudentWithValidation> allSimpleStudents = new ArrayList<SimpleStudentWithValidation>();
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
 		for (String login : allLogins) {
@@ -157,7 +157,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudent> findSimpleStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
-		List<String> allLogins = choiceService.getLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
+		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		List<SimpleStudent> allSimpleStudents = new ArrayList<SimpleStudent>();
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
 		for (String login : allLogins) {
@@ -202,8 +202,7 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void populateValidation() {
 		validationService.deleteAllStudents();
-		List<String> allLoginsConcerned = findAllStudentsConcernedLogin();
-		for (String login : allLoginsConcerned) {
+		for (String login : findAllStudentsConcernedLogin()) {
 			validationService.saveStudentValidation(new StudentValidation(login, true, true));
 		}
 	}
@@ -243,8 +242,8 @@ public class StudentServiceImpl implements StudentService {
 		for (String login : logins) {
 			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
 					&& documentService.hasFilledResume(path, login);
-			List<Integer> l1 = choiceService.getElementNotFilledImprovementCourse(login);
-			List<Integer> l2 = choiceService.getElementNotFilledJobSector(login);
+			List<Integer> l1 = choiceService.findElementNotFilledImprovementCourse(login);
+			List<Integer> l2 = choiceService.findElementNotFilledJobSector(login);
 			filledChoices = (l1.size() == 0) && (l2.size() == 0);
 
 			if ((filledDoc) && (filledChoices)) {
@@ -303,8 +302,8 @@ public class StudentServiceImpl implements StudentService {
 		for (String login : logins) {
 			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
 					&& documentService.hasFilledResume(path, login);
-			filledChoices = (choiceService.getElementNotFilledImprovementCourse(login).size() == 0)
-					&& (choiceService.getElementNotFilledJobSector(login).size() == 0);
+			filledChoices = (choiceService.findElementNotFilledImprovementCourse(login).size() == 0)
+					&& (choiceService.findElementNotFilledJobSector(login).size() == 0);
 
 			if ((filledDoc) && (filledChoices)) {
 				nbreAll += 1;

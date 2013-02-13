@@ -54,7 +54,7 @@ public class ExportServiceImpl implements ExportService {
 	public void generatePdfResults(String path) {
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream(path + "/pdf/resultats_affectation.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(path + "/WEB-INF/pdf/resultats_affectation.pdf"));
 			document.open();
 			document.add(new Paragraph("Affectation parcours/filières 3ème année Centrale Marseille", FontFactory.getFont(FontFactory.COURIER, 20, Font.BOLD,
 					new CMYKColor(0, 255, 0, 0))));

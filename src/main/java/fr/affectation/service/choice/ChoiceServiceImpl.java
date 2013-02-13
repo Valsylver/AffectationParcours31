@@ -24,14 +24,14 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional
-	public void save(Choice choices) {
+	public void save(Choice choice) {
 		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(choices);
+		session.saveOrUpdate(choice);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public JobSectorChoice getJobSectorChoicesByLogin(String login) {
+	public JobSectorChoice findJobSectorChoiceByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		JobSectorChoice choices = (JobSectorChoice) session.get(JobSectorChoice.class, login);
 		if (choices == null) {
@@ -43,7 +43,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ImprovementCourseChoice getImprovementCourseChoicesByLogin(String login) {
+	public ImprovementCourseChoice findImprovementCourseChoiceByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		ImprovementCourseChoice choices = (ImprovementCourseChoice) session.get(ImprovementCourseChoice.class, login);
 		if (choices == null) {
@@ -55,25 +55,28 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<JobSectorChoice> findAllJobSectorChoices() {
+	public List<JobSectorChoice> findJobSectorChoices() {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from JobSectorChoice");
+		@SuppressWarnings("unchecked")
 		List<JobSectorChoice> allChoices = query.list();
 		return allChoices;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<ImprovementCourseChoice> findAllImprovementCourseChoices() {
+	public List<ImprovementCourseChoice> findImprovementCourseChoices() {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from ImprovementCourseChoice");
 		List<ImprovementCourseChoice> allChoices = query.list();
 		return allChoices;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<String> getLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
+	public List<String> findLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
 		String querySpecialization = "from ";
 		querySpecialization += specialization.getType().equals("JobSector") ? "JobSectorChoice" : "ImprovementCourseChoice";
 		querySpecialization += " where choice" + orderChoice + "=:abbreviation";
@@ -97,7 +100,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Integer> getElementNotFilledImprovementCourse(String login) {
+	public List<Integer> findElementNotFilledImprovementCourse(String login) {
 		Choice choice = findIcChoicesByLogin(login);
 		List<Integer> notFilled = new ArrayList<Integer>();
 		if (choice == null){
@@ -127,7 +130,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Integer> getElementNotFilledJobSector(String login) {
+	public List<Integer> findElementNotFilledJobSector(String login) {
 		Choice choice = findJsChoicesByLogin(login);
 		List<Integer> notFilled = new ArrayList<Integer>();
 		if (choice == null){
@@ -157,12 +160,6 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public boolean hasFilledAll(String login) {
-		return (getElementNotFilledImprovementCourse(login).size() == 0) && (getElementNotFilledJobSector(login).size() == 0);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
 	public ImprovementCourseChoice findIcChoicesByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		ImprovementCourseChoice choice = (ImprovementCourseChoice) session.get(ImprovementCourseChoice.class, login);
@@ -175,6 +172,14 @@ public class ChoiceServiceImpl implements ChoiceService {
 		Session session = sessionFactory.getCurrentSession();
 		JobSectorChoice choice = (JobSectorChoice) session.get(JobSectorChoice.class, login);
 		return choice;
+	}
+
+	@Override
+	@Transactional
+	public void deleteAllChoices() {
+		Session session = sessionFactory.getCurrentSession();
+		session.createQuery("delete from JobSectorChoice").executeUpdate();
+		session.createQuery("delete from ImprovementCourseChoice").executeUpdate();
 	}
 
 }

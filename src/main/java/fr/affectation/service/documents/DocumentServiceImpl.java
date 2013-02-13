@@ -14,19 +14,19 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	public void saveLetterIc(String path, String login, MultipartFile file) throws FileUploadException{
-		String where = path + "/resources/lettres/parcours/lettre_parcours_" + login + ".pdf";
+		String where = path + "WEB-INF/resources/lettres/parcours/lettre_parcours_" + login + ".pdf";
 		saveFile(where, file);
 	}
 
 	@Override
 	public void saveLetterJs(String path, String login, MultipartFile file) throws FileUploadException{
-		String where = path + "/resources/lettres/filieres/lettre_filiere_" + login + ".pdf";
+		String where = path + "WEB-INF/resources/lettres/filieres/lettre_filiere_" + login + ".pdf";
 		saveFile(where, file);
 	}
 
 	@Override
 	public void saveResume(String path, String login, MultipartFile file) throws FileUploadException{
-		String where = path + "/resources/cv/cv_" + login + ".pdf";
+		String where = path + "WEB-INF/resources/cv/cv_" + login + ".pdf";
 		saveFile(where, file);
 	}
 	
@@ -42,19 +42,19 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	public boolean hasFilledLetterIc(String path, String login) {
-		File letterIc = new File(path + "/resources/lettres/parcours/lettre_parcours_" + login + ".pdf");
+		File letterIc = new File(path + "WEB-INF/resources/lettres/parcours/lettre_parcours_" + login + ".pdf");
 		return letterIc.exists();
 	}
 
 	@Override
 	public boolean hasFilledLetterJs(String path, String login) {
-		File letterJs = new File(path + "/resources/lettres/filieres/lettre_filiere_" + login + ".pdf");
+		File letterJs = new File(path + "WEB-INF/resources/lettres/filieres/lettre_filiere_" + login + ".pdf");
 		return letterJs.exists();
 	}
 
 	@Override
 	public boolean hasFilledResume(String path, String login) {
-		File resume = new File(path + "/resources/cv/cv_" + login +".pdf");
+		File resume = new File(path + "WEB-INF/resources/cv/cv_" + login +".pdf");
 		return resume.exists();
 	}
 

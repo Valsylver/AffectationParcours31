@@ -231,17 +231,17 @@ public class FakeDataService {
 			specializationService.delete(ic);
 		}
 		for (ImprovementCourseChoice icc : choiceService
-				.findAllImprovementCourseChoices()) {
+				.findImprovementCourseChoices()) {
 			choiceService.delete(icc);
 		}
 		for (JobSector js : specializationService.findJobSectors()) {
 			specializationService.delete(js);
 		}
-		for (JobSectorChoice jsc : choiceService.findAllJobSectorChoices()) {
+		for (JobSectorChoice jsc : choiceService.findJobSectorChoices()) {
 			choiceService.delete(jsc);
 		}
 		exclusionService.deleteAllStudentsToExclude();
-		validationService.deleteAllStudents();
+		//validationService.deleteAllStudents();
 	}
 	
 

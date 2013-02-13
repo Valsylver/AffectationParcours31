@@ -56,94 +56,98 @@ public class StudentController {
 			@RequestParam(value="letterJs", required=false) MultipartFile letterJs,
 			HttpServletRequest request
 			){
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String login = auth.getName();
-		
-		String path = request.getSession().getServletContext().getRealPath("/");
-		
-		try{
-			if (!resume.isEmpty()){
-				validatePdf(resume);
-				documentService.saveResume(path, login, resume);
+		if (configurationService.isSubmissionAvailable()){
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String login = auth.getName();
+			
+			String path = request.getSession().getServletContext().getRealPath("/");
+			
+			try{
+				if (!resume.isEmpty()){
+					validatePdf(resume);
+					documentService.saveResume(path, login, resume);
+				}
+				if (!letterIc.isEmpty()){
+					validatePdf(letterIc);
+					documentService.saveLetterIc(path, login, letterIc);
+				}
+				if (!letterJs.isEmpty()){
+					validatePdf(letterJs);
+					documentService.saveLetterJs(path, login, letterJs);
+				}
 			}
-			if (!letterIc.isEmpty()){
-				validatePdf(letterIc);
-				documentService.saveLetterIc(path, login, letterIc);
+			catch (FileUploadException e) {
+				return "redirect:/eleve/add";
 			}
-			if (!letterJs.isEmpty()){
-				validatePdf(letterJs);
-				documentService.saveLetterJs(path, login, letterJs);
+			
+			ImprovementCourseChoice improvementCourseChoice = fullChoice.getImprovementCourseChoice();
+			JobSectorChoice jobSectorChoice = fullChoice.getJobSectorChoice();
+			
+			improvementCourseChoice.setLogin(login);
+			jobSectorChoice.setLogin(login);
+	
+			improvementCourseChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice1()));
+			improvementCourseChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice2()));
+			improvementCourseChoice.setChoice3(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice3()));
+			improvementCourseChoice.setChoice4(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice4()));
+			improvementCourseChoice.setChoice5(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice5()));
+			
+			jobSectorChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice1()));
+			jobSectorChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice2()));
+			jobSectorChoice.setChoice3(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice3()));
+			jobSectorChoice.setChoice4(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice4()));
+			jobSectorChoice.setChoice5(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice5()));
+	
+			choiceService.save(improvementCourseChoice);
+			choiceService.save(jobSectorChoice);
+			
+			List<Integer> notFilledJs = choiceService.findElementNotFilledJobSector(login);
+			List<Integer> notFilledIc = choiceService.findElementNotFilledImprovementCourse(login);
+			
+			String nfJs = "Vous n'avez pas fait de choix ";
+			int index = 0;
+			for (Integer i : notFilledJs){
+				if (index == 0){
+					nfJs += i;
+				}
+				else{
+					nfJs += ", " + i;
+				}
+				index += 1;
 			}
+			nfJs += ".";
+			
+			String nfIc = "Vous n'avez pas fait de choix ";
+			index = 0;
+			for (Integer i : notFilledIc){
+				if (index == 0){
+					nfIc += i;
+				}
+				else{
+					nfIc += ", " + i;
+				}
+				index += 1;
+			}
+			nfIc += ".";
+			
+			model.addAttribute("notFilledJs", nfJs);
+			model.addAttribute("notFilledJsNumber", notFilledJs);
+			model.addAttribute("notFilledIc", nfIc);
+			model.addAttribute("notFilledIcNumber", notFilledIc);
+			
+			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
+			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
+			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
+			
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+			String dateEnd = dateFormat.format(configurationService.getWhen().getEndSubmission());
+			model.addAttribute("dateEnd", dateEnd);
+		
+			return "eleve/success";
 		}
-		catch (FileUploadException e) {
-			return "redirect:/eleve/add";
+		else{
+			return "eleve/noSubmission";
 		}
-		
-		ImprovementCourseChoice improvementCourseChoice = fullChoice.getImprovementCourseChoice();
-		JobSectorChoice jobSectorChoice = fullChoice.getJobSectorChoice();
-		
-		improvementCourseChoice.setLogin(login);
-		jobSectorChoice.setLogin(login);
-
-		improvementCourseChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice1()));
-		improvementCourseChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice2()));
-		improvementCourseChoice.setChoice3(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice3()));
-		improvementCourseChoice.setChoice4(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice4()));
-		improvementCourseChoice.setChoice5(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice5()));
-		
-		jobSectorChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice1()));
-		jobSectorChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice2()));
-		jobSectorChoice.setChoice3(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice3()));
-		jobSectorChoice.setChoice4(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice4()));
-		jobSectorChoice.setChoice5(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice5()));
-
-		choiceService.save(improvementCourseChoice);
-		choiceService.save(jobSectorChoice);
-		
-		List<Integer> notFilledJs = choiceService.getElementNotFilledJobSector(login);
-		List<Integer> notFilledIc = choiceService.getElementNotFilledImprovementCourse(login);
-		
-		String nfJs = "Vous n'avez pas fait de choix ";
-		int index = 0;
-		for (Integer i : notFilledJs){
-			if (index == 0){
-				nfJs += i;
-			}
-			else{
-				nfJs += ", " + i;
-			}
-			index += 1;
-		}
-		nfJs += ".";
-		
-		String nfIc = "Vous n'avez pas fait de choix ";
-		index = 0;
-		for (Integer i : notFilledIc){
-			if (index == 0){
-				nfIc += i;
-			}
-			else{
-				nfIc += ", " + i;
-			}
-			index += 1;
-		}
-		nfIc += ".";
-		
-		model.addAttribute("notFilledJs", nfJs);
-		model.addAttribute("notFilledJsNumber", notFilledJs);
-		model.addAttribute("notFilledIc", nfIc);
-		model.addAttribute("notFilledIcNumber", notFilledIc);
-		
-		model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
-		model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
-		model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
-		
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
-		String dateEnd = dateFormat.format(configurationService.getWhen().getEndSubmission());
-		model.addAttribute("dateEnd", dateEnd);
-		
-	    return "eleve/success";
 	}
 	
 	@RequestMapping("/add")
@@ -154,8 +158,8 @@ public class StudentController {
 			
 			String path = request.getSession().getServletContext().getRealPath("/");
 			
-			Choice choiceIc = choiceService.getImprovementCourseChoicesByLogin(login);
-			Choice choiceJs = choiceService.getJobSectorChoicesByLogin(login);
+			Choice choiceIc = choiceService.findImprovementCourseChoiceByLogin(login);
+			Choice choiceJs = choiceService.findJobSectorChoiceByLogin(login);
 			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
 			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
 			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));

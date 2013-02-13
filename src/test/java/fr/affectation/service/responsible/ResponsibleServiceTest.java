@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,8 +32,18 @@ public class ResponsibleServiceTest {
 	@Inject
 	private SessionFactory sessionFactory;
 	
+	@Before
+	public void cleanDbBefore() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		session.createQuery("delete from JobSector").executeUpdate();
+		session.createQuery("delete from ImprovementCourse").executeUpdate();
+		transaction.commit();
+		session.close();
+	}
+	
 	@After
-	public void cleanDb() {
+	public void cleanDbAfter() {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		session.createQuery("delete from JobSector").executeUpdate();

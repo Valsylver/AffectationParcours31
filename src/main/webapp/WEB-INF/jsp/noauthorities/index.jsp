@@ -1,18 +1,19 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="tags"%>
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Affectation parcours/filiÃ¨re 3Ã¨me annÃ©e Centrale
+<title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
-<!-- Bootstrap -->
+<link href="/css/bootstrap.css" rel="stylesheet">
+<link href="/css/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
-		PAS POSSIBLE 
+		<div class="row">
+			<br />
+			<br />
+			<div class="alert alert-block">Vous n'êtes pas concerné par le
+				processus d'affectation en cours.</div>
+		</div>
 	</div>
 
 </body>

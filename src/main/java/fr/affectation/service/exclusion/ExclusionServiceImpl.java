@@ -36,6 +36,7 @@ public class ExclusionServiceImpl implements ExclusionService{
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
 	public List<StudentToExclude> findStudentsToExclude() {
@@ -57,6 +58,7 @@ public class ExclusionServiceImpl implements ExclusionService{
 		return findByLogin(login) != null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
 	public StudentToExclude findByLogin(String login) {

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -39,6 +38,7 @@ import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.admin.AdminService;
+import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
 import fr.affectation.service.exclusion.ExclusionService;
@@ -48,6 +48,7 @@ import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
 import fr.affectation.service.student.StudentService;
+import fr.affectation.service.validation.ValidationService;
 
 @Controller
 @RequestMapping("/admin")
@@ -58,6 +59,12 @@ public class AdminController {
 
 	@Inject
 	private StudentService studentService;
+	
+	@Inject
+	private ValidationService validationService;
+	
+	@Inject
+	private ChoiceService choiceService;
 
 	@Inject
 	private ExclusionService exclusionService;
@@ -647,6 +654,8 @@ public class AdminController {
 		if (configurationService.isRunning()) {
 			try {
 				configurationService.stopProcess();
+				choiceService.deleteAllChoices();
+				validationService.deleteAllStudents();
 			} catch (SchedulerException e) {
 				e.printStackTrace();
 			}
@@ -800,11 +809,6 @@ public class AdminController {
 	public String fakeValidation() {
 		fakeData.fakeValidation();
 		return "redirect:/admin/";
-	}
-
-	@PreDestroy
-	public void deleteFake() {
-		fakeData.deleteAll();
 	}
 
 }

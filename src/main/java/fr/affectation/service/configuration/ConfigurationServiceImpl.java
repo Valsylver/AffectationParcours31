@@ -75,6 +75,8 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		
 		Configuration configuration = new Configuration(when.getFirstEmail(), when.getSecondEmail(), when.getEndSubmission(), when.getEndValidation());
 		saveConfiguration(configuration);
+		
+		studentService.populateValidation();
 	}
 	
 	@Override
@@ -382,7 +384,6 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		System.out.println("endSubmission");
 		submissionAvailable = false;
 		validating = true;
-		populateValidation();
 	}
 	
 	@Override

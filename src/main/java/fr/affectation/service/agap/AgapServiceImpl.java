@@ -163,11 +163,9 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public boolean checkStudent(String login) {
-		String queryGradeGpa = "SELECT * FROM eleves WHERE personne_id=:login";
-		Map<String, String> namedParameter = new HashMap<String, String>();
-		namedParameter.put("login", login);
-		return namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter).size() != 0;
+	public boolean isAnExcludableStudent(String login) {
+		List<String> currentPromotion = findCurrentPromotionStudentLogins();
+		return currentPromotion.contains(login);
 	}
 
 	@Override
@@ -197,6 +195,14 @@ public class AgapServiceImpl implements AgapService {
 	public List<String> findCesureStudentLogins() {
 		// TODO Auto-generated method stub
 		return new ArrayList<String>();
+	}
+
+	@Override
+	public List<String> findStudentConcernedLogins() {
+		List <String> logins = findCesureStudentLogins();
+		logins.addAll(findCurrentPromotionStudentLogins());
+		Collections.sort(logins);
+		return logins;
 	}
 
 }

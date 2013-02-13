@@ -13,24 +13,24 @@ public interface ChoiceService {
 	
 	public void delete(Choice choice);
 	
-	public Choice getJobSectorChoicesByLogin(String login);
+	public Choice findJobSectorChoiceByLogin(String login);
 	
-	public Choice getImprovementCourseChoicesByLogin(String login);
+	public Choice findImprovementCourseChoiceByLogin(String login);
 	
-	public List<JobSectorChoice> findAllJobSectorChoices();
+	public List<JobSectorChoice> findJobSectorChoices();
 	
-	public List<ImprovementCourseChoice> findAllImprovementCourseChoices();
+	public List<ImprovementCourseChoice> findImprovementCourseChoices();
 	
-	public List<String> getLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
+	public List<String> findLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
 	
-	public List<Integer> getElementNotFilledImprovementCourse(String login);
+	public List<Integer> findElementNotFilledImprovementCourse(String login);
 	
-	public List<Integer> getElementNotFilledJobSector(String login);
+	public List<Integer> findElementNotFilledJobSector(String login);
 	
 	public ImprovementCourseChoice findIcChoicesByLogin(String login);
 	
 	public JobSectorChoice findJsChoicesByLogin(String login);
 	
-	public boolean hasFilledAll(String login);
+	public void deleteAllChoices();
 
 }

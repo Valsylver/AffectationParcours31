@@ -1,3 +1,4 @@
+
 package fr.affectation.service.choice;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,8 +34,18 @@ public class ChoiceServiceTest {
 	@Inject
 	private SessionFactory sessionFactory;
 	
+	@Before
+	public void cleanDbBefore() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		session.createQuery("delete from JobSectorChoice").executeUpdate();
+		session.createQuery("delete from ImprovementCourseChoice").executeUpdate();
+		transaction.commit();
+		session.close();
+	}
+	
 	@After
-	public void cleanDb() {
+	public void cleanDbAfter() {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		session.createQuery("delete from JobSectorChoice").executeUpdate();
@@ -148,14 +160,14 @@ public class ChoiceServiceTest {
 	@Test
 	public void choicesRetrievment(){
 		saveFullJobSectorChoices();
-		Choice jobSectorChoices = choiceService.getJobSectorChoicesByLogin("login");
+		Choice jobSectorChoices = choiceService.findJobSectorChoiceByLogin("login");
 		Assert.assertTrue(createFullChoices("JobSector").equals(jobSectorChoices));
 	}
 	
 	@Test
 	public void distinctionJobSectorImprovementCourse(){
 		saveFullJobSectorChoices();
-		Choice jobSectorChoices = choiceService.getJobSectorChoicesByLogin("login");
+		Choice jobSectorChoices = choiceService.findJobSectorChoiceByLogin("login");
 		Assert.assertFalse(createFullChoices("ImprovementCourse").equals(jobSectorChoices));
 	}
 	
@@ -165,7 +177,7 @@ public class ChoiceServiceTest {
 			Choice choices = createFullChoices("JobSector", "login" + i);
 			choiceService.save(choices);
 		}
-		List<JobSectorChoice> allChoices = choiceService.findAllJobSectorChoices();
+		List<JobSectorChoice> allChoices = choiceService.findJobSectorChoices();
 		Assert.assertEquals(10, allChoices.size());
 	}
 	
@@ -175,7 +187,7 @@ public class ChoiceServiceTest {
 			Choice choices = createFullChoices("ImprovementCourse", "login" + i);
 			choiceService.save(choices);
 		}
-		List<ImprovementCourseChoice> allChoices = choiceService.findAllImprovementCourseChoices();
+		List<ImprovementCourseChoice> allChoices = choiceService.findImprovementCourseChoices();
 		Assert.assertEquals(10, allChoices.size());
 	}
 	
@@ -185,7 +197,7 @@ public class ChoiceServiceTest {
 		choiceService.save(choices);
 		choices.setChoice1("BBB");
 		choiceService.save(choices);
-		Assert.assertEquals(1, choiceService.findAllImprovementCourseChoices().size());
+		Assert.assertEquals(1, choiceService.findImprovementCourseChoices().size());
 	}
 	
 	@Test
@@ -193,11 +205,11 @@ public class ChoiceServiceTest {
 		saveFullJobSectorChoices();
 		Specialization specialization = new JobSector();
 		specialization.setAbbreviation("AAA");
-		Assert.assertTrue(choiceService.getLoginsByOrderChoiceAndSpecialization(1, specialization).contains("login"));
+		Assert.assertTrue(choiceService.findLoginsByOrderChoiceAndSpecialization(1, specialization).contains("login"));
 		saveFullImprovementCourseChoices();
 		specialization = new ImprovementCourse();
 		specialization.setAbbreviation("AAA");
-		Assert.assertTrue(choiceService.getLoginsByOrderChoiceAndSpecialization(1, specialization).contains("login"));
+		Assert.assertTrue(choiceService.findLoginsByOrderChoiceAndSpecialization(1, specialization).contains("login"));
 	}
 	
 	@Test
@@ -209,7 +221,7 @@ public class ChoiceServiceTest {
 			choice = createFullChoices("Job Sector", "login" + i);
 			choiceService.save(choice);
 		}
-		Assert.assertEquals(20, choiceService.findAllImprovementCourseChoices().size() + choiceService.findAllJobSectorChoices().size());
+		Assert.assertEquals(20, choiceService.findImprovementCourseChoices().size() + choiceService.findJobSectorChoices().size());
 	}
 	
 	public Choice createFullChoices(String type, String login){
@@ -237,7 +249,7 @@ public class ChoiceServiceTest {
 			choiceService.save(choice);
 			choiceService.delete(choice);
 		}
-		Assert.assertTrue(choiceService.findAllJobSectorChoices().size() == 0);
+		Assert.assertTrue(choiceService.findJobSectorChoices().size() == 0);
 	}
 	
 	@Test
@@ -245,7 +257,7 @@ public class ChoiceServiceTest {
 		Choice choice = createFullChoices("ImprovementCourse", "haha");
 		choiceService.save(choice);
 		choiceService.delete(choice);
-		Assert.assertTrue(choiceService.findAllImprovementCourseChoices().size() == 0);
+		Assert.assertTrue(choiceService.findImprovementCourseChoices().size() == 0);
 	}
 	
 	@Test
@@ -255,7 +267,7 @@ public class ChoiceServiceTest {
 		choice.setChoice1("AAA");
 		choice.setChoice4("BBB");
 		choiceService.save(choice);
-		List<Integer> notFilled = choiceService.getElementNotFilledJobSector("login");
+		List<Integer> notFilled = choiceService.findElementNotFilledJobSector("login");
 		Assert.assertTrue(notFilled.size() == 3);
 		Assert.assertTrue(notFilled.contains(2));
 		Assert.assertTrue(notFilled.contains(3));
@@ -271,7 +283,7 @@ public class ChoiceServiceTest {
 		choice.setChoice1("AAA");
 		choice.setChoice4("BBB");
 		choiceService.save(choice);
-		List<Integer> notFilled = choiceService.getElementNotFilledImprovementCourse("login");
+		List<Integer> notFilled = choiceService.findElementNotFilledImprovementCourse("login");
 		Assert.assertTrue(notFilled.size() == 3);
 		Assert.assertTrue(notFilled.contains(2));
 		Assert.assertTrue(notFilled.contains(3));
@@ -284,16 +296,29 @@ public class ChoiceServiceTest {
 	public void improvementCourseChoiceRetrievement(){
 		Choice choices = createFullChoices("ImprovementCourse", "login");
 		choiceService.save(choices);
-		Assert.assertTrue(choiceService.getImprovementCourseChoicesByLogin("login") != null);
-		Assert.assertTrue(choiceService.getImprovementCourseChoicesByLogin("login").getChoice1().equals("AAA"));
+		Assert.assertTrue(choiceService.findImprovementCourseChoiceByLogin("login") != null);
+		Assert.assertTrue(choiceService.findImprovementCourseChoiceByLogin("login").getChoice1().equals("AAA"));
 	}
 	
 	@Test
 	public void jobSectorChoiceRetrievement(){
 		Choice choices = createFullChoices("JobSector", "login");
 		choiceService.save(choices);
-		Assert.assertTrue(choiceService.getJobSectorChoicesByLogin("login") != null);
-		Assert.assertTrue(choiceService.getJobSectorChoicesByLogin("login").getChoice1().equals("AAA"));
+		Assert.assertTrue(choiceService.findJobSectorChoiceByLogin("login") != null);
+		Assert.assertTrue(choiceService.findJobSectorChoiceByLogin("login").getChoice1().equals("AAA"));
 	}
 	
+	@Test
+	public void deleteAll(){
+		Choice choice = new Choice();
+		for (int i = 0; i<10; i++){
+			choice = createFullChoices("ImprovementCourse", "login" + i);
+			choiceService.save(choice);
+			choice = createFullChoices("Job Sector", "login" + i);
+			choiceService.save(choice);
+		}
+		choiceService.deleteAllChoices();
+		Assert.assertTrue(choiceService.findJobSectorChoices().size() == 0);
+		Assert.assertTrue(choiceService.findImprovementCourseChoices().size() == 0);
+	}
 }

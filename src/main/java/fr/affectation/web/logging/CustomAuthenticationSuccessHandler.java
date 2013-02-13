@@ -21,10 +21,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	@Autowired
 	private ResponsibleService responsibleService;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
 			HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		System.out.println("onAuthenticationSuccess");
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) authentication.getAuthorities();
 		if (isRolePresent(authorities, "ROLE_ELEVE")){
 			response.sendRedirect("eleve/add");
