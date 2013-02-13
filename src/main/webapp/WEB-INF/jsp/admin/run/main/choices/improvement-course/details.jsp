@@ -63,7 +63,7 @@
 				<hr>
 
 				<span class="lead"> <a
-					href="/admin/config/modif/parcours/${abbreviation}">
+					href="/admin/common/edit/ic/${abbreviation}">
 						${specialization.name} (${specialization.abbreviation}) </a>
 				</span> <br /> <br />
 				<c:choose>

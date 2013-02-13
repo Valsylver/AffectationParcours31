@@ -13,14 +13,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import fr.affectation.domain.comparator.ComparatorName;
 import fr.affectation.domain.comparator.ComparatorSimpleStudent;
-import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.Contentious;
-import fr.affectation.domain.student.Result;
 import fr.affectation.domain.student.SimpleStudent;
-import fr.affectation.domain.student.Student;
-import fr.affectation.domain.student.StudentDetails;
 import fr.affectation.domain.student.UeResult;
 
 @Service
@@ -31,71 +26,6 @@ public class AgapServiceImpl implements AgapService {
 
 	@Inject
 	private NamedParameterJdbcTemplate namedParameterjdbcTemplate;
-
-	private List<String> ranking;
-
-	private List<Float> means;
-
-	private List<String> allUeCode;
-
-	@Override
-	public StudentDetails getStudentDetailsFromLogin(String login) {
-		String queryStudents = "SELECT * FROM eleves WHERE personne_id=:login";
-		Map<String, String> namedParameter = new HashMap<String, String>();
-		namedParameter.put("login", login);
-		List<Map<String, Object>> allContentiousMap = namedParameterjdbcTemplate.queryForList(queryStudents, namedParameter);
-		List<StudentDetails> allStudentDetails = new ArrayList<StudentDetails>();
-		for (Map<String, Object> map : allContentiousMap) {
-			StudentDetails studentDetails = new StudentDetails();
-			studentDetails.setBacCode((String) map.get("bac_code"));
-			studentDetails.setBacMention((String) map.get("bac_mention"));
-			studentDetails.setCivility(convertCivilityToString((Integer) map.get("civil")));
-			studentDetails.setEntreeFil((String) map.get("entree_fil"));
-			studentDetails.setEntreePrep((String) map.get("entree_prep"));
-			studentDetails.setFullName((String) map.get("nom"));
-			studentDetails.setLogin(login);
-			allStudentDetails.add(studentDetails);
-		}
-		return allStudentDetails.get(0);
-	}
-
-	public String convertCivilityToString(Integer civility) {
-		if (civility == 1) {
-			return "M.";
-		} else {
-			if (civility == 3) {
-				return "Mlle";
-			}
-		}
-		return null;
-	}
-
-	public void generateRanking() {
-		List<String> allLogin = getAllStudentConcernedLogin();
-		List<Gpa> allGpa = new ArrayList<Gpa>();
-		for (String login : allLogin) {
-			List<Float> gpaAllSemester = findGpaMeans(login);
-			Float mean = (gpaAllSemester.get(0) + gpaAllSemester.get(1) + gpaAllSemester.get(2)) / 3;
-			allGpa.add(new Gpa(login, mean));
-		}
-		Collections.sort(allGpa, new ComparatorGpa());
-		List<String> ranking_ = new ArrayList<String>();
-		List<Float> means_ = new ArrayList<Float>();
-		for (Gpa gpa : allGpa) {
-			ranking_.add(gpa.getLogin());
-			means_.add(gpa.getMean());
-		}
-		ranking = ranking_;
-		means = means_;
-	}
-
-	public Float computeRankingIndicator(String login) {
-		Float minMean = means.get(means.size() - 1);
-		Float maxMean = means.get(0);
-		Float mean = means.get(ranking.indexOf(login));
-		Float indicator = 10 * ((mean - minMean) / (maxMean - minMean));
-		return indicator;
-	}
 
 	public String getCurrentCycle() {
 		Calendar calendar = Calendar.getInstance();
@@ -112,34 +42,6 @@ public class AgapServiceImpl implements AgapService {
 		int yearBeforeLastYear = lastYear - 1;
 		String cycle = "" + yearBeforeLastYear + '-' + lastYear;
 		return cycle;
-	}
-
-	@Override
-	public Result getResultsFromLogin(String login) {
-		Result result = new Result();
-		List<Float> gpaMeanList = findGpaMeans(login);
-		result.setGpaMeanS5(gpaMeanList.get(0));
-		result.setGpaMeanS6(gpaMeanList.get(1));
-		result.setGpaMeanS7(gpaMeanList.get(2));
-		result.setRanking(ranking.indexOf(login) + 1);
-		result.setRankingIndicator(computeRankingIndicator(login));
-		result.setContentious(findContentious(login));
-		return result;
-	}
-
-	@Override
-	public Result getResultsFromLoginAndSpecialization(String login, Specialization specialization) {
-		Result result = new Result();
-		List<Float> gpaMeanList = findGpaMeans(login);
-		result.setGpaMeanS5(gpaMeanList.get(0));
-		result.setGpaMeanS6(gpaMeanList.get(1));
-		result.setGpaMeanS7(gpaMeanList.get(2));
-		result.setRanking(ranking.indexOf(login) + 1);
-		result.setRankingIndicator(computeRankingIndicator(login));
-		result.setUeGrade(getUeGrade(login));
-		result.setContentious(findContentious(login));
-		result.generateMeanForSpecialization(specialization);
-		return result;
 	}
 
 	public List<Float> findGpaMeans(String login) {
@@ -194,12 +96,7 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public boolean isStudentConcerned(String login) {
-		return getAllStudentConcernedLogin().contains(login);
-	}
-
-	@Override
-	public List<String> getAllStudentConcernedLogin() {
+	public List<String> findCurrentPromotionStudentLogins() {
 		String cycle = getCurrentCycle();
 		String requeteEleves = "SELECT DISTINCT personne_id FROM eleves WHERE nom IN "
 				+ "(SELECT nom FROM notes_details WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('etranger')";
@@ -212,57 +109,6 @@ public class AgapServiceImpl implements AgapService {
 			allStudentLogin.add(login);
 		}
 		return allStudentLogin;
-	}
-
-	@Override
-	public Map<String, Float> getUeGrade(String login) {
-		List<String> ueCodes = allUeCode;
-		String queryGradeGpa = "SELECT * FROM notes_details WHERE nom IN (SELECT nom FROM eleves WHERE personne_id=:login)";
-		Map<String, String> namedParameter = new HashMap<String, String>();
-		namedParameter.put("login", login);
-		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter);
-		Map<String, Float> gpaByUeCode = new HashMap<String, Float>();
-		for (Map<String, Object> map : studentMap) {
-			String codeUe = (String) map.get("code_ue");
-			if (ueCodes.contains(codeUe)) {
-				Integer creditsEcts = (Integer) map.get("credits_ects");
-				if ((creditsEcts != null) && (creditsEcts != 0)) {
-					Float gradeGpa = (Float) map.get("grade_gpa");
-					gpaByUeCode.put(codeUe, gradeGpa);
-				}
-			}
-		}
-		return gpaByUeCode;
-	}
-
-	@Override
-	public void generateUeCode() {
-		List<String> ueS5 = getUeCodeFromSemester("SEM-5");
-		List<String> ueS6 = getUeCodeFromSemester("SEM-6");
-		List<String> ueS7 = getUeCodeFromSemester("SEM-7");
-		List<String> ueCode = new ArrayList<String>();
-		for (String ue : ueS5) {
-			ueCode.add(ue);
-		}
-		for (String ue : ueS6) {
-			ueCode.add(ue);
-		}
-		for (String ue : ueS7) {
-			ueCode.add(ue);
-		}
-		allUeCode = ueCode;
-	}
-
-	@Override
-	public List<String> findAllValidForSpecUeCode() {
-		generateUeCode();
-		List<String> allValidUeCode = new ArrayList<String>();
-		for (String code : allUeCode) {
-			if (!code.substring(0, 3).equals("EAO")) {
-				allValidUeCode.add(code);
-			}
-		}
-		return allValidUeCode;
 	}
 
 	public List<String> getUeCodeFromSemester(String semester) {
@@ -283,26 +129,6 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public List<String> getRanking() {
-		return ranking;
-	}
-
-	@Override
-	public Student getStudent(String login) {
-		generateRanking();
-		generateUeCode();
-		Student student = new Student();
-		// student.setDetails(getStudentDetailsFromLogin(login));
-		// student.setResults(getResultsFromLogin(login));
-		return student;
-	}
-
-	@Override
-	public List<Float> getMeans() {
-		return means;
-	}
-
-	@Override
 	public String findNameFromLogin(String login) {
 		String queryGradeGpa = "SELECT nom FROM eleves WHERE personne_id=:login";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -320,20 +146,15 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public List<String> getAllStudentConcernedName() {
-		List<String> allStudentConcernedName = new ArrayList<String>();
-		for (String login : getAllStudentConcernedLogin()) {
-			allStudentConcernedName.add(findNameFromLogin(login));
-		}
-		Collections.sort(allStudentConcernedName, new ComparatorName());
-		return allStudentConcernedName;
-	}
-
-	@Override
-	public List<SimpleStudent> findAllStudentsConcerned() {
+	public List<SimpleStudent> findStudentsConcerned() {
 		List<SimpleStudent> studentsConcerned = new ArrayList<SimpleStudent>();
-		List<String> allLogin = getAllStudentConcernedLogin();
-		for (String login : allLogin) {
+		List<String> currentPromotion = findCurrentPromotionStudentLogins();
+		List<String> cesure = findCesureStudentLogins();
+		for (String login : currentPromotion) {
+			SimpleStudent student = new SimpleStudent(login, findNameFromLogin(login));
+			studentsConcerned.add(student);
+		}
+		for (String login : cesure) {
 			SimpleStudent student = new SimpleStudent(login, findNameFromLogin(login));
 			studentsConcerned.add(student);
 		}
@@ -343,7 +164,10 @@ public class AgapServiceImpl implements AgapService {
 
 	@Override
 	public boolean checkStudent(String login) {
-		return !findNameFromLogin(login).equals(login);
+		String queryGradeGpa = "SELECT * FROM eleves WHERE personne_id=:login";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("login", login);
+		return namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter).size() != 0;
 	}
 
 	@Override
@@ -367,6 +191,12 @@ public class AgapServiceImpl implements AgapService {
 			}
 		}
 		return results;
+	}
+
+	@Override
+	public List<String> findCesureStudentLogins() {
+		// TODO Auto-generated method stub
+		return new ArrayList<String>();
 	}
 
 }

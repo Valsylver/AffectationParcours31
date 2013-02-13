@@ -71,7 +71,7 @@ public class FakeDataService {
 		List<String> liste3 = new ArrayList<String>();
 		List<String> liste4 = new ArrayList<String>();
 
-		for (String login : agapService.getAllStudentConcernedLogin()) {
+		for (String login : studentService.findAllStudentsConcernedLogin()) {
 			int willSubmit = (int) (Math.random() * 10);
 			if (willSubmit < 9){
 				liste3.clear();

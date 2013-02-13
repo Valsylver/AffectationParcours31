@@ -54,7 +54,7 @@
 				</ul>
 				<hr>
 
-				<span class="lead"> <a href="/admin/config/modif/filieres/${abbreviation}"> ${specialization.name} (${specialization.abbreviation}) </a>
+				<span class="lead"> <a href="/admin/common/edit/js/${abbreviation}"> ${specialization.name} (${specialization.abbreviation}) </a>
 				</span> <br /> <br />
 				<c:choose>
 					<c:when test="${fn:length(allStudents) > 0}">

@@ -52,7 +52,7 @@
 
 				<c:forEach var="specialization" items="${allJs}" varStatus="status">
 					<span class="lead"> <a
-						href="/admin/config/modif/filieres/${specialization.abbreviation}">
+						href="/admin/common/edit/js/${specialization.abbreviation}">
 							${specialization.name} (${specialization.abbreviation}) </a>
 					</span>
 					<br />

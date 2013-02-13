@@ -102,7 +102,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudent> findAllStudentsConcerned() {
-		List<SimpleStudent> allStudents = agapService.findAllStudentsConcerned();
+		List<SimpleStudent> allStudents = agapService.findStudentsConcerned();
 		List<SimpleStudent> allStudentsConcerned = new ArrayList<SimpleStudent>();
 		List<String> allStudentsExcludedLogin = exclusionService.findStudentToExcludeLogins();
 		for (SimpleStudent student : allStudents) {

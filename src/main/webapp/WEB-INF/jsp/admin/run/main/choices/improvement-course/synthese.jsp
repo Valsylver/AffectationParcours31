@@ -52,7 +52,7 @@
 
 				<c:forEach var="specialization" items="${allIc}" varStatus="status">
 					<span class="lead"> <a
-						href="/admin/config/modif/parcours/${specialization.abbreviation}">
+						href="/admin/common/edit/ic/${specialization.abbreviation}">
 							${specialization.name} (${specialization.abbreviation}) </a>
 					</span>
 					<br />

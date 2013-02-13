@@ -1,46 +1,14 @@
 package fr.affectation.service.agap;
 
 import java.util.List;
-import java.util.Map;
 
-import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.Contentious;
-import fr.affectation.domain.student.Result;
 import fr.affectation.domain.student.SimpleStudent;
-import fr.affectation.domain.student.Student;
-import fr.affectation.domain.student.StudentDetails;
 import fr.affectation.domain.student.UeResult;
 
 public interface AgapService {
 	
-	public Student getStudent(String login);
-
-	public StudentDetails getStudentDetailsFromLogin(String login);
-	
-	public Result getResultsFromLogin(String login);
-	
-	public boolean isStudentConcerned(String login);
-	
-	public List<String> getAllStudentConcernedLogin();
-	
-	public List<String> getAllStudentConcernedName();
-	
-	public void generateRanking();
-	
-	public void generateUeCode();
-	
-	public List<String> getRanking();
-	
-	public List<Float> getMeans();
-	
-	public Map<String, Float> getUeGrade(String login);
-
-	public Result getResultsFromLoginAndSpecialization(String login,
-			Specialization specialization);
-
-	public List<String> findAllValidForSpecUeCode();
-	
-	public List<SimpleStudent> findAllStudentsConcerned();
+	public List<SimpleStudent> findStudentsConcerned();
 	
 	public boolean checkStudent(String login);
 	
@@ -51,4 +19,8 @@ public interface AgapService {
 	public List<Float> findGpaMeans(String login);
 	
 	public List<UeResult> findUeResults(String login);
+
+	public List<String> findCurrentPromotionStudentLogins();
+	
+	public List<String> findCesureStudentLogins();
 }
