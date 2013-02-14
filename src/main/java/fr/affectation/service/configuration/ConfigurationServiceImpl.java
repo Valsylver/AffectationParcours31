@@ -24,6 +24,8 @@ import fr.affectation.service.student.StudentService;
 @Service
 public class ConfigurationServiceImpl implements ConfigurationService{
 	
+	public static final int CONFIGURATION_ID = 42;
+	
 	@Inject
 	private SessionFactory sessionFactory;
 	
@@ -90,7 +92,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	@Transactional(readOnly = true)
 	public Configuration retrieveConfiguration(){
 		Session session = sessionFactory.getCurrentSession();
-		return (Configuration) session.get(Configuration.class, 42);
+		return (Configuration) session.get(Configuration.class, CONFIGURATION_ID);
 	}
 	
 	@Override
@@ -100,7 +102,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		Query query = session.createQuery("update Configuration set firstMail = :firstMail" +
 				" where id = :id");
 		query.setParameter("firstMail", date);
-		query.setParameter("id", 42);
+		query.setParameter("id", CONFIGURATION_ID);
 		query.executeUpdate();
 	}
 	
@@ -111,7 +113,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		Query query = session.createQuery("update Configuration set secondMail = :secondMail" +
 				" where id = :id");
 		query.setParameter("secondMail", date);
-		query.setParameter("id", 42);
+		query.setParameter("id", CONFIGURATION_ID);
 		query.executeUpdate();
 	}
 	
@@ -122,7 +124,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		Query query = session.createQuery("update Configuration set endSubmission = :endSubmission" +
 				" where id = :id");
 		query.setParameter("endSubmission", date);
-		query.setParameter("id", 42);
+		query.setParameter("id", CONFIGURATION_ID);
 		query.executeUpdate();
 	}
 	
@@ -133,7 +135,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		Query query = session.createQuery("update Configuration set endValidation = :endValidation" +
 				" where id = :id");
 		query.setParameter("endValidation", date);
-		query.setParameter("id", 42);
+		query.setParameter("id", CONFIGURATION_ID);
 		query.executeUpdate();
 	}
 	

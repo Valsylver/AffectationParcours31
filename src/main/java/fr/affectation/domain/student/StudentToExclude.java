@@ -11,11 +11,11 @@ import javax.persistence.Table;
 @Table
 public class StudentToExclude {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	private int id;
 
-	@Column
+	@Id
 	private String login;
 	
 	public StudentToExclude(String login){

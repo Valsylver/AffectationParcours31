@@ -1,5 +1,8 @@
 package fr.affectation.service.configuration;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,24 +30,37 @@ public class ConfigurationServiceTest {
 
 	@Inject
 	private ConfigurationService configurationService;
-	
+
 	private Date date1;
-	
+
 	private Date date2;
-	
+
 	private Date date3;
-	
+
 	private Date date4;
-	
-	public ConfigurationServiceTest(){
+
+	private Timestamp date1ts;
+
+	private Timestamp date2ts;
+
+	private Timestamp date3ts;
+
+	private Timestamp date4ts;
+
+	public ConfigurationServiceTest() {
 		Calendar calendar = Calendar.getInstance();
 		date1 = calendar.getTime();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		date1ts = Timestamp.valueOf(dateFormat.format(date1));
 		calendar.set(2015, Calendar.JANUARY, 1, 4, 5, 2);
 		date2 = calendar.getTime();
+		date2ts = Timestamp.valueOf(dateFormat.format(date2));
 		calendar.set(2018, Calendar.JULY, 1, 8, 2, 32);
 		date3 = calendar.getTime();
+		date3ts = Timestamp.valueOf(dateFormat.format(date3));
 		calendar.set(2022, Calendar.DECEMBER, 1, 8, 2, 32);
 		date4 = calendar.getTime();
+		date4ts = Timestamp.valueOf(dateFormat.format(date4));
 	}
 
 	@Test
@@ -68,66 +84,66 @@ public class ConfigurationServiceTest {
 	public void retrieveFirstMail() {
 		saveConfig();
 		Configuration retrievedConfiguration = configurationService.retrieveConfiguration();
-		Assert.assertTrue(retrievedConfiguration.getFirstMail().compareTo(date1) == 0);
+		Assert.assertTrue(retrievedConfiguration.getFirstMail().equals(date1ts));
 	}
 
 	@Test
 	public void retrieveSecondMail() {
 		saveConfig();
 		Configuration retrievedConfiguration = configurationService.retrieveConfiguration();
-		Assert.assertTrue(retrievedConfiguration.getSecondMail().compareTo(date2) == 0);
+		Assert.assertTrue(retrievedConfiguration.getSecondMail().equals(date2ts));
 	}
 
 	@Test
 	public void retrieveEndSubmission() {
 		saveConfig();
 		Configuration retrievedConfiguration = configurationService.retrieveConfiguration();
-		Assert.assertTrue(retrievedConfiguration.getEndSubmission().compareTo(date3) == 0);
+		Assert.assertTrue(retrievedConfiguration.getEndSubmission().equals(date3ts));
 	}
 
 	@Test
 	public void retrieveEndValidation() {
 		saveConfig();
 		Configuration retrievedConfiguration = configurationService.retrieveConfiguration();
-		Assert.assertTrue(retrievedConfiguration.getEndValidation().compareTo(date4) == 0);
+		Assert.assertTrue(retrievedConfiguration.getEndValidation().equals(date4ts));
 	}
-	
+
 	@Test
-	public void updateFirstMail(){
+	public void updateFirstMail() {
 		saveConfig();
 		configurationService.updateFirstMail(date2);
-		Assert.assertTrue(configurationService.retrieveConfiguration().getFirstMail().compareTo(date2) == 0);
+		Assert.assertTrue(configurationService.retrieveConfiguration().getFirstMail().equals(date2ts));
 	}
-	
+
 	@Test
-	public void updateSecondMail(){
+	public void updateSecondMail() {
 		saveConfig();
 		configurationService.updateSecondMail(date4);
-		Assert.assertTrue(configurationService.retrieveConfiguration().getSecondMail().compareTo(date4) == 0);
+		Assert.assertTrue(configurationService.retrieveConfiguration().getSecondMail().equals(date4ts));
 	}
-	
+
 	@Test
-	public void updateEndSubmission(){
+	public void updateEndSubmission() {
 		saveConfig();
 		configurationService.updateEndSubmission(date2);
-		Assert.assertTrue(configurationService.retrieveConfiguration().getEndSubmission().compareTo(date2) == 0);
+		Assert.assertTrue(configurationService.retrieveConfiguration().getEndSubmission().equals(date2ts));
 	}
-	
+
 	@Test
-	public void updateEndValidation(){
+	public void updateEndValidation() {
 		saveConfig();
 		configurationService.updateEndValidation(date2);
-		Assert.assertTrue(configurationService.retrieveConfiguration().getEndValidation().compareTo(date2) == 0);
+		Assert.assertTrue(configurationService.retrieveConfiguration().getEndValidation().equals(date2ts));
 	}
-	
+
 	@Test
-	public void delete(){
+	public void delete() {
 		saveConfig();
 		configurationService.deleteConfiguration();
 		Assert.assertTrue(configurationService.retrieveConfiguration() == null);
 	}
-	
-	public void saveConfig(){
+
+	public void saveConfig() {
 		Configuration configuration = new Configuration(date1, date2, date3, date4);
 		configurationService.saveConfiguration(configuration);
 	}
