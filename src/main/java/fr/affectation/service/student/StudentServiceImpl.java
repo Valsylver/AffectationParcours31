@@ -89,7 +89,7 @@ public class StudentServiceImpl implements StudentService {
 						String login = cell.toString();
 						if ((!login.equals("")) && (agapService.isAnExcludableStudent(login))) {
 							StudentToExclude student = new StudentToExclude(login);
-							exclusionService.save(student);
+							exclusionService.save(login);
 						}
 					}
 				}
@@ -201,9 +201,9 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public void populateValidation() {
-		validationService.deleteAllStudents();
+		validationService.removeAll();
 		for (String login : findAllStudentsConcernedLogin()) {
-			validationService.saveStudentValidation(new StudentValidation(login, true, true));
+			validationService.save(login, true, true);
 		}
 	}
 
@@ -286,7 +286,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public int findNecessarySizeForStudentExclusion() {
-		return findAllStudentsConcerned().size() + exclusionService.findStudentsToExclude().size();
+		return findAllStudentsConcerned().size() + exclusionService.findStudentToExcludeLogins().size();
 	}
 
 	@Override

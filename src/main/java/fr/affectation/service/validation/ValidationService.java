@@ -2,13 +2,9 @@ package fr.affectation.service.validation;
 
 import java.util.List;
 
-import fr.affectation.domain.student.StudentValidation;
-
 public interface ValidationService {
 	
-	public void saveStudentValidation(StudentValidation studentValidation);
-	
-	public void saveStudentValidation(String login, boolean validatedIc, boolean validatedJs);
+	public void save(String login, boolean validatedIc, boolean validatedJs);
 	
 	public void updateIcValidation(String login, boolean validation);
 	
@@ -20,17 +16,13 @@ public interface ValidationService {
 	
 	public boolean isInValidationProcess(String login);
 	
-	public void deleteStudentByLogin(String login);
+	public void remove(String login);
 	
-	public List<String> findLoginsValidatedIc();
+	public List<String> findStudentValidatedIcLogins();
 	
-	public List<String> findLoginsValidatedJs();
+	public List<String> findStudentValidatedJsLogins();
 	
-	public List<StudentValidation> findStudentsValidatedIc();
-	
-	public List<StudentValidation> findStudentsValidatedJs();
-	
-	public void deleteAllStudents();
+	public void removeAll();
 
 
 }

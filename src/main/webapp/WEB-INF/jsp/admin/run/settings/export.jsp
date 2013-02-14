@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="span10">
-				<a href="/files/resultats_affectation.pdf" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en pdf</a> <br />
+				<a href="/files/results/index" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en pdf</a> <br />
 			</div>
 		</div>
 	</div>

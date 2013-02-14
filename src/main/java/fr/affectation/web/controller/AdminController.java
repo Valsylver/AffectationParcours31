@@ -32,7 +32,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.student.StudentToExclude;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
@@ -110,12 +109,12 @@ public class AdminController {
 			}
 			for (String login : newExcluded) {
 				if (!oldExcluded.contains(login)) {
-					exclusionService.save(new StudentToExclude(login));
+					exclusionService.save(login);
 				}
 			}
 			for (String login : oldExcluded) {
 				if (!newExcluded.contains(login)) {
-					exclusionService.removeStudentByLogin(login);
+					exclusionService.remove(login);
 				}
 			}
 			return "redirect:/admin/run/settings/students";
@@ -654,8 +653,8 @@ public class AdminController {
 		if (configurationService.isRunning()) {
 			try {
 				configurationService.stopProcess();
-				choiceService.deleteAllChoices();
-				validationService.deleteAllStudents();
+				choiceService.deleteAll();
+				validationService.removeAll();
 			} catch (SchedulerException e) {
 				e.printStackTrace();
 			}

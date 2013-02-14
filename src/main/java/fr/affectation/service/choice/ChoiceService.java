@@ -31,6 +31,6 @@ public interface ChoiceService {
 	
 	public JobSectorChoice findJsChoicesByLogin(String login);
 	
-	public void deleteAllChoices();
+	public void deleteAll();
 
 }

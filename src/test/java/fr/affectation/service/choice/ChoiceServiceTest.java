@@ -317,7 +317,7 @@ public class ChoiceServiceTest {
 			choice = createFullChoices("Job Sector", "login" + i);
 			choiceService.save(choice);
 		}
-		choiceService.deleteAllChoices();
+		choiceService.deleteAll();
 		Assert.assertTrue(choiceService.findJobSectorChoices().size() == 0);
 		Assert.assertTrue(choiceService.findImprovementCourseChoices().size() == 0);
 	}

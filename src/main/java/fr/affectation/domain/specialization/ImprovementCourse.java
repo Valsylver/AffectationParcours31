@@ -5,7 +5,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "Improvement_Course")
+@Table
 public class ImprovementCourse extends Specialization{
 	
 	private String type = "ImprovementCourse";

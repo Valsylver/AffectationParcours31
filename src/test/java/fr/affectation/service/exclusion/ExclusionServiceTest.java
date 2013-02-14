@@ -8,12 +8,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import fr.affectation.domain.student.StudentToExclude;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -26,40 +25,59 @@ public class ExclusionServiceTest {
 	private SessionFactory sessionFactory;
 	
 	@Test
-	public void saveStudentToExclude(){
-		StudentToExclude student = new StudentToExclude("login");
-		exclusionService.save(student);
-	}
-	
-	@Test
 	public void isStudentToExcludeSaved(){
-		StudentToExclude student = new StudentToExclude("login");
-		exclusionService.save(student);
+		exclusionService.save("login");
 		Assert.assertTrue(exclusionService.findStudentToExcludeLogins().contains("login"));
 	}
 	
 	@Test
-	public void deleteAllStudentToExclude(){
-		exclusionService.deleteAllStudentsToExclude();
+	public void findStudentToExcludeLogins(){
+		for (int i=0; i<10; i++){
+			exclusionService.save("login" + i);
+		}
+		Assert.assertTrue(exclusionService.findStudentToExcludeLogins().size() == 10);
 	}
 	
 	@Test
-	public void deleteStudent(){
-		StudentToExclude student = new StudentToExclude("login");
-		exclusionService.save(student);
-		exclusionService.removeStudentByLogin("login");
+	public void deleteAllStudentToExclude(){
+		for (int i=0; i<10; i++){
+			exclusionService.save("login" + i);
+		}
+		exclusionService.removeAll();
+		Assert.assertTrue(exclusionService.findStudentToExcludeLogins().size() == 0);
+	}
+	
+	@Test
+	public void removeStudent(){
+		exclusionService.save("login");
+		exclusionService.remove("login");
 		Assert.assertTrue(!exclusionService.findStudentToExcludeLogins().contains("login"));
 	}
 	
 	@Test
-	public void findByLogin(){
-		StudentToExclude student = new StudentToExclude("login");
-		exclusionService.save(student);
-		Assert.assertTrue(exclusionService.findByLogin("login") != null);
+	public void isExcluded(){
+		exclusionService.save("login");
+		Assert.assertTrue(exclusionService.isExcluded("login"));
+	}
+	
+	@Test
+	public void duplication(){
+		exclusionService.save("login");
+		exclusionService.save("login");
+		Assert.assertTrue(exclusionService.findStudentToExcludeLogins().size() == 1);
 	}
 	
 	@After
-	public void cleanDb() {
+	public void cleanDbAfter(){
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		session.createQuery("delete from StudentToExclude").executeUpdate();
+		transaction.commit();
+		session.close();
+	}
+	
+	@Before
+	public void cleanDbBefore(){
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		session.createQuery("delete from StudentToExclude").executeUpdate();

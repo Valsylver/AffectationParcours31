@@ -1,6 +1,5 @@
 package fr.affectation.service.exclusion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,82 +10,52 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.StudentToExclude;
 
 @Service
-public class ExclusionServiceImpl implements ExclusionService{
-	
+public class ExclusionServiceImpl implements ExclusionService {
+
 	@Inject
 	private SessionFactory sessionFactory;
-	
+
 	@Override
 	@Transactional
-	public void save(StudentToExclude student) {
+	public void save(String login) {
 		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(student);
+		session.saveOrUpdate(new StudentToExclude(login));
 	}
 
 	@Override
 	@Transactional
-	public void deleteAllStudentsToExclude() {
+	public void removeAll() {
 		Session session = sessionFactory.getCurrentSession();
-		for (StudentToExclude student : findStudentsToExclude()) {
-			session.delete(student);
-		}
+		Query query = session.createQuery("delete from StudentToExclude");
+		query.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<StudentToExclude> findStudentsToExclude() {
+	public List<String> findStudentToExcludeLogins() {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from StudentToExclude");
-		List<StudentToExclude> allStudent = (List<StudentToExclude>) query.list();
-		return allStudent;
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public boolean isExcluded(SimpleStudent student) {
-		return findByLogin(student.getLogin()) != null;
+		Query query = session.createQuery("select student.login from StudentToExclude student");
+		return query.list();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public boolean isExcluded(String login) {
-		return findByLogin(login) != null;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(readOnly = true)
-	public StudentToExclude findByLogin(String login) {
 		String queryStudent = "from StudentToExclude where login=:login";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(queryStudent);
 		query.setString("login", login);
-		List<StudentToExclude> allStudents = query.list();
-		if (allStudents.size() == 1) {
-			return allStudents.get(0);
-		} else {
-			return null;
-		}
-	}
+		return query.list().size() != 0;
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<String> findStudentToExcludeLogins() {
-		List<String> studentsToExcludeLogin = new ArrayList<String>();
-		for (StudentToExclude student : findStudentsToExclude()) {
-			studentsToExcludeLogin.add(student.getLogin());
-		}
-		return studentsToExcludeLogin;
 	}
 
 	@Override
 	@Transactional
-	public void removeStudentByLogin(String login) {
+	public void remove(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("delete StudentToExclude where login=:login");
 		query.setString("login", login);

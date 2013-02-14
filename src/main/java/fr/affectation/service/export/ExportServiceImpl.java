@@ -1,5 +1,6 @@
 package fr.affectation.service.export;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.lowagie.text.Chapter;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
@@ -20,7 +22,6 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Section;
-import com.lowagie.text.pdf.CMYKColor;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -40,13 +41,13 @@ public class ExportServiceImpl implements ExportService {
 
 	@Inject
 	private StatisticsService statisticsService;
-	
+
 	@Inject
 	private StudentService studentService;
-	
+
 	@Inject
 	private ConfigurationService configurationService;
-	
+
 	@Inject
 	private SpecializationService specializationService;
 
@@ -54,137 +55,154 @@ public class ExportServiceImpl implements ExportService {
 	public void generatePdfResults(String path) {
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream(path + "/WEB-INF/pdf/resultats_affectation.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(path + "/WEB-INF/resources/pdf/resultats_affectation.pdf"));
 			document.open();
-			document.add(new Paragraph("Affectation parcours/filières 3ème année Centrale Marseille", FontFactory.getFont(FontFactory.COURIER, 20, Font.BOLD,
-					new CMYKColor(0, 255, 0, 0))));
 			Image logo = Image.getInstance(path + "/img/logo_ecm.png");
-			logo.scaleAbsolute(100f, 100f);
+			logo.scalePercent(50);
+			logo.setAlignment(Element.ALIGN_CENTER);
 			document.add(logo);
+			Paragraph mainParagraph = new Paragraph("Affectation parcours/filières 3ème année", FontFactory.getFont(FontFactory.COURIER, 40, Font.BOLD,
+					Color.BLUE));
+			mainParagraph.setAlignment(Element.ALIGN_CENTER);
+			document.add(new Paragraph("Hidden text, Hidden text, Hidden text", FontFactory.getFont(FontFactory.COURIER, 40, Font.BOLD, Color.WHITE)));
+			document.add(mainParagraph);
 
 			document.newPage();
-			Paragraph title1 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLDITALIC, new CMYKColor(0, 255, 255, 17)));
-
+			Paragraph title1 = new Paragraph("Parcours d'approfondissement", FontFactory.getFont(FontFactory.COURIER, 20, Font.BOLD, Color.BLACK));
 			Chapter chapter1 = new Chapter(title1, 1);
-			Paragraph title11 = new Paragraph("Parcours d'approfondissement", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(0, 255,
-					255, 17)));
+			Paragraph title11 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
 			Section section1 = chapter1.addSection(title11);
-			section1.add(createTable("ic"));
-			statisticsService.generateBarChartIc(path);
 			statisticsService.generatePieChartIc(path);
 			Image pieChartIc = Image.getInstance(path + "/img/jspchart/piechartPa.png");
-			Image barChartIc = Image.getInstance(path + "/img/jspchart/barchartPa.png");
+			pieChartIc.setAlignment(Element.ALIGN_CENTER);
+			pieChartIc.scalePercent(50);
 			section1.add(pieChartIc);
-			section1.add(barChartIc);
-
-			Paragraph title12 = new Paragraph("Filières métier", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(0, 255, 255, 17)));
-			Section section2 = chapter1.addSection(title12);
-			section2.add(createTable("js"));
-			statisticsService.generateBarChartIc(path);
-			statisticsService.generatePieChartIc(path);
-			Image pieChartJs = Image.getInstance(path + "/img/jspchart/piechartFm.png");
-			Image barChartJs = Image.getInstance(path + "/img/jspchart/barchartFm.png");
-			section2.add(pieChartJs);
-			section2.add(barChartJs);
-
-			document.add(chapter1);
+			section1.add(createTable("ic"));
 
 			document.newPage();
-			Paragraph title2 = new Paragraph("Détails des résultats", FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLDITALIC, new CMYKColor(0, 255,
-					255, 17)));
-			Chapter chapter2 = new Chapter(title2, 2);
-			Paragraph title21 = new Paragraph("Parcours d'approfondissement", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(0, 255,
-					255, 17)));
-			section1 = chapter2.addSection(title21);
-			
-			if (!configurationService.isSubmissionAvailable()){
+			Paragraph title12 = new Paragraph("Détails", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
+			Section section2 = chapter1.addSection(title12);
+
+			if (!configurationService.isSubmissionAvailable()) {
 				List<List<SimpleStudentWithValidation>> studentsBySpec = studentService.findSimpleStudentsWithValidationForAllIcByOrder(1);
 				List<ImprovementCourse> improvementCourses = specializationService.findImprovementCourses();
 				int index = 0;
-				for (ImprovementCourse ic : improvementCourses){
-					Section icSection = section1.addSection(ic.getName() + "(" + ic.getAbbreviation() + ")");
-					PdfPTable table = new PdfPTable(2);
-					table.setSpacingBefore(25);
-					table.setSpacingAfter(25);
-					PdfPCell c1 = new PdfPCell(new Phrase("Elève"));
-					table.addCell(c1);
-					PdfPCell c2 = new PdfPCell(new Phrase("Validation"));
-					table.addCell(c2);
+				for (ImprovementCourse ic : improvementCourses) {
+					Section icSection = section2.addSection(ic.getName() + "(" + ic.getAbbreviation() + ")");
 					List<SimpleStudentWithValidation> students = studentsBySpec.get(index);
-					for (SimpleStudentWithValidation student : students){
-						table.addCell(student.getName());
-						table.addCell(student.isValidated() ? "Accepté" : "Refusé");
+					if (students.size() == 0) {
+						icSection.add(new Paragraph("Aucun élève n'a choisi ce parcours d'approfondissement.", FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLD, Color.BLACK)));
+					} else {
+						PdfPTable table = new PdfPTable(2);
+						table.setSpacingBefore(25);
+						table.setSpacingAfter(25);
+						Phrase phrase = new Phrase("Elève", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD));
+						PdfPCell c1 = new PdfPCell(phrase);
+						table.addCell(c1);
+						Phrase phrase2 = new Phrase("Validation", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD));
+						PdfPCell c2 = new PdfPCell(phrase2);
+						table.addCell(c2);
+						for (SimpleStudentWithValidation student : students) {
+							table.addCell(student.getName());
+							table.addCell(student.isValidated() ? "Accepté" : "Refusé");
+						}
+						icSection.add(table);
 					}
 					index += 1;
-					icSection.add(table);
 				}
-			}
-			else{
+			} else {
 				List<List<SimpleStudent>> studentsBySpec = studentService.findSimpleStudentsForAllIcByOrder(1);
 				List<ImprovementCourse> improvementCourses = specializationService.findImprovementCourses();
 				int index = 0;
-				for (ImprovementCourse ic : improvementCourses){
-					Section icSection = section1.addSection(ic.getName() + "(" + ic.getAbbreviation() + ")");
-					PdfPTable table = new PdfPTable(1);
-					table.setSpacingBefore(25);
-					table.setSpacingAfter(25);
-					PdfPCell c1 = new PdfPCell(new Phrase("Elève"));
-					table.addCell(c1);
+				for (ImprovementCourse ic : improvementCourses) {
+					Section icSection = section2.addSection(ic.getName() + "(" + ic.getAbbreviation() + ")");
 					List<SimpleStudent> students = studentsBySpec.get(index);
-					for (SimpleStudent student : students){
-						table.addCell(student.getName());
+					if (students.size() == 0) {
+						icSection.add(new Paragraph("Aucun élève n'a choisi ce parcours d'approfondissement.", FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLD, Color.BLACK)));
+					} else {
+						PdfPTable table = new PdfPTable(1);
+						table.setSpacingBefore(25);
+						table.setSpacingAfter(25);
+						PdfPCell c1 = new PdfPCell(new Phrase("Elève", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
+						table.addCell(c1);
+						for (SimpleStudent student : students) {
+							table.addCell(student.getName());
+						}
+						icSection.add(table);
 					}
 					index += 1;
-					icSection.add(table);
 				}
 			}
-			
-			Paragraph title22 = new Paragraph("Filières métier", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(0, 255,
-					255, 17)));
-			section2 = chapter2.addSection(title22);
+			document.add(chapter1);
 
-			if (!configurationService.isSubmissionAvailable()){
+			document.newPage();
+			Paragraph title2 = new Paragraph("Filières métier", FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, Color.BLACK));
+
+			Chapter chapter2 = new Chapter(title2, 2);
+			Paragraph title21 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
+			Section section3 = chapter2.addSection(title21);
+			statisticsService.generatePieChartJs(path);
+			Image pieChartJs = Image.getInstance(path + "/img/jspchart/piechartFm.png");
+			pieChartJs.scalePercent(50);
+			pieChartJs.setAlignment(Element.ALIGN_CENTER);
+			section3.add(pieChartJs);
+			section3.add(createTable("js"));
+
+			document.newPage();
+			Paragraph title22 = new Paragraph("Détails", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
+			Section section4 = chapter2.addSection(title22);
+
+			if (!configurationService.isSubmissionAvailable()) {
 				List<List<SimpleStudentWithValidation>> studentsBySpec = studentService.findSimpleStudentsWithValidationForAllJsByOrder(1);
 				List<JobSector> jobSectors = specializationService.findJobSectors();
 				int index = 0;
-				for (JobSector js : jobSectors){
-					Section jsSection = section2.addSection(js.getName() + "(" + js.getAbbreviation() + ")");
-					PdfPTable table = new PdfPTable(2);
-					table.setSpacingBefore(25);
-					table.setSpacingAfter(25);
-					PdfPCell c1 = new PdfPCell(new Phrase("Elève"));
-					table.addCell(c1);
-					PdfPCell c2 = new PdfPCell(new Phrase("Validation"));
-					table.addCell(c2);
+				for (JobSector js : jobSectors) {
 					List<SimpleStudentWithValidation> students = studentsBySpec.get(index);
-					for (SimpleStudentWithValidation student : students){
-						table.addCell(student.getName());
-						table.addCell(student.isValidated() ? "Accepté" : "Refusé");
+					Section jsSection = section4.addSection(js.getName() + "(" + js.getAbbreviation() + ")");
+					if (students.size() == 0) {
+						jsSection.add(new Paragraph("Aucun élève n'a choisi cette filière métier.", FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLD, Color.BLACK)));
+					} else {
+						PdfPTable table = new PdfPTable(2);
+						table.setSpacingBefore(25);
+						table.setSpacingAfter(25);
+						PdfPCell c1 = new PdfPCell(new Phrase("Elève", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
+						table.addCell(c1);
+						PdfPCell c2 = new PdfPCell(new Phrase("Validation", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
+						table.addCell(c2);
+						for (SimpleStudentWithValidation student : students) {
+							table.addCell(student.getName());
+							table.addCell(student.isValidated() ? "Accepté" : "Refusé");
+						}
+						
+						jsSection.add(table);
 					}
 					index += 1;
-					jsSection.add(table);
 				}
-			}
-			else{
+			} else {
 				List<List<SimpleStudent>> studentsBySpec = studentService.findSimpleStudentsForAllJsByOrder(1);
 				List<JobSector> jobSectors = specializationService.findJobSectors();
 				int index = 0;
-				for (JobSector js : jobSectors){
-					Section jsSection = section2.addSection(js.getName() + "(" + js.getAbbreviation() + ")");
-					PdfPTable table = new PdfPTable(1);
-					table.setSpacingBefore(25);
-					table.setSpacingAfter(25);
-					PdfPCell c1 = new PdfPCell(new Phrase("Elève"));
-					table.addCell(c1);
+				for (JobSector js : jobSectors) {
+					Section jsSection = section4.addSection(js.getName() + "(" + js.getAbbreviation() + ")");
 					List<SimpleStudent> students = studentsBySpec.get(index);
-					for (SimpleStudent student : students){
-						table.addCell(student.getName());
+					if (students.size() == 0) {
+						jsSection.add(new Paragraph("Aucun élève n'a choisi cette filière métier.", FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLD, Color.BLACK)));
+					} else {
+						PdfPTable table = new PdfPTable(1);
+						table.setSpacingBefore(25);
+						table.setSpacingAfter(25);
+						PdfPCell c1 = new PdfPCell(new Phrase("Elève", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
+						table.addCell(c1);
+						for (SimpleStudent student : students) {
+							table.addCell(student.getName());
+						}
+						jsSection.add(table);
 					}
 					index += 1;
-					jsSection.add(table);
+
 				}
 			}
-			
+
 			document.add(chapter2);
 			document.close();
 
@@ -206,9 +224,9 @@ public class ExportServiceImpl implements ExportService {
 
 		List<SimpleSpecialization> results = type.equals("ic") ? statisticsService.findSimpleIcStats(1) : statisticsService.findSimpleJsStats(1);
 
-		PdfPCell c1 = new PdfPCell(new Phrase(type.equals("ic") ? "Parcours" : "Filières"));
+		PdfPCell c1 = new PdfPCell(new Phrase(type.equals("ic") ? "Parcours" : "Filières", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
 		table.addCell(c1);
-		PdfPCell c2 = new PdfPCell(new Phrase("Nombre d'élèves"));
+		PdfPCell c2 = new PdfPCell(new Phrase("Nombre d'élèves", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
 		table.addCell(c2);
 
 		for (SimpleSpecialization specialization : results) {

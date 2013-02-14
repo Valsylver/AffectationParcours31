@@ -16,30 +16,54 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class FilesController {
 
-	@RequestMapping(value = "/files/{file_name}", method = RequestMethod.GET)
-	public void getFile(@PathVariable("file_name") String fileName,
+	@RequestMapping(value = "/files/lettre_parcours_{login}", method = RequestMethod.GET)
+	public void getLetterIc(@PathVariable("file_name") String login,
 			HttpServletResponse response, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("/");
-		String realPath = path + "WEB-INF/resources/";
-		if (fileName.substring(0, 2).equals("cv")){
-			System.out.println("cv");
-			realPath += "cv/" + fileName;
+		String realPath = path + "WEB-INF/resources/" + "/lettres/parcours/lettre_parcours_" + login;
+		realPath += ".pdf";
+		try {
+			InputStream is = new FileInputStream(realPath);
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+		} catch (IOException ex) {
+			throw new RuntimeException("IOError writing file to output stream");
 		}
-		else{
-			if (fileName.substring(0, 6).equals("lettre")){
-				realPath += "lettres/";
-				if (fileName.substring(7, 8).equals("p")){
-					realPath += "parcours/" + fileName;
-				}
-				else{
-					System.out.println("lettre filieres");
-					realPath += "filieres/" + fileName;
-				}
-			}
-			else{
-				realPath += "pdf/resultats_affectation";
-			}
+	}
+	
+	@RequestMapping(value = "/files/lettre_filiere_{login}", method = RequestMethod.GET)
+	public void getLetterJs(@PathVariable("file_name") String login,
+			HttpServletResponse response, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		String realPath = path + "WEB-INF/resources/" + "/lettres/filieres/lettre_filiere_" + login;
+		realPath += ".pdf";
+		try {
+			InputStream is = new FileInputStream(realPath);
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+		} catch (IOException ex) {
+			throw new RuntimeException("IOError writing file to output stream");
 		}
+	}
+	
+	@RequestMapping(value = "/files/results/index", method = RequestMethod.GET)
+	public void getResults(HttpServletResponse response, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		String realPath = path + "WEB-INF/resources/pdf/resultats_affectation.pdf";
+		try {
+			InputStream is = new FileInputStream(realPath);
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+		} catch (IOException ex) {
+			throw new RuntimeException("IOError writing file to output stream");
+		}
+	}
+	
+	@RequestMapping(value = "/files/cv_{login}", method = RequestMethod.GET)
+	public void getResume(@PathVariable("login") String login,
+			HttpServletResponse response, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		String realPath = path + "WEB-INF/resources/" + "cv/cv_" + login;
 		realPath += ".pdf";
 		try {
 			InputStream is = new FileInputStream(realPath);

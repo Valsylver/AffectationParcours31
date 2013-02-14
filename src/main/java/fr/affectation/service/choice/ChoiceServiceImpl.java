@@ -176,7 +176,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 
 	@Override
 	@Transactional
-	public void deleteAllChoices() {
+	public void deleteAll() {
 		Session session = sessionFactory.getCurrentSession();
 		session.createQuery("delete from JobSectorChoice").executeUpdate();
 		session.createQuery("delete from ImprovementCourseChoice").executeUpdate();

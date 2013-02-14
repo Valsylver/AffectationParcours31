@@ -211,13 +211,13 @@ public class FakeDataService {
 	}
 	
 	public void fakeValidation(){
-		for (String login :validationService.findLoginsValidatedIc()){
+		for (String login :validationService.findStudentValidatedIcLogins()){
 			int willSwitch = (int) (Math.random() * 10);
 			if (willSwitch>8){
 				validationService.updateIcValidation(login, false);
 			}
 		}
-		for (String login :validationService.findLoginsValidatedJs()){
+		for (String login :validationService.findStudentValidatedJsLogins()){
 			int willSwitch = (int) (Math.random() * 10);
 			if (willSwitch>8){
 				validationService.updateJsValidation(login, false);
@@ -240,7 +240,7 @@ public class FakeDataService {
 		for (JobSectorChoice jsc : choiceService.findJobSectorChoices()) {
 			choiceService.delete(jsc);
 		}
-		exclusionService.deleteAllStudentsToExclude();
+		exclusionService.removeAll();
 		//validationService.deleteAllStudents();
 	}
 	

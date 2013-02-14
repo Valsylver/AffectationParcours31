@@ -1,19 +1,12 @@
 package fr.affectation.domain.student;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table
 public class StudentToExclude {
-	
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-//	private int id;
 
 	@Id
 	private String login;
