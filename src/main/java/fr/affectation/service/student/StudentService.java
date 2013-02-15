@@ -13,6 +13,10 @@ import fr.affectation.domain.util.SimpleMail;
 
 public interface StudentService {
 
+	public List<SimpleStudent> findCurrentPromotionStudentsConcerned();
+	
+	public List<SimpleStudent> findCesureStudentsConcerned();
+	
 	public List<SimpleStudent> findAllStudentsConcerned();
 
 	public int findNecessarySizeForStudentExclusion();

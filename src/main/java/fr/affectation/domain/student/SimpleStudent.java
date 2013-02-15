@@ -43,8 +43,18 @@ public class SimpleStudent implements Comparable<SimpleStudent>{
 	
 	private String retrieveLastName(String fullName){
 		String[] fullNameList = StringUtils.split(fullName, " ");
-		if (fullNameList.length > 1){
+		if (fullNameList.length == 2){
 			return fullNameList[1];
+		}
+		else if (fullNameList.length > 2){
+			String name = "";
+			for (int i=1; i<fullNameList.length; i++){
+				name += fullNameList[i];
+				if (i != fullNameList.length-1){
+					name += " ";
+				}
+			}
+			return name;
 		}
 		else{
 			return fullName;

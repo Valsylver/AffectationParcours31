@@ -2,25 +2,16 @@ package fr.affectation.service.exclusion;
 
 import java.util.List;
 
-import fr.affectation.domain.student.SimpleStudent;
-import fr.affectation.domain.student.StudentToExclude;
-
 public interface ExclusionService {
-
-	public void save(StudentToExclude student);
-
-	public void deleteAllStudentsToExclude();
-
-	public List<StudentToExclude> findStudentsToExclude();
-
-	public List<String> findStudentToExcludeLogins();
+	
+	public void save(String login);
+	
+	public void remove(String login);
 	
 	public boolean isExcluded(String login);
 
-	public StudentToExclude findByLogin(String login);
+	public void removeAll();
 
-	public boolean isExcluded(SimpleStudent student);
-
-	public void removeStudentByLogin(String login);
+	public List<String> findStudentToExcludeLogins();
 
 }

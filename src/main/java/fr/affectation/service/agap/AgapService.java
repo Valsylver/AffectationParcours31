@@ -15,6 +15,8 @@ public interface AgapService {
 	public List<String> findCurrentPromotionStudentLogins();
 
 	public List<String> findCesureStudentLogins();
+	
+	public List<String> findCesureStudentNames();
 
 	public boolean isAnExcludableStudent(String login);
 

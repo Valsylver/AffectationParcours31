@@ -37,6 +37,7 @@ import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.admin.AdminService;
+import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
@@ -58,6 +59,9 @@ public class AdminController {
 
 	@Inject
 	private StudentService studentService;
+	
+	@Inject
+	private AgapService agapService;
 	
 	@Inject
 	private ValidationService validationService;
@@ -415,8 +419,9 @@ public class AdminController {
 	@RequestMapping("/run/settings/students")
 	public String manageStudents(Model model) {
 		if (configurationService.isRunning()) {
-			model.addAttribute("studentsConcerned", studentService.findAllStudentsConcerned());
+			model.addAttribute("studentsConcerned", studentService.findCurrentPromotionStudentsConcerned());
 			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
+			model.addAttribute("studentsCesure", studentService.findCesureStudentsConcerned());
 			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
 			model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
 			return "admin/run/settings/students";

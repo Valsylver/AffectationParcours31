@@ -69,8 +69,13 @@
 								</c:forEach>
 							</ul>
 						</div>
-						<div class="span4">
+						<div class="span3">
 							<h4>Elèves en césure</h4>
+							<ul id="cesure" class="unstyled">
+								<c:forEach var="student" items="${studentsCesure}" varStatus="status">
+									<li>${student.name}</li>
+								</c:forEach>
+							</ul>
 						</div>
 					</div>
 				</div>

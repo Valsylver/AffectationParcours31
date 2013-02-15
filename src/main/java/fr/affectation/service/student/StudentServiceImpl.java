@@ -28,10 +28,9 @@ import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
+import fr.affectation.domain.student.SimpleStudentWithOrigin;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
-import fr.affectation.domain.student.StudentToExclude;
-import fr.affectation.domain.student.StudentValidation;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
@@ -58,13 +57,13 @@ public class StudentServiceImpl implements StudentService {
 
 	@Inject
 	private DocumentService documentService;
-	
+
 	@Inject
 	private MailService mailService;
 
 	@Inject
 	private ExclusionService exclusionService;
-	
+
 	private Map<String, Integer> sizeOfCategories;
 
 	@Override
@@ -88,7 +87,6 @@ public class StudentServiceImpl implements StudentService {
 					if (!cell.toString().equals("")) {
 						String login = cell.toString();
 						if ((!login.equals("")) && (agapService.isAnExcludableStudent(login))) {
-							StudentToExclude student = new StudentToExclude(login);
 							exclusionService.save(login);
 						}
 					}
@@ -275,12 +273,12 @@ public class StudentServiceImpl implements StudentService {
 			}
 
 		}
-		
+
 		sizeOfCategories = new HashMap<String, Integer>();
 		sizeOfCategories.put("total", nbreAll);
 		sizeOfCategories.put("partial", nbrePartial);
 		sizeOfCategories.put("empty", nbreNo);
-		
+
 		return results;
 	}
 
@@ -353,10 +351,11 @@ public class StudentServiceImpl implements StudentService {
 		List<SimpleStudent> studentsToExclude = new ArrayList<SimpleStudent>();
 		List<String> studentsLogin = exclusionService.findStudentToExcludeLogins();
 		for (String login : studentsLogin) {
-			SimpleStudent student = new SimpleStudent(login, agapService.findNameFromLogin(login));
+			
+			SimpleStudent student = new SimpleStudentWithOrigin(login, agapService.findNameFromLogin(login), "");
 			studentsToExclude.add(student);
 		}
-		Collections.sort(studentsToExclude, new ComparatorSimpleStudent());
+		Collections.sort(studentsToExclude);
 		return studentsToExclude;
 	}
 
@@ -368,20 +367,45 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void sendSimpleMail(SimpleMail mail, String path) {
 		List<String> addressees = new ArrayList<String>();
-		if (mail.getAddressee().charAt(0) == 'E'){
+		if (mail.getAddressee().charAt(0) == 'E') {
 			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
 			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
-			for (Map<String, Object> map : partialMap){
+			for (Map<String, Object> map : partialMap) {
 				addressees.add((String) map.get("login"));
 			}
-			for (Map<String, Object> map : noMap){
+			for (Map<String, Object> map : noMap) {
 				addressees.add((String) map.get("login"));
 			}
-		}
-		else{
+		} else {
 			addressees = findAllStudentsConcernedLogin();
 		}
 		mailService.sendSimpleMail(mail, addressees);
+	}
+
+	@Override
+	public List<SimpleStudent> findCurrentPromotionStudentsConcerned() {
+		List<String> logins = agapService.findCurrentPromotionStudentLogins();
+		List<SimpleStudent> currentPromotion = new ArrayList<SimpleStudent>();
+		for (String login : logins) {
+			if (!exclusionService.isExcluded(login)) {
+				currentPromotion.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
+			}
+		}
+		Collections.sort(currentPromotion);
+		return currentPromotion;
+	}
+
+	@Override
+	public List<SimpleStudent> findCesureStudentsConcerned() {
+		List<String> logins = agapService.findCesureStudentLogins();
+		List<SimpleStudent> cesure = new ArrayList<SimpleStudent>();
+		for (String login : logins) {
+			if (!exclusionService.isExcluded(login)){
+				cesure.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
+			}
+		}
+		Collections.sort(cesure);
+		return cesure;
 	}
 
 }

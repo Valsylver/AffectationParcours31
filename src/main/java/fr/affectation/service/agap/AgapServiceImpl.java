@@ -99,7 +99,7 @@ public class AgapServiceImpl implements AgapService {
 	public List<String> findCurrentPromotionStudentLogins() {
 		String cycle = getCurrentCycle();
 		String requeteEleves = "SELECT DISTINCT personne_id FROM eleves WHERE nom IN "
-				+ "(SELECT nom FROM notes_details WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('etranger')";
+				+ "(SELECT nom FROM gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Credits')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("cycle", cycle);
 		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
@@ -193,16 +193,37 @@ public class AgapServiceImpl implements AgapService {
 
 	@Override
 	public List<String> findCesureStudentLogins() {
-		// TODO Auto-generated method stub
-		return new ArrayList<String>();
+		String queryCesure = "SELECT personne_id FROM eleves WHERE nom IN (SELECT nom FROM cesure WHERE nom IN "
+				+ "(SELECT nom FROM gpa WHERE cycle=:cycle AND sem='SEM-7'))";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("cycle", getLastCycle());
+		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryCesure, namedParameter);
+		List<String> logins = new ArrayList<String>();
+		for (Map<String, Object> map : resultsMap) {
+			logins.add((String) map.get("personne_id"));
+		}
+		return logins;
 	}
 
 	@Override
 	public List<String> findStudentConcernedLogins() {
 		List <String> logins = findCesureStudentLogins();
 		logins.addAll(findCurrentPromotionStudentLogins());
-		Collections.sort(logins);
 		return logins;
+	}
+
+	@Override
+	public List<String> findCesureStudentNames() {
+		String queryCesure = "SELECT nom FROM cesure WHERE nom IN "
+				+ "(SELECT nom FROM gpa WHERE cycle=:cycle AND sem='SEM-7')";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("cycle", getLastCycle());
+		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryCesure, namedParameter);
+		List<String> names = new ArrayList<String>();
+		for (Map<String, Object> map : resultsMap) {
+			names.add((String) map.get("nom"));
+		}
+		return names;
 	}
 
 }
