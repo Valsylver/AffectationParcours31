@@ -9,4 +9,12 @@ public class SimpleStudentWithOrigin extends SimpleStudent {
 		this.origin = origin;
 	}
 
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
 }

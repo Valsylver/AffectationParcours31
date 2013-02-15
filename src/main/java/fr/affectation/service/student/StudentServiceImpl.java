@@ -351,8 +351,14 @@ public class StudentServiceImpl implements StudentService {
 		List<SimpleStudent> studentsToExclude = new ArrayList<SimpleStudent>();
 		List<String> studentsLogin = exclusionService.findStudentToExcludeLogins();
 		for (String login : studentsLogin) {
-			
-			SimpleStudent student = new SimpleStudentWithOrigin(login, agapService.findNameFromLogin(login), "");
+			String origin;
+			if (agapService.findCurrentPromotionStudentLogins().contains(login)){
+				origin = "promo";
+			}
+			else{
+				origin = "cesure";
+			}
+			SimpleStudent student = new SimpleStudentWithOrigin(login, agapService.findNameFromLogin(login), origin);
 			studentsToExclude.add(student);
 		}
 		Collections.sort(studentsToExclude);

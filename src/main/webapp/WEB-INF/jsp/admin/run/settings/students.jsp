@@ -57,7 +57,7 @@
 							<h4>Promo ${promo}</h4>
 							<ul id="promo" class="unstyled">
 								<c:forEach var="student" items="${studentsConcerned}" varStatus="status">
-									<li><a id="promo${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removeStudent(this.id);"><img src="/img/minus-new.png"></img></a> ${student.name}</li>
+									<li><a id="promo${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removePromoStudent(this.id);"><img src="/img/minus-new.png"></img></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>
@@ -65,7 +65,14 @@
 							<h4>Elèves à exclure</h4>
 							<ul id="exclusion" class="unstyled">
 								<c:forEach var="student" items="${studentsToExclude}" varStatus="status">
-									<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addStudent(this.id);"><img src="/img/plus-new.png"></img></a> ${student.name}</li>
+									<c:choose>
+										<c:when test="${student.origin == 'promo'}">
+											<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addPromoStudent(this.id);"><img src="/img/plus-new.png"></img></a> ${student.name}</li>
+										</c:when>
+										<c:otherwise>
+											<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addCesureStudent(this.id);"><img src="/img/plus-new.png"></img></a> ${student.name}</li>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 							</ul>
 						</div>
@@ -73,7 +80,7 @@
 							<h4>Elèves en césure</h4>
 							<ul id="cesure" class="unstyled">
 								<c:forEach var="student" items="${studentsCesure}" varStatus="status">
-									<li>${student.name}</li>
+									<li><a id="cesure${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removeCesureStudent(this.id);"><img src="/img/minus-new.png"></img></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>
