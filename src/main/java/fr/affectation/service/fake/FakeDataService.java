@@ -169,9 +169,7 @@ public class FakeDataService {
 	}
 	
 	public void createFakeAdmin(){
-		Admin admin = new Admin();
-		admin.setLogin("admin");
-		superUserService.saveAdmin(admin);
+		superUserService.save("admin");
 	}
 	
 	public String getRandomUeCode() {
