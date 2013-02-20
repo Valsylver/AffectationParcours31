@@ -84,7 +84,7 @@ $(document).ready(function() {
 });
 
 function updatePaSelect(value, id) {
-	if (value != "") {
+	if (value != "------------------------- Pas de choix -------------------------") {
 		var currentId = id[id.length - 1];
 		var texte = "";
 		for (i = 1; i < 6; i++) {
@@ -239,7 +239,7 @@ function updatePaSelect(value, id) {
 }
 
 function updateFmSelect(value, id) {
-	if (value != "") {
+	if (value != "------------------------- Pas de choix -------------------------") {
 		for (i = 1; i < 6; i++) {
 			if (i != parseInt(id[id.length - 1])) {
 				var select = document.getElementById("selectFm" + i);

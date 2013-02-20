@@ -95,6 +95,39 @@ public class StudentController {
 			
 			improvementCourseChoice.setLogin(login);
 			jobSectorChoice.setLogin(login);
+			
+			if (improvementCourseChoice.getChoice1().equals("------------------------- Pas de choix -------------------------")){
+				improvementCourseChoice.setChoice1("");
+			}
+			if (improvementCourseChoice.getChoice2().equals("------------------------- Pas de choix -------------------------")){
+				improvementCourseChoice.setChoice2("");
+			}
+			if (improvementCourseChoice.getChoice3().equals("------------------------- Pas de choix -------------------------")){
+				improvementCourseChoice.setChoice3("");
+			}
+			if (improvementCourseChoice.getChoice4().equals("------------------------- Pas de choix -------------------------")){
+				improvementCourseChoice.setChoice4("");
+			}
+			if (improvementCourseChoice.getChoice5().equals("------------------------- Pas de choix -------------------------")){
+				improvementCourseChoice.setChoice5("");
+			}
+			
+			if (jobSectorChoice.getChoice1().equals("------------------------- Pas de choix -------------------------")){
+				jobSectorChoice.setChoice1("");
+			}
+			if (jobSectorChoice.getChoice2().equals("------------------------- Pas de choix -------------------------")){
+				jobSectorChoice.setChoice2("");
+			}
+			if (jobSectorChoice.getChoice3().equals("------------------------- Pas de choix -------------------------")){
+				jobSectorChoice.setChoice3("");
+			}
+			if (jobSectorChoice.getChoice4().equals("------------------------- Pas de choix -------------------------")){
+				jobSectorChoice.setChoice4("");
+			}
+			if (jobSectorChoice.getChoice5().equals("------------------------- Pas de choix -------------------------")){
+				jobSectorChoice.setChoice5("");
+			}
+			
 	
 			improvementCourseChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice1()));
 			improvementCourseChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice2()));
