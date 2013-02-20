@@ -21,20 +21,12 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Override
 	@Transactional
-	public void saveAdmin(String login) {
+	public void save(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(new Admin(login));
 	}
 
-	@Override
-	@Transactional
-	public void saveAdmin(Admin admin) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(admin);
-	}
-
 	@SuppressWarnings("unchecked")
-	@Override
 	@Transactional(readOnly = true)
 	public List<Admin> findAdmins() {
 		Session session = sessionFactory.getCurrentSession();
@@ -56,7 +48,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public void deleteAdmin(String login) {
+	public void delete(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("delete from Admin where login= :login");
 		query.setParameter("login", login);

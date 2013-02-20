@@ -104,8 +104,6 @@ public class Configuration {
 				return false;
 		} else if (!firstMail.equals(other.firstMail))
 			return false;
-		if (id != other.id)
-			return false;
 		if (secondMail == null) {
 			if (other.secondMail != null)
 				return false;

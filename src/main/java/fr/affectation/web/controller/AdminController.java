@@ -345,12 +345,12 @@ public class AdminController {
 	@RequestMapping("/run/settings/admins/delete/{login}")
 	public String deleteAdmins(Model model, @PathVariable String login, RedirectAttributes redirectAttributes) {
 		if (configurationService.isRunning()) {
-			int numberOfAdmins = adminService.findAdmins().size();
+			int numberOfAdmins = adminService.findAdminLogins().size();
 			if (numberOfAdmins == 1){
 				redirectAttributes.addFlashAttribute("errorMessage", "Impossible de supprimer cet administrateur. Il doit toujours rester au moins un administrateur.");
 			}
 			else{
-				adminService.deleteAdmin(login);
+				adminService.delete(login);
 				redirectAttributes.addFlashAttribute("successMessage", "L'administrateur dont le login était " + login + " a bien été supprimé.");
 			}
 			return "redirect:/admin/run/settings/admins";
@@ -366,7 +366,7 @@ public class AdminController {
 				redirectAttributes.addFlashAttribute("alertMessage", "Impossible de sauvegarder un administrateur dont le login est vide.");
 			}
 			else{
-				adminService.saveAdmin(admin);
+				adminService.save(admin.getLogin());
 				redirectAttributes.addFlashAttribute("successMessage", "Un nouvel administrateur dont le login est " + admin.getLogin() + " a bien été ajouté.");
 			}
 			return "redirect:/admin/run/settings/admins";
@@ -794,8 +794,8 @@ public class AdminController {
 	public void initialize() {
 		fakeData.createFakeSpecialization();
 		fakeData.createFakeAdmin();
-		adminService.saveAdmin("admin");
-		adminService.saveAdmin("jmrossi");
+		adminService.save("admin");
+		adminService.save("jmrossi");
 		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		mailService.save(first);

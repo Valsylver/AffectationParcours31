@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 .idea/*
+src/main/webapp/img/jspchart/piechartPa.png
 
 # External tool builders
 .externalToolBuilders/
@@ -33,7 +34,6 @@ target/
 src/main/webapp/resources/cv/*.pdf
 src/main/webapp/resources/lettres/*.pdf
 derby.log
-src/main/webapp/img/jspchart/*.png
 
 #################
 ## Visual Studio

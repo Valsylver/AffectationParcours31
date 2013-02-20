@@ -11,6 +11,10 @@ import javax.validation.constraints.Size;
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Specialization {
 	
+	public static final int IMPROVEMENT_COURSE = 1;
+	
+	public static final int JOB_SECTOR = 2;
+	
 	@Id
 	@Size(min=1, max=6)
 	private String abbreviation;

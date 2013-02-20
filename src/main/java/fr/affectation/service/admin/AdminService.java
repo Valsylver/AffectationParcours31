@@ -2,17 +2,11 @@ package fr.affectation.service.admin;
 
 import java.util.List;
 
-import fr.affectation.domain.superuser.Admin;
-
 public interface AdminService {
 	
-	public void saveAdmin(String login);
-
-	public void saveAdmin(Admin admin);
+	public void save(String login);
 	
-	public void deleteAdmin(String login);
-	
-	public List<Admin> findAdmins();
+	public void delete(String login);
 	
 	public List<String> findAdminLogins();
 	

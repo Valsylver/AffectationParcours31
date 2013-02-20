@@ -1,21 +1,19 @@
 package fr.affectation.domain.specialization;
 
-public class SimpleSpecialization {
+public class SimpleSpecialization implements Comparable<SimpleSpecialization> {
 
 	private String abbreviation;
 
 	private String name;
 
-	private int number;
-	
-	public SimpleSpecialization(String abbreviation, String name, int number){
+	public SimpleSpecialization(String abbreviation, String name) {
 		this.abbreviation = abbreviation;
 		this.name = name;
-		this.number = number;
 	}
 
-	public SimpleSpecialization(){}
-	
+	public SimpleSpecialization() {
+	}
+
 	public String getAbbreviation() {
 		return abbreviation;
 	}
@@ -32,11 +30,8 @@ public class SimpleSpecialization {
 		this.name = name;
 	}
 
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
+	@Override
+	public int compareTo(SimpleSpecialization specialization) {
+		return this.name.compareTo(specialization.getName());
 	}
 }

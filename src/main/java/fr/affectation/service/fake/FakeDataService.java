@@ -12,7 +12,6 @@ import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.superuser.Admin;
 import fr.affectation.service.admin.AdminService;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
@@ -169,9 +168,7 @@ public class FakeDataService {
 	}
 	
 	public void createFakeAdmin(){
-		Admin admin = new Admin();
-		admin.setLogin("admin");
-		superUserService.saveAdmin(admin);
+		superUserService.save("admin");
 	}
 	
 	public String getRandomUeCode() {

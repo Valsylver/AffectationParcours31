@@ -27,7 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) authentication.getAuthorities();
 		if (isRolePresent(authorities, "ROLE_ELEVE")){
-			response.sendRedirect("eleve/add");
+			response.sendRedirect("eleve/");
 		}
 		else{
 			if (isRolePresent(authorities, "ROLE_ADMIN")){

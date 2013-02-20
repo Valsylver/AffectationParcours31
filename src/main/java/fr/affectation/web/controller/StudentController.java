@@ -27,7 +27,7 @@ import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.specialization.SpecializationService;
 
 @Controller
-@RequestMapping("/eleve")
+@RequestMapping("/student")
 public class StudentController {
 	
 	@Inject 
@@ -41,6 +41,16 @@ public class StudentController {
 	
 	@Inject
 	private ConfigurationService configurationService;
+	
+	@RequestMapping({"/", ""})
+	public String index(){
+		if (configurationService.isSubmissionAvailable()){
+			return "redirect:/student/add";
+		}
+		else{
+			return "student/noSubmission";
+		}
+	}
 	
 	private void validatePdf(MultipartFile file) throws FileUploadException {
 		if (!file.getContentType().equals("application/pdf")){
@@ -77,7 +87,7 @@ public class StudentController {
 				}
 			}
 			catch (FileUploadException e) {
-				return "redirect:/eleve/add";
+				return "redirect:/student/add";
 			}
 			
 			ImprovementCourseChoice improvementCourseChoice = fullChoice.getImprovementCourseChoice();
@@ -143,10 +153,10 @@ public class StudentController {
 			String dateEnd = dateFormat.format(configurationService.getWhen().getEndSubmission());
 			model.addAttribute("dateEnd", dateEnd);
 		
-			return "eleve/success";
+			return "student/success";
 		}
 		else{
-			return "eleve/noSubmission";
+			return "student/noSubmission";
 		}
 	}
 	
@@ -168,10 +178,10 @@ public class StudentController {
 		    model.addAttribute("fullChoice", new FullChoice());
 		    model.addAttribute("paAvailable", specializationService.findImprovementCourses());
 		    model.addAttribute("fmAvailable", specializationService.findJobSectors());
-		    return "eleve/form";
+		    return "student/form";
 		}
 		else{
-			return "eleve/noSubmission";
+			return "student/noSubmission";
 		}
 	}
 
