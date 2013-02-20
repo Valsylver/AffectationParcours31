@@ -60,4 +60,6 @@ public interface StudentService {
 	
 	public List<SimpleSpecializationWithList> findChoiceRepartitionKnowingOne(int knownChoice, int wantedChoice, Specialization specialization);
 
+	public Map<String, List<String>> findChoiceRepartitionForTheOtherType(String abbreviation, int specializationType);
+
 }

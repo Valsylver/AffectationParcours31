@@ -432,4 +432,9 @@ public class StudentServiceImpl implements StudentService {
 		Collections.sort(results);
 		return results;
 	}
+
+	@Override
+	public Map<String, List<String>> findChoiceRepartitionForTheOtherType(String abbreviation, int specializationType) {
+		return choiceService.findInverseRepartitionForAListOfLogin(choiceService.findLoginsByOrderChoiceAndSpecialization(1, abbreviation, specializationType), specializationType);
+	}
 }

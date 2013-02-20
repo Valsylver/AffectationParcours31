@@ -36,4 +36,8 @@ public interface ChoiceService {
 	
 	public void deleteAll();
 
+	public Map<String, List<String>> findInverseRepartitionForAListOfLogin(List<String> loginsConcerned, int specializationType);
+
+	public List<String> findLoginsByOrderChoiceAndSpecialization(int orderChoice, String abbreviation, int specializationType);
+
 }
