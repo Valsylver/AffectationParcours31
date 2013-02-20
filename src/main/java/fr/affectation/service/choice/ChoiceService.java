@@ -1,6 +1,7 @@
 package fr.affectation.service.choice;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.affectation.domain.choice.Choice;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
@@ -26,6 +27,8 @@ public interface ChoiceService {
 	public List<Integer> findElementNotFilledImprovementCourse(String login);
 	
 	public List<Integer> findElementNotFilledJobSector(String login);
+	
+	public Map<String, List<String>> findChoiceRepartitionKnowingOne(int knownChoice, int wantedChoice, String abbreviation, int specializationType);
 	
 	public ImprovementCourseChoice findIcChoicesByLogin(String login);
 	

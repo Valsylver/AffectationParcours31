@@ -20,10 +20,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.stereotype.Service;
 
-import fr.affectation.domain.comparator.ComparatorSimpleSpecialization;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.specialization.SimpleSpecialization;
+import fr.affectation.domain.specialization.SimpleSpecializationWithNumber;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.student.StudentService;
 
@@ -140,34 +139,28 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 
 	@Override
-	public List<SimpleSpecialization> findSimpleIcStats(int choice) {
+	public List<SimpleSpecializationWithNumber> findSimpleIcStats(int choice) {
 		Map<String, Integer> icMap = findIcStats(choice);
-		List<SimpleSpecialization> specializations = new ArrayList<SimpleSpecialization>();
+		List<SimpleSpecializationWithNumber> specializations = new ArrayList<SimpleSpecializationWithNumber>();
 		for (String abbreviation : icMap.keySet()){
-			SimpleSpecialization specialization = new SimpleSpecialization();
-			specialization.setAbbreviation(abbreviation);
-			specialization.setName(specializationService.findNameFromIcAbbreviation(abbreviation));
-			specialization.setNumber(icMap.get(abbreviation));
+			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, specializationService.findNameFromIcAbbreviation(abbreviation), icMap.get(abbreviation));
 			specializations.add(specialization);
 		}
-		Collections.sort(specializations, new ComparatorSimpleSpecialization()); 
+		Collections.sort(specializations); 
 		return specializations;
 	}
 
 
 
 	@Override
-	public List<SimpleSpecialization> findSimpleJsStats(int choice) {
+	public List<SimpleSpecializationWithNumber> findSimpleJsStats(int choice) {
 		Map<String, Integer> jsMap = findJsStats(choice);
-		List<SimpleSpecialization> specializations = new ArrayList<SimpleSpecialization>();
+		List<SimpleSpecializationWithNumber> specializations = new ArrayList<SimpleSpecializationWithNumber>();
 		for (String abbreviation : jsMap.keySet()){
-			SimpleSpecialization specialization = new SimpleSpecialization();
-			specialization.setAbbreviation(abbreviation);
-			specialization.setName(specializationService.findNameFromJsAbbreviation(abbreviation));
-			specialization.setNumber(jsMap.get(abbreviation));
+			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, specializationService.findNameFromJsAbbreviation(abbreviation), jsMap.get(abbreviation));
 			specializations.add(specialization);
 		}
-		Collections.sort(specializations, new ComparatorSimpleSpecialization()); 
+		Collections.sort(specializations); 
 		return specializations;
 	}
 

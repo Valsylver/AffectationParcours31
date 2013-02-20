@@ -9,18 +9,40 @@ import org.apache.commons.lang.StringUtils;
 public class ComparatorName implements Comparator<String>{
 
 	@Override
-	public int compare(String fullName0, String fullName1) {
-		String name0 = retrieveName(fullName0);
-		String name1 = retrieveName(fullName1);
-		return name0.compareTo(name1);
+	public int compare(String name, String otherName) {
+		String lastName = retrieveLastName(name);
+		String lastNameOther = retrieveLastName(otherName);
+		if (lastName.compareTo(lastNameOther) == 0) {
+			String firstName = retrieveFirstName(name);
+			String firstNameOther = retrieveFirstName(otherName);
+			return firstName.compareTo(firstNameOther);
+		}
+		return lastName.compareTo(lastNameOther);
 	}
 	
-	private String retrieveName(String fullName){
+	private String retrieveLastName(String fullName) {
 		String[] fullNameList = StringUtils.split(fullName, " ");
-		if (fullNameList.length > 1){
+		if (fullNameList.length == 2) {
 			return fullNameList[1];
+		} else if (fullNameList.length > 2) {
+			String name = "";
+			for (int i = 1; i < fullNameList.length; i++) {
+				name += fullNameList[i];
+				if (i != fullNameList.length - 1) {
+					name += " ";
+				}
+			}
+			return name;
+		} else {
+			return fullName;
 		}
-		else{
+	}
+
+	private String retrieveFirstName(String fullName) {
+		String[] fullNameList = StringUtils.split(fullName, " ");
+		if (fullNameList.length > 1) {
+			return fullNameList[0];
+		} else {
 			return fullName;
 		}
 	}

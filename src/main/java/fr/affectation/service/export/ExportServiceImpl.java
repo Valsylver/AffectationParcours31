@@ -28,7 +28,7 @@ import com.lowagie.text.pdf.PdfWriter;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
-import fr.affectation.domain.specialization.SimpleSpecialization;
+import fr.affectation.domain.specialization.SimpleSpecializationWithNumber;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.service.configuration.ConfigurationService;
@@ -222,14 +222,14 @@ public class ExportServiceImpl implements ExportService {
 		table.setSpacingBefore(25);
 		table.setSpacingAfter(25);
 
-		List<SimpleSpecialization> results = type.equals("ic") ? statisticsService.findSimpleIcStats(1) : statisticsService.findSimpleJsStats(1);
+		List<SimpleSpecializationWithNumber> results = type.equals("ic") ? statisticsService.findSimpleIcStats(1) : statisticsService.findSimpleJsStats(1);
 
 		PdfPCell c1 = new PdfPCell(new Phrase(type.equals("ic") ? "Parcours" : "Filières", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
 		table.addCell(c1);
 		PdfPCell c2 = new PdfPCell(new Phrase("Nombre d'élèves", FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD)));
 		table.addCell(c2);
 
-		for (SimpleSpecialization specialization : results) {
+		for (SimpleSpecializationWithNumber specialization : results) {
 			table.addCell(specialization.getName() + " (" + specialization.getAbbreviation() + ")");
 			table.addCell("" + specialization.getNumber());
 		}

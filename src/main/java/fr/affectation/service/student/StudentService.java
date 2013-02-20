@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import fr.affectation.domain.specialization.SimpleSpecializationWithList;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
@@ -56,5 +57,7 @@ public interface StudentService {
 	public boolean populateStudentToExcludeFromFile(MultipartFile file);
 	
 	public void sendSimpleMail(SimpleMail mail, String path);
+	
+	public List<SimpleSpecializationWithList> findChoiceRepartitionKnowingOne(int knownChoice, int wantedChoice, Specialization specialization);
 
 }

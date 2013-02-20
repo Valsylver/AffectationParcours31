@@ -36,8 +36,9 @@
 						</c:choose>
 					</c:forEach>
 					
-					<li class="nav-header">Synthese</li>
-					<li><a href="/responsable/statistics">Statistiques</a></li>
+					<li class="nav-header">Statistiques</li>
+					<li><a href="/responsable/run/statistics/choice1">Parcours/filière</a></li>
+					<li><a href="/responsable/run/statistics/repartition-other-choice2">Répartition autres choix</a></li>
 				</ul>
 			</div>
 			

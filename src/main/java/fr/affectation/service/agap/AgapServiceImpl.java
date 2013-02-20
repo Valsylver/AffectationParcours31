@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import fr.affectation.domain.comparator.ComparatorSimpleStudent;
 import fr.affectation.domain.student.Contentious;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.UeResult;
@@ -158,7 +157,7 @@ public class AgapServiceImpl implements AgapService {
 			SimpleStudent student = new SimpleStudent(login, findNameFromLogin(login));
 			studentsConcerned.add(student);
 		}
-		Collections.sort(studentsConcerned, new ComparatorSimpleStudent());
+		Collections.sort(studentsConcerned);
 		return studentsConcerned;
 	}
 

@@ -75,9 +75,6 @@ public class ResponsibleController {
 				}
 				model.addAttribute("studentsValidation", new StudentValidationList(logins, validated));
 				model.addAttribute("allStudents", studentsWithValidation);
-				System.out.println("BEFORE");
-				System.out.println(logins);
-				System.out.println(validated);
 				return "responsable/choix-validation";
 			} else {
 				model.addAttribute("allStudents", studentService.findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(order, specialization));
@@ -111,21 +108,40 @@ public class ResponsibleController {
 		return "responsable/student";
 	}
 
-	@RequestMapping("/statistics")
-	public String statistics(Model model, HttpServletRequest request) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String loginRespo = auth.getName();
-		String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
-
-		Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
-				.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
-		model.addAttribute("specialization", specialization);
-		String path = request.getSession().getServletContext().getRealPath("/");
-		model.addAttribute("specForStats",
-				specialization.getType().equals("ImprovementCourse") ? statisticsService.findSimpleIcStats(1) : statisticsService.findSimpleJsStats(1));
-		model.addAttribute("type", specialization.getType().equals("ImprovementCourse") ? 1 : 2);
-		statisticsService.generateBarChartIc(path);
-		statisticsService.generatePieChartIc(path);
-		return "responsable/statistics";
+	@RequestMapping("/run/statistics/choice{choice}")
+	public String pieChartsForChoice(@PathVariable int choice, Model model) {
+		if (configurationService.isRunning()) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String loginRespo = auth.getName();
+			String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
+			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
+					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
+			model.addAttribute("specialization", specialization);
+			model.addAttribute("choiceNumber", choice);
+			model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats(choice));
+			model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats(choice));
+			model.addAttribute("allIc", specializationService.findImprovementCourses());
+			model.addAttribute("allJs", specializationService.findJobSectors());
+			return "responsable/run/statistics/choice";
+		} else {
+			return "redirect:/responsable/";
+		}
+	}
+	
+	@RequestMapping("/run/statistics/repartition-other-choice{choice}")
+	public String pieChartsForOtherChoice(@PathVariable int choice, Model model) {
+		if (configurationService.isRunning()) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String loginRespo = auth.getName();
+			String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
+			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
+					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
+			model.addAttribute("specialization", specialization);
+			model.addAttribute("choiceNumber", choice);
+			model.addAttribute("specializations", studentService.findChoiceRepartitionKnowingOne(1, choice, specialization));
+			return "responsable/run/statistics/repartition-other-choice";
+		} else {
+			return "redirect:/responsable/";
+		}
 	}
 }

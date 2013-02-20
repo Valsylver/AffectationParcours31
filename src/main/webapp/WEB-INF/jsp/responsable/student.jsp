@@ -25,8 +25,9 @@
 						<li><a href="/responsable/${i}">Choix ${i}</a></li>
 					</c:forEach>
 
-					<li class="nav-header">Synthese</li>
-					<li><a href="/responsable/statistics">Statistiques</a></li>
+					<li class="nav-header">Statistiques</li>
+					<li><a href="/responsable/run/statistics/choice1">Synthèse parcours/filière</a></li>
+					<li><a href="/responsable/run/statistics/repartition-other-choice2">Répartition autres choix</a></li>
 				</ul>
 			</div>
 

@@ -22,10 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.comparator.ComparatorName;
-import fr.affectation.domain.comparator.ComparatorSimpleStudent;
-import fr.affectation.domain.comparator.ComparatorSimpleStudentWithValidation;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
+import fr.affectation.domain.specialization.SimpleSpecializationWithList;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithOrigin;
@@ -139,7 +138,7 @@ public class StudentServiceImpl implements StudentService {
 				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.findNameFromLogin(login), isValidated));
 			}
 		}
-		Collections.sort(allSimpleStudents, new ComparatorSimpleStudentWithValidation());
+		Collections.sort(allSimpleStudents);
 		return allSimpleStudents;
 	}
 
@@ -163,7 +162,7 @@ public class StudentServiceImpl implements StudentService {
 				allSimpleStudents.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
 			}
 		}
-		Collections.sort(allSimpleStudents, new ComparatorSimpleStudent());
+		Collections.sort(allSimpleStudents);
 		return allSimpleStudents;
 	}
 
@@ -352,10 +351,9 @@ public class StudentServiceImpl implements StudentService {
 		List<String> studentsLogin = exclusionService.findStudentToExcludeLogins();
 		for (String login : studentsLogin) {
 			String origin;
-			if (agapService.findCurrentPromotionStudentLogins().contains(login)){
+			if (agapService.findCurrentPromotionStudentLogins().contains(login)) {
 				origin = "promo";
-			}
-			else{
+			} else {
 				origin = "cesure";
 			}
 			SimpleStudent student = new SimpleStudentWithOrigin(login, agapService.findNameFromLogin(login), origin);
@@ -406,7 +404,7 @@ public class StudentServiceImpl implements StudentService {
 		List<String> logins = agapService.findCesureStudentLogins();
 		List<SimpleStudent> cesure = new ArrayList<SimpleStudent>();
 		for (String login : logins) {
-			if (!exclusionService.isExcluded(login)){
+			if (!exclusionService.isExcluded(login)) {
 				cesure.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
 			}
 		}
@@ -414,4 +412,24 @@ public class StudentServiceImpl implements StudentService {
 		return cesure;
 	}
 
+	@Override
+	public List<SimpleSpecializationWithList> findChoiceRepartitionKnowingOne(int knownChoice, int wantedChoice, Specialization specialization) {
+		String abbreviationToLookFor = specialization.getAbbreviation();
+		boolean isAnIc = specialization.getType().equals("ImprovementCourse");
+		Map<String, List<String>> choicesResults =  choiceService.findChoiceRepartitionKnowingOne(knownChoice, wantedChoice, abbreviationToLookFor,
+				isAnIc ? Specialization.IMPROVEMENT_COURSE : Specialization.JOB_SECTOR);
+		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
+		for (String abbreviation : choicesResults.keySet()){
+			List<String> logins = choicesResults.get(abbreviation);
+			List<String> names = new ArrayList<String>();
+			for (String login : logins){
+				names.add(agapService.findNameFromLogin(login));
+			}
+			Collections.sort(names, new ComparatorName());
+			String specializationName = isAnIc ? specializationService.findNameFromIcAbbreviation(abbreviation) : specializationService.findNameFromJsAbbreviation(abbreviation);
+			results.add(new SimpleSpecializationWithList(abbreviation, specializationName, names));
+		}
+		Collections.sort(results);
+		return results;
+	}
 }

@@ -1,13 +1,17 @@
 package fr.affectation.service.choice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,12 +107,11 @@ public class ChoiceServiceImpl implements ChoiceService {
 	public List<Integer> findElementNotFilledImprovementCourse(String login) {
 		Choice choice = findIcChoicesByLogin(login);
 		List<Integer> notFilled = new ArrayList<Integer>();
-		if (choice == null){
-			for (int i=1; i<6; i++){
+		if (choice == null) {
+			for (int i = 1; i < 6; i++) {
 				notFilled.add(i);
 			}
-		}
-		else{
+		} else {
 			if (choice.getChoice1() == null) {
 				notFilled.add(1);
 			}
@@ -133,12 +136,11 @@ public class ChoiceServiceImpl implements ChoiceService {
 	public List<Integer> findElementNotFilledJobSector(String login) {
 		Choice choice = findJsChoicesByLogin(login);
 		List<Integer> notFilled = new ArrayList<Integer>();
-		if (choice == null){
-			for (int i=1; i<6; i++){
+		if (choice == null) {
+			for (int i = 1; i < 6; i++) {
 				notFilled.add(i);
 			}
-		}
-		else{
+		} else {
 			if (choice.getChoice1() == null) {
 				notFilled.add(1);
 			}
@@ -182,4 +184,51 @@ public class ChoiceServiceImpl implements ChoiceService {
 		session.createQuery("delete from ImprovementCourseChoice").executeUpdate();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly=true)
+	public Map<String, List<String>> findChoiceRepartitionKnowingOne(int knownChoice, int wantedChoice, String abbreviation, int specializationType) {
+		Map<String, List<String>> results = new HashMap<String, List<String>>();
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(ImprovementCourseChoice.class);
+		switch (specializationType) {
+		case Specialization.IMPROVEMENT_COURSE:
+			criteria = session.createCriteria(ImprovementCourseChoice.class);
+			break;
+		case Specialization.JOB_SECTOR:
+			criteria = session.createCriteria(JobSectorChoice.class);
+			break;
+		}
+		criteria.add(Restrictions.eq("choice" + knownChoice, abbreviation));
+		criteria.add(Restrictions.isNotNull("choice" + wantedChoice));
+		List<Choice> choices = (List<Choice>) criteria.list();
+		for (Choice choice : choices) {
+			String abbChoice = "";
+			switch (wantedChoice) {
+			case 1:
+				abbChoice = choice.getChoice1();
+				break;
+			case 2:
+				abbChoice = choice.getChoice2();
+				break;
+			case 3:
+				abbChoice = choice.getChoice3();
+				break;
+			case 4:
+				abbChoice = choice.getChoice4();
+				break;
+			case 5:
+				abbChoice = choice.getChoice5();
+			}
+			if (!results.containsKey(abbChoice)) {
+				List<String> logins = new ArrayList<String>();
+				logins.add(choice.getLogin());
+				results.put(abbChoice, logins);
+			}
+			else{
+				results.get(abbChoice).add(choice.getLogin());
+			}
+		}
+		return results;
+	}
 }
