@@ -165,9 +165,7 @@ public class StudentController {
 		if (configurationService.isSubmissionAvailable()){
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String login = auth.getName();
-			
 			String path = request.getSession().getServletContext().getRealPath("/");
-			
 			Choice choiceIc = choiceService.findImprovementCourseChoiceByLogin(login);
 			Choice choiceJs = choiceService.findJobSectorChoiceByLogin(login);
 			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));

@@ -7,7 +7,11 @@
 <head>
 <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
 <link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/select2.css" rel="stylesheet">
+<link href="/css/student/bootstrap-select.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/student/bootstrap-select.js" type="text/javascript"></script>
+<script src="/js/student/dynamic_select.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container">
@@ -28,13 +32,12 @@
 												String strIdPa = "selectPa" + i;
 							%>
 							<label path="<%=strChPa%>"><%=strAttrPa%></label>
-							<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
+							<div class="row-fluid"><form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="selectpicker span10">
 								<option></option>
 								<c:forEach var="pa" items="${paAvailable}">
 									<option>${pa.stringForForm}</option>
 								</c:forEach>
-							</form:select>
-							<br />
+							</form:select></div>
 							<br />
 							<%
 								}
@@ -73,18 +76,17 @@
 							<c:choose>
 								<c:when test="${abb == null}">
 									<label path="<%=strChPa%>"><%=strAttrPa%></label>
-									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
+									<div class="row-fluid"><form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="selectpicker span10">
 										<option></option>
 										<c:forEach var="pa" items="${paAvailable}">
-											<option>${pa.stringForForm}</option>
+											<option disabled>${pa.stringForForm}</option>
 										</c:forEach>
-									</form:select>
-									<br />
+									</form:select></div>
 									<br />
 								</c:when>
 								<c:otherwise>
 									<label path="<%=strChPa%>"><%=strAttrPa%></label>
-									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
+									<div class="row-fluid"><form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="selectpicker span10">
 										<option></option>
 										<c:forEach var="pa" items="${paAvailable}">
 											<c:choose>
@@ -96,8 +98,7 @@
 												</c:otherwise>
 											</c:choose>
 										</c:forEach>
-									</form:select>
-									<br />
+									</form:select></div>
 									<br />
 								</c:otherwise>
 							</c:choose>
@@ -120,13 +121,12 @@
 												String strIdFm = "selectFm" + i;
 							%>
 							<label path="<%=strChFm%>"><%=strAttrFm%></label>
-							<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
+							<div class="row-fluid"><form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="selectpicker span10">
 								<option></option>
 								<c:forEach var="fm" items="${fmAvailable}">
 									<option>${fm.stringForForm}</option>
 								</c:forEach>
-							</form:select>
-							<br />
+							</form:select></div>
 							<br />
 							<%
 								}
@@ -160,31 +160,32 @@
 							<c:choose>
 								<c:when test="${abb == null}">
 									<label path="<%=strChFm%>"><%=strAttrFm%></label>
-									<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
+									<div class="row-fluid"><form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="selectpicker span10">
 										<option></option>
 										<c:forEach var="fm" items="${fmAvailable}">
 											<option>${fm.stringForForm}</option>
 										</c:forEach>
-									</form:select>
+									</form:select></div>
 									<br />
 									<br />
 								</c:when>
 								<c:otherwise>
 									<label path="<%=strChFm%>"><%=strAttrFm%></label>
-									<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-										<option></option>
-										<c:forEach var="fm" items="${fmAvailable}">
-											<c:choose>
-												<c:when test="${fm.abbreviation == abb}">
-													<option selected>${fm.stringForForm}</option>
-												</c:when>
-												<c:otherwise>
-													<option>${fm.stringForForm}</option>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</form:select>
-									<br />
+									<div class="row-fluid">
+										<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="selectpicker span10">
+											<option></option>
+											<c:forEach var="fm" items="${fmAvailable}">
+												<c:choose>
+													<c:when test="${fm.abbreviation == abb}">
+														<option selected>${fm.stringForForm}</option>
+													</c:when>
+													<c:otherwise>
+														<option>${fm.stringForForm}</option>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</form:select>
+									</div>
 									<br />
 								</c:otherwise>
 							</c:choose>
@@ -284,11 +285,7 @@
 			</div>
 		</div>
 	</div>
-
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-	<script src="/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
-	<script src="/js/select2.min.js" type="text/javascript"></script>
-	<script src="/js/student/dynamic_select.js" type="text/javascript"></script>
-
 </body>
 </html>
+
+

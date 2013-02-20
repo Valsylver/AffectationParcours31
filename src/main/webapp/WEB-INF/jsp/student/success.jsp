@@ -54,7 +54,7 @@
 	            		<h4>Modification</h4>
 	            		Vous pouvez modifier vos choix et vos documents jusqu'au ${dateEnd}.
 	            		<br />
-	            		<a class="btn btn-primary pull-right" href="/eleve/add">Modifier</a>
+	            		<a class="btn btn-primary pull-right" href="/student/add">Modifier</a>
 	            		<br />
 	            		<br />
 	            	</div>

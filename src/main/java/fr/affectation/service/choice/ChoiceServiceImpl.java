@@ -38,11 +38,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 	public JobSectorChoice findJobSectorChoiceByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		JobSectorChoice choices = (JobSectorChoice) session.get(JobSectorChoice.class, login);
-		if (choices == null) {
-			return new JobSectorChoice();
-		} else {
-			return choices;
-		}
+		return choices == null ? new JobSectorChoice() : choices;
 	}
 
 	@Override
@@ -50,11 +46,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 	public ImprovementCourseChoice findImprovementCourseChoiceByLogin(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		ImprovementCourseChoice choices = (ImprovementCourseChoice) session.get(ImprovementCourseChoice.class, login);
-		if (choices == null) {
-			return new ImprovementCourseChoice();
-		} else {
-			return choices;
-		}
+		return choices == null ? new ImprovementCourseChoice() : choices;
 	}
 
 	@Override

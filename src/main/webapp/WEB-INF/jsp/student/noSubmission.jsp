@@ -11,7 +11,7 @@
 		<div class="row">
 			<br />
 			<br />
-			<div class="alert alert-block">Il n'est pas actuellement pas possible d'effectuer vos choix.</div>
+			<div class="alert alert-block">Il n'est pas actuellement possible d'effectuer vos choix.</div>
 		</div>
 		<a href="/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
 	</div>

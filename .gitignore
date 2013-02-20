@@ -17,6 +17,7 @@ local.properties
 .loadpath
 .idea/*
 src/main/webapp/img/jspchart/piechartPa.png
+src/main/webapp/img/jspchart/piechartFm.png
 
 # External tool builders
 .externalToolBuilders/
