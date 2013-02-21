@@ -199,72 +199,70 @@
 						<h3>Documents</h3>
 					</legend>
 
+					<label for="resume"><h4>CV</h4></label>
+					<c:if test="${not empty resumeError}">
+						<div class="alert alert-error">${resumeError}</div>
+					</c:if>
 					<c:choose>
 						<c:when test="${!hasFilledResume}">
-							<span id="resume2"> <label for="resume"><h4>CV</h4></label> <input id="resume" name="resume" type="file" style="display: none">
+							<input id="resume" name="resume" type="file" style="display: none">
 								<div class="input-append">
 									<input id="resumeInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=resume]').click();">Parcourir...</a>
-								</div> <br /> <br />
-							</span>
+								</div> <br />
 						</c:when>
 						<c:otherwise>
-							<span id="resume2"> <label><h4>CV</h4></label> Vous avez déjà déposé votre CV, voulez vous supprimer ce fichier pour en ajouter un nouveau ? <a
-								class="btn" onclick="changeResume();">Oui</a>
-								<div style="display: none">
-									<input id="resume" name="resume" type="file" style="display: none">
-									<div class="input-append">
-										<input id="resumeInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=resume]').click();">Parcourir...</a>
-									</div>
-								</div>
-							</span>
+							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
+							<br />
+							<a class="btn btn-primary" href="/filestudent/cv"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+							<a class="btn btn-danger" href="/student/deleteResume"><i class="icon-white icon-remove"></i> Supprimer</a>
+							<input id="resume" name="resume" type="file" style="display: none">
+							<br />
 						</c:otherwise>
 					</c:choose>
 
+					<c:if test="${not empty letterIcError}">
+						<div class="alert alert-error">${letterIcError}</div>
+					</c:if>
+					<span id="letterIc2"> <label for="letterIc"><h4>Lettre de motivation parcours</h4></label>
 					<c:choose>
 						<c:when test="${!hasFilledLetterIc}">
-							<span id="letterIc2"> <label for="letterIc"><h4>Lettre de motivation parcours d'approfondissement</h4></label> <input id="letterIc"
-								name="letterIc" type="file" style="display: none">
+							<input id="letterIc" name="letterIc" type="file" style="display: none">
 								<div class="input-append">
 									<input id="letterIcInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterIc]').click();">Parcourir...</a>
-								</div> <br /> <br />
+								</div> <br />
 							</span>
 						</c:when>
 						<c:otherwise>
-							<span id="letterIc2"> <label><h4>Lettre de motivation parcours d'approfondissement</h4></label> Vous avez déjà déposé votre lettre de motivation
-								pour le parcours d'approfondissement, voulez vous supprimer ce fichier pour en ajouter un nouveau ? <a class="btn" onclick="changeLetterIc();">Oui</a>
-								<div style="display: none">
-									<input id="letterIc" name="letterIc" type="file" style="display: none">
-									<div class="input-append">
-										<input id="letterIcInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterIc]').click();">Parcourir...</a>
-									</div>
-								</div>
-							</span>
+							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
+							<br />
+							<a class="btn btn-primary" href="/filestudent/lettre-parcours"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+							<a class="btn btn-danger" href="/student/deleteLetterIc"><i class="icon-white icon-remove"></i> Supprimer</a>
+							<input id="letterIc" name="letterIc" type="file" style="display: none">
+							<br />
 						</c:otherwise>
 					</c:choose>
 
+					<c:if test="${not empty letterJsError}">
+						<div class="alert alert-error">${letterJsError}</div>
+					</c:if>
+					<label for="letterJs"><h4>Lettre de motivation filière métier</h4></label>
 					<c:choose>
 						<c:when test="${!hasFilledLetterJs}">
-							<span id="letterJs2"> <label for="letterJs"><h4>Lettre de motivation filière métier</h4></label> <input id="letterJs" name="letterJs" type="file"
-								style="display: none">
+							<input id="letterJs" name="letterJs" type="file" style="display: none">
 								<div class="input-append">
 									<input id="letterJsInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterJs]').click();">Parcourir...</a>
-								</div> <br /> <br />
-							</span>
+								</div> <br />
 						</c:when>
 						<c:otherwise>
-							<span id="letterJs2"> <label><h4>Lettre de motivation filière métier</h4></label> Vous avez déjà déposé votre lettre de motivation pour la filière
-								métier, voulez vous supprimer ce fichier pour en ajouter un nouveau ? <a class="btn" onclick="changeLetterJs();">Oui</a>
-								<div style="display: none">
-									<input id="letterJs" name="letterJs" type="file" style="display: none">
-									<div class="input-append">
-										<input id="letterJsInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterJs]').click();">Parcourir...</a>
-									</div>
-								</div>
-							</span>
+							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
+							<br />
+							<a class="btn btn-primary" href="/filestudent/lettre-filiere"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+							<a class="btn btn-danger" href="/student/deleteLetterJs"><i class="icon-white icon-remove"></i> Supprimer</a>
+							<input id="letterJs" name="letterJs" type="file" style="display: none">
+							<br />
 						</c:otherwise>
 					</c:choose>
 
-					<br />
 					<br />
 
 					<button class="btn btn-primary pull-right" name="commit" type="submit">

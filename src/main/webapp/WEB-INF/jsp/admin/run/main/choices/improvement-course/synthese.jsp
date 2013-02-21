@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Affectation parcours/filière 3ème année Centrale
-	Marseille</title>
+<title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
 </head>
@@ -18,7 +17,22 @@
 		<div class="row">
 			<div class="span2">
 				<ul class="nav nav-list">
-					<tags:leftColumnAdmin />
+					<li class="nav-header">Statistiques</li>
+					<li><a href="/admin/run/main/statistics/choice1">Choix</a></li>
+					<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
+					<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
+					<li class="dropdown-submenu"><a href="#">Répartition parcours</a>
+						<ul class="dropdown-menu">
+							<c:forEach var="js" items="${allJs}">
+								<li><a href="/admin/run/main/statistics/inverse-repartition/js/${js.abbreviation}">${js.abbreviation}</a></li>
+							</c:forEach>
+						</ul></li>
+					<li class="dropdown-submenu"><a href="#">Répartition filières</a>
+						<ul class="dropdown-menu">
+							<c:forEach var="ic" items="${allIc}">
+								<li><a href="/admin/run/main/statistics/inverse-repartition/ic/${ic.abbreviation}">${ic.abbreviation}</a></li>
+							</c:forEach>
+						</ul></li>
 
 					<li class="nav-header">Parcours</li>
 					<li class="active"><a href="/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
@@ -38,12 +52,10 @@
 					<c:forEach var="i" begin="1" end="5" step="1">
 						<c:choose>
 							<c:when test="${i == order}">
-								<li class="active"><a
-									href="/admin/run/main/choices/improvement-course/synthese/choice${order}">Choix ${i}</a></li>
+								<li class="active"><a href="/admin/run/main/choices/improvement-course/synthese/choice${order}">Choix ${i}</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="/admin/run/main/choices/improvement-course/synthese/choice${i}">Choix
-										${i}</a></li>
+								<li><a href="/admin/run/main/choices/improvement-course/synthese/choice${i}">Choix ${i}</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -51,9 +63,7 @@
 				<hr>
 
 				<c:forEach var="specialization" items="${allIc}" varStatus="status">
-					<span class="lead"> <a
-						href="/admin/common/edit/ic/${specialization.abbreviation}">
-							${specialization.name} (${specialization.abbreviation}) </a>
+					<span class="lead"> <a href="/admin/common/edit/ic/${specialization.abbreviation}"> ${specialization.name} (${specialization.abbreviation}) </a>
 					</span>
 					<br />
 					<br />
@@ -86,14 +96,12 @@
 												<c:choose>
 													<c:when test="${student.validated}">
 														<tr class="success">
-															<td><a href="/admin/run/main/student/${student.login}">${student.name}</a>
-															</td>
+															<td><a href="/admin/run/main/student/${student.login}">${student.name}</a></td>
 														</tr>
 													</c:when>
 													<c:otherwise>
 														<tr class="error">
-															<td><a href="/admin/run/main/student/${student.login}">${student.name}</a>
-															</td>
+															<td><a href="/admin/run/main/student/${student.login}">${student.name}</a></td>
 														</tr>
 													</c:otherwise>
 												</c:choose>
@@ -105,8 +113,7 @@
 						</c:when>
 						<c:otherwise>
 							<p>
-								Aucun elève n'a pour l'instant choisi ce parcours
-								d'approfondissement en
+								Aucun elève n'a pour l'instant choisi ce parcours d'approfondissement en
 								<c:choose>
 									<c:when test="${order == 1}">
 										1er choix

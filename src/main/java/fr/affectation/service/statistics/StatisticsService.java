@@ -2,7 +2,6 @@ package fr.affectation.service.statistics;
 
 import java.util.List;
 
-import fr.affectation.domain.specialization.SimpleSpecialization;
 import fr.affectation.domain.specialization.SimpleSpecializationWithNumber;
 
 public interface StatisticsService {

@@ -10,48 +10,6 @@ $('input[id=letterJs]').change(function() {
 	$('#letterJsInput').val($(this).val());
 });
 
-function changeResume() {
-	var resume = document.getElementById("resume2");
-	var inH = "<label for='resume'><h4>CV</h4></label>";
-	inH += '<input id="resume" name="resume" type="file" style="display:none">'
-	inH += '<div class="input-append"><input id="resumeInput" type="text" style="min-width:300px">'
-	inH += "<a class='btn' onclick=\"$('input[id=resume]').click();\"";
-	inH += '>Parcourir...</a></div>';
-	resume.innerHTML = inH;
-
-	$('input[id=resume]').change(function() {
-		$('#resumeInput').val($(this).val());
-	});
-};
-
-function changeLetterIc() {
-	var letterIc = document.getElementById("letterIc2");
-	var inH = "<label for='letterIc'><h4>Lettre de motivation parcours d'approdonfissement</h4></label>";
-	inH += '<input id="letterIc" name="letterIc" type="file" style="display:none">'
-	inH += '<div class="input-append"><input id="letterIcInput" type="text" style="min-width:300px">'
-	inH += "<a class='btn' onclick=\"$('input[id=letterIc]').click();\"";
-	inH += '>Parcourir...</a></div>';
-	letterIc.innerHTML = inH;
-
-	$('input[id=letterIc]').change(function() {
-		$('#letterIcInput').val($(this).val());
-	});
-};
-
-function changeLetterJs() {
-	var letterJs = document.getElementById("letterJs2");
-	var inH = "<label for='letterJs'><h4>Lettre de motivation filière métier</h4></label>";
-	inH += '<input id="letterJs" name="letterJs" type="file" style="display:none">'
-	inH += '<div class="input-append"><input id="letterJsInput" type="text" style="min-width:300px">'
-	inH += "<a class='btn' onclick=\"$('input[id=letterJs]').click();\"";
-	inH += '>Parcourir...</a></div>';
-	letterJs.innerHTML = inH;
-
-	$('input[id=letterJs]').change(function() {
-		$('#letterJsInput').val($(this).val());
-	});
-};
-
 $(document).ready(function() {
 	$("select").select2();
 });

@@ -2,19 +2,25 @@ package fr.affectation.service.documents;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.affectation.web.controller.FileUploadException;
-
 public interface DocumentService {
 	
-	public void saveResume(String path, String login, MultipartFile file) throws FileUploadException;
+	public boolean saveResume(String path, String login, MultipartFile file);
 	
-	public void saveLetterIc(String path, String login, MultipartFile file) throws FileUploadException;
+	public boolean saveLetterIc(String path, String login, MultipartFile file);
 	
-	public void saveLetterJs(String path, String login, MultipartFile file) throws FileUploadException;
+	public boolean saveLetterJs(String path, String login, MultipartFile file);
 	
 	public boolean hasFilledResume(String path, String login);
 	
 	public boolean hasFilledLetterIc(String path, String login);
 	
 	public boolean hasFilledLetterJs(String path, String login);
+	
+	public boolean validatePdf(MultipartFile file);
+	
+	public boolean deleteResume(String path, String resume);
+	
+	public boolean deleteLetterIc(String path, String letterIc);
+	
+	public boolean deleteLetterJs(String path, String letterJs);
 }

@@ -9,9 +9,10 @@
 
 	<http entry-point-ref="casEntryPoint">
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/eleve/**" access="ROLE_ELEVE" />
+		<intercept-url pattern="/student/**" access="ROLE_ELEVE" />
 		<intercept-url pattern="/responsable/**" access="ROLE_RESPONSABLE" />
 		<intercept-url pattern="/files/**" access="ROLE_ADMIN, ROLE_RESPONSABLE" />
+		<intercept-url pattern="/filestudent/**" access="ROLE_ELEVE" />
 		<intercept-url pattern="/" access="ROLE_ELEVE, ROLE_RESPONSABLE, ROLE_ADMIN" />
 		<form-login 
 			authentication-success-handler-ref="authenticationSuccessHandler" 
@@ -63,8 +64,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <http>
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/eleve/**" access="ROLE_ELEVE" />
+        <intercept-url pattern="/student/**" access="ROLE_ELEVE" />
         <intercept-url pattern="/files/**" access="ROLE_ADMIN, ROLE_RESPONSABLE" />
+        <intercept-url pattern="/filestudent/**" access="ROLE_ELEVE" />
         <intercept-url pattern="/responsable/**" access="ROLE_RESPONSABLE" />
         <intercept-url pattern="/resources/**" access="ROLE_ADMIN, ROLE_RESPONSABLE" />
         <form-login login-page="/login"

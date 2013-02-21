@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
+import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
@@ -750,6 +751,34 @@ public class AdminController {
 			model.addAttribute("allIc", specializationService.findImprovementCourses());
 			model.addAttribute("allJs", specializationService.findJobSectors());
 			return "admin/run/main/statistics/choice";
+		} else {
+			return "redirect:/admin";
+		}
+	}
+	
+	@RequestMapping("/run/main/statistics/inverse-repartition/ic/{abbreviation}")
+	public String inverseRepartitionIc(@PathVariable String abbreviation, Model model) {
+		if (configurationService.isRunning()) {
+			Specialization specialization = specializationService.getImprovementCourseByAbbreviation(abbreviation);
+			model.addAttribute("specialization", specialization);
+			model.addAttribute("inverseSpecializations", studentService.findInverseRepartition(specialization));
+			model.addAttribute("allIc", specializationService.findImprovementCourses());
+			model.addAttribute("allJs", specializationService.findJobSectors());
+			return "admin/run/main/statistics/inverse-repartition";
+		} else {
+			return "redirect:/admin";
+		}
+	}
+	
+	@RequestMapping("/run/main/statistics/inverse-repartition/js/{abbreviation}")
+	public String inverseRepartitionJs(@PathVariable String abbreviation, Model model) {
+		if (configurationService.isRunning()) {
+			Specialization specialization = specializationService.getJobSectorByAbbreviation(abbreviation);
+			model.addAttribute("specialization", specialization);
+			model.addAttribute("inverseSpecializations", studentService.findInverseRepartition(specialization));
+			model.addAttribute("allIc", specializationService.findImprovementCourses());
+			model.addAttribute("allJs", specializationService.findJobSectors());
+			return "admin/run/main/statistics/inverse-repartition";
 		} else {
 			return "redirect:/admin";
 		}

@@ -7,36 +7,34 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.affectation.web.controller.FileUploadException;
-
 @Service
 public class DocumentServiceImpl implements DocumentService {
 
 	@Override
-	public void saveLetterIc(String path, String login, MultipartFile file) throws FileUploadException{
+	public boolean saveLetterIc(String path, String login, MultipartFile file) {
 		String where = path + "WEB-INF/resources/lettres/parcours/lettre_parcours_" + login + ".pdf";
-		saveFile(where, file);
+		return saveFile(where, file);
 	}
 
 	@Override
-	public void saveLetterJs(String path, String login, MultipartFile file) throws FileUploadException{
+	public boolean saveLetterJs(String path, String login, MultipartFile file) {
 		String where = path + "WEB-INF/resources/lettres/filieres/lettre_filiere_" + login + ".pdf";
-		saveFile(where, file);
+		return saveFile(where, file);
 	}
 
 	@Override
-	public void saveResume(String path, String login, MultipartFile file) throws FileUploadException{
+	public boolean saveResume(String path, String login, MultipartFile file) {
 		String where = path + "WEB-INF/resources/cv/cv_" + login + ".pdf";
-		saveFile(where, file);
+		return saveFile(where, file);
 	}
-	
-	public void saveFile(String path, MultipartFile fileToUpload) throws FileUploadException{
-		try{
+
+	public boolean saveFile(String path, MultipartFile fileToUpload) {
+		try {
 			File file = new File(path);
 			FileUtils.writeByteArrayToFile(file, fileToUpload.getBytes());
-		}
-		catch (IOException e){
-			throw new FileUploadException(e.getMessage());
+			return true;
+		} catch (IOException e) {
+			return false;
 		}
 	}
 
@@ -54,8 +52,31 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	public boolean hasFilledResume(String path, String login) {
-		File resume = new File(path + "WEB-INF/resources/cv/cv_" + login +".pdf");
+		File resume = new File(path + "WEB-INF/resources/cv/cv_" + login + ".pdf");
 		return resume.exists();
+	}
+
+	@Override
+	public boolean validatePdf(MultipartFile file) {
+		return file.getContentType().equals("application/pdf");
+	}
+
+	@Override
+	public boolean deleteResume(String path, String login) {
+		File resume = new File(path + "WEB-INF/resources/cv/cv_" + login + ".pdf");
+		return resume.delete();
+	}
+
+	@Override
+	public boolean deleteLetterIc(String path, String login) {
+		File letterIc = new File(path + "WEB-INF/resources/lettres/parcours/lettre_parcours_" + login + ".pdf");
+		return letterIc.delete();
+	}
+
+	@Override
+	public boolean deleteLetterJs(String path, String login) {
+		File letterJs = new File(path + "WEB-INF/resources/lettres/filieres/lettre_filiere_" + login + ".pdf");
+		return letterJs.delete();
 	}
 
 }
