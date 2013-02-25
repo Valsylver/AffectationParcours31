@@ -17,5 +17,4 @@ public class ImprovementCourse extends Specialization{
 	public void setType(String type) {
 		this.type = type;
 	}
-
 }

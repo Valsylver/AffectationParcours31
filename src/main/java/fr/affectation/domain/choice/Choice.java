@@ -27,10 +27,6 @@ public class Choice {
 	
 	@Column
 	protected String choice5;
-	
-	public String getType(){
-		return "";
-	}
 
 	public String getLogin() {
 		return login;

@@ -32,6 +32,16 @@ public class SimpleSpecialization implements Comparable<SimpleSpecialization> {
 
 	@Override
 	public int compareTo(SimpleSpecialization specialization) {
-		return this.name.compareTo(specialization.getName());
+		if ((name != null) && (specialization.getName() != null)){
+			return this.name.compareTo(specialization.getName());
+		}
+		else{
+			if ((abbreviation != null) && (specialization.getAbbreviation() != null)){
+				return this.abbreviation.compareTo(specialization.getAbbreviation());
+			}
+			else{
+				return 0;
+			}
+		}
 	}
 }

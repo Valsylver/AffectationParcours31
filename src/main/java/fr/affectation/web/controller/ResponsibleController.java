@@ -52,7 +52,7 @@ public class ResponsibleController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String login = auth.getName();
 			String abbreviation = responsibleService.forWhichSpecialization(login);
-			Specialization specialization = responsibleService.forWhichSpecializationType(login).equals("ic") ? specializationService
+			Specialization specialization = responsibleService.forWhichSpecializationType(login) == Specialization.IMPROVEMENT_COURSE ? specializationService
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			return "responsable/config/norunning";
@@ -65,7 +65,7 @@ public class ResponsibleController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String login = auth.getName();
 			String abbreviation = responsibleService.forWhichSpecialization(login);
-			Specialization specialization = responsibleService.forWhichSpecializationType(login).equals("ic") ? specializationService
+			Specialization specialization = responsibleService.forWhichSpecializationType(login) == Specialization.IMPROVEMENT_COURSE ? specializationService
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			if (configurationService.isSubmissionAvailable()) {
@@ -100,8 +100,7 @@ public class ResponsibleController {
 	public String editExclusion(StudentValidationList studentsValidation, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String login = auth.getName();
-		String type = responsibleService.forWhichSpecializationType(login).equals("ic") ? "ImprovementCourse" : "JobSector";
-		studentService.updateValidation(studentsValidation.getStudents(), studentsValidation.getValidated(), type);
+		studentService.updateValidationFromList(studentsValidation.getStudents(), studentsValidation.getValidated(), responsibleService.forWhichSpecializationType(login));
 		redirectAttributes.addFlashAttribute("successMessage", "Les changements ont bien été sauvegardés.");
 		return "redirect:/responsable/1";
 	}
@@ -112,7 +111,7 @@ public class ResponsibleController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String loginRespo = auth.getName();
 			String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
-			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
+			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo) == Specialization.IMPROVEMENT_COURSE ? specializationService
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			model.addAttribute("student", studentService.retrieveStudentByLogin(login, request.getSession().getServletContext().getRealPath("/")));
@@ -129,7 +128,7 @@ public class ResponsibleController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String loginRespo = auth.getName();
 			String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
-			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
+			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo) == Specialization.IMPROVEMENT_COURSE ? specializationService
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			model.addAttribute("choiceNumber", choice);
@@ -149,7 +148,7 @@ public class ResponsibleController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String loginRespo = auth.getName();
 			String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
-			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
+			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo) == Specialization.IMPROVEMENT_COURSE ? specializationService
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			model.addAttribute("choiceNumber", choice);
@@ -166,7 +165,7 @@ public class ResponsibleController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String loginRespo = auth.getName();
 			String abbreviation = responsibleService.forWhichSpecialization(loginRespo);
-			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo).equals("ic") ? specializationService
+			Specialization specialization = responsibleService.forWhichSpecializationType(loginRespo) == Specialization.IMPROVEMENT_COURSE ? specializationService
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			model.addAttribute("inverseSpecializations", studentService.findInverseRepartition(specialization));

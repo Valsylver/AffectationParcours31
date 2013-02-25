@@ -40,7 +40,7 @@ public interface StudentService {
 
 	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllJsByOrder(int order);
 
-	public void updateValidation(List<String> students, List<Boolean> validated_, String type);
+	public void updateValidationFromList(List<String> students, List<Boolean> validated_, int specializationType);
 
 	public List<Map<String, Object>> findStudentsForCategorySynthese(String category, String path);
 

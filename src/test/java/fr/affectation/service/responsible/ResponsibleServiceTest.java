@@ -72,7 +72,7 @@ public class ResponsibleServiceTest {
 	@Test
 	public void forWhichSpecializationTypeJs(){
 		createAndSaveSpecialization("JobSector", "resp", "abb");
-		Assert.assertTrue(responsibleService.forWhichSpecializationType("resp").equals("js"));
+		Assert.assertTrue(responsibleService.forWhichSpecializationType("resp") == Specialization.JOB_SECTOR);
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class ResponsibleServiceTest {
 	@Test
 	public void forWhichSpecializationTypeIc(){
 		createAndSaveSpecialization("ImprovementCourse", "resp", "abb");
-		Assert.assertTrue(responsibleService.forWhichSpecializationType("resp").equals("ic"));
+		Assert.assertTrue(responsibleService.forWhichSpecializationType("resp") == Specialization.IMPROVEMENT_COURSE);
 	}
 	
 	@Test

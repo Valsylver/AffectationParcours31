@@ -88,15 +88,6 @@ public class SpecializationServiceTest {
 	}
 	
 	@Test
-	public void distinctionBetweenSpecialization(){
-		saveJobSector();
-		saveImprovementCourse();
-		JobSector specializationJS = specializationService.getJobSectorByAbbreviation("S2I");
-		ImprovementCourse specializationIC = specializationService.getImprovementCourseByAbbreviation("S2I");
-		Assert.assertTrue(specializationJS.getType() != specializationIC.getType());
-	}
-	
-	@Test
 	public void retrieveJobSectorFromAbbreviation(){
 		saveJobSector();
 		JobSector js = specializationService.getJobSectorByAbbreviation("S2I");
@@ -182,6 +173,21 @@ public class SpecializationServiceTest {
 		ic.setName("An improvement course");
 		specializationService.save(ic);
 		Assert.assertTrue(specializationService.findImprovementCourseStringsForForm().contains("An improvement course (AAA)"));
+	}
+	
+	@Test
+	public void deleteAll(){
+		for (int i=0; i<10; i++){
+			JobSector js = new JobSector();
+			js.setAbbreviation("js" + i);
+			ImprovementCourse ic = new ImprovementCourse();
+			ic.setAbbreviation("ic" + i);
+			specializationService.save(js);
+			specializationService.save(ic);
+		}
+		specializationService.deleteAll();
+		Assert.assertTrue(specializationService.findJobSectors().size() == 0);
+		Assert.assertTrue(specializationService.findImprovementCourses().size() == 0);
 	}
 	
 	public void retrieveAbbreviationFromStringForForm(){

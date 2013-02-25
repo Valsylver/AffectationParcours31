@@ -12,6 +12,8 @@ public interface SpecializationService {
 	
 	public void delete(Specialization specialization);
 	
+	public void deleteAll();
+	
 	public JobSector getJobSectorByAbbreviation(String abbreviation);
 	
 	public ImprovementCourse getImprovementCourseByAbbreviation(String abbreviation);

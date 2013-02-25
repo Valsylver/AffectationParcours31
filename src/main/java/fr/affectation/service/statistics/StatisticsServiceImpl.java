@@ -164,12 +164,4 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return specializations;
 	}
 
-
-
-	@Override
-	public String getLink() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -58,10 +58,9 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	public void sendSimpleMail(SimpleMail mail, List<String> addressees) {
-		for (String login : addressees){
-			String address = login + "@centrale-marseille.fr";
-			//sendMail("valery.marmousez@centrale-marseille.fr", address, mail.getObject(), mail.getMessage());
-		}
+//		for (String login : addressees){
+			//sendMail("valery.marmousez@centrale-marseille.fr", login + "@centrale-marseille.fr", mail.getObject(), mail.getMessage());
+//		}
 	}
 
 

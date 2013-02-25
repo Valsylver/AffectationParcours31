@@ -30,7 +30,7 @@
 			</bean>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="fr.affectation.domain.choice, fr.affectation.domain.student" />
+		<property name="packagesToScan" value="fr.affectation.domain.choice, fr.affectation.domain.student, fr.affectation.domain.specialization" />
 	</bean>
 	
 	<import resource="agap.xml" />
@@ -52,6 +52,8 @@
 	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
 	
 	<bean class="fr.affectation.service.exclusion.ExclusionServiceImpl" />
+	
+	<bean class="fr.affectation.service.statistics.StatisticsServiceImpl" />
 	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">

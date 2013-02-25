@@ -9,7 +9,7 @@ public class SimpleMail {
 	@Size(min = 1, max = 255)
 	private String object;
 	
-	@Size(min = 1, max = 600)
+	@Size(min = 1, max = 1500)
 	private String message;
 	
 	private boolean receiveACopy;

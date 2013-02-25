@@ -16,6 +16,5 @@ public class JobSector extends Specialization{
 	public void setType(String type) {
 		this.type = type;
 	}
-
 }
 

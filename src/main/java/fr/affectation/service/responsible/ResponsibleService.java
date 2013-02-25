@@ -8,7 +8,7 @@ public interface ResponsibleService {
 	
 	public String forWhichSpecialization(String login);
 
-	public String forWhichSpecializationType(String login);
+	public int forWhichSpecializationType(String login);
 	
 	public boolean isResponsible(String login);
 

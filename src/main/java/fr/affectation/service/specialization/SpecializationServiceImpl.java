@@ -12,7 +12,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.affectation.domain.specialization.ComparatorAlphabetic;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
@@ -51,7 +50,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from JobSector");
 		List<JobSector> allJs = (List<JobSector>) query.list();
-		Collections.sort(allJs, new ComparatorAlphabetic());
+		Collections.sort(allJs);
 		return allJs;
 	}
 	
@@ -62,7 +61,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from ImprovementCourse");
 		List<ImprovementCourse> allIc = (List<ImprovementCourse>) query.list();
-		Collections.sort(allIc, new ComparatorAlphabetic());
+		Collections.sort(allIc);
 		return allIc;
 	}
 
@@ -148,6 +147,14 @@ public class SpecializationServiceImpl implements SpecializationService {
 		Session session = sessionFactory.getCurrentSession();
 		JobSector js = (JobSector) session.get(JobSector.class, abbreviation);
 		return js == null ? "" : js.getName();
+	}
+
+	@Override
+	@Transactional
+	public void deleteAll() {
+		Session session = sessionFactory.getCurrentSession();
+		session.createQuery("delete from JobSector").executeUpdate();
+		session.createQuery("delete from ImprovementCourse").executeUpdate();
 	}
 
 }

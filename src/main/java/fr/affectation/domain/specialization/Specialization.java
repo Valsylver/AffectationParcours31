@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Specialization {
+public abstract class Specialization implements Comparable<Specialization>{
 	
 	public static final int IMPROVEMENT_COURSE = 1;
 	
@@ -25,8 +25,6 @@ public abstract class Specialization {
 	@Column
 	@Size(min=1)
 	private String name;
-	
-	abstract public String getType();
 
 	public String getAbbreviation() {
 		return abbreviation;
@@ -54,5 +52,20 @@ public abstract class Specialization {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public int compareTo(Specialization specialization) {
+		if ((name != null) && (specialization.getName() != null)){
+			return this.name.compareTo(specialization.getName());
+		}
+		else{
+			if ((abbreviation != null) && (specialization.getAbbreviation() != null)){
+				return this.abbreviation.compareTo(specialization.getAbbreviation());
+			}
+			else{
+				return 0;
+			}
+		}
 	}
 }

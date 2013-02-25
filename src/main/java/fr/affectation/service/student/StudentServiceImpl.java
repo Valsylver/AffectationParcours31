@@ -133,7 +133,7 @@ public class StudentServiceImpl implements StudentService {
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
 		for (String login : allLogins) {
 			if (!studentsToExcludeLogins.contains(login)) {
-				boolean isValidated = specialization.getType().equals("JobSector") ? validationService.isValidatedJs(login) : validationService
+				boolean isValidated = specialization instanceof JobSector ? validationService.isValidatedJs(login) : validationService
 						.isValidatedIc(login);
 				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.findNameFromLogin(login), isValidated));
 			}
@@ -205,7 +205,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public void updateValidation(List<String> students, List<Boolean> validated_, String type) {
+	public void updateValidationFromList(List<String> students, List<Boolean> validated_, int specializationType) {
 		for (int i = 0; i < students.size(); i++) {
 			String login = students.get(i);
 			Boolean validated;
@@ -217,7 +217,7 @@ public class StudentServiceImpl implements StudentService {
 			if (validated == null) {
 				validated = false;
 			}
-			if (type.equals("JobSector")) {
+			if (specializationType == Specialization.JOB_SECTOR) {
 				validationService.updateJsValidation(login, validated);
 			} else {
 				validationService.updateIcValidation(login, validated);
@@ -415,7 +415,7 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<SimpleSpecializationWithList> findChoiceRepartitionKnowingOne(int knownChoice, int wantedChoice, Specialization specialization) {
 		String abbreviationToLookFor = specialization.getAbbreviation();
-		boolean isAnIc = specialization.getType().equals("ImprovementCourse");
+		boolean isAnIc = specialization instanceof ImprovementCourse;
 		Map<String, List<String>> choicesResults = choiceService.findChoiceRepartitionKnowingOne(knownChoice, wantedChoice, abbreviationToLookFor,
 				isAnIc ? Specialization.IMPROVEMENT_COURSE : Specialization.JOB_SECTOR);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
@@ -442,7 +442,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleSpecializationWithList> findInverseRepartition(Specialization specialization) {
-		int type = specialization.getType().equals("JobSector") ? Specialization.JOB_SECTOR : Specialization.IMPROVEMENT_COURSE;
+		int type = specialization instanceof JobSector ? Specialization.JOB_SECTOR : Specialization.IMPROVEMENT_COURSE;
 		Map<String, List<String>> inverseRepartition = findChoiceRepartitionForTheOtherType(specialization.getAbbreviation(),
 				type);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();

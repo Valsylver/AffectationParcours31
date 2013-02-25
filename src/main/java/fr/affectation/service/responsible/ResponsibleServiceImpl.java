@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
+import fr.affectation.domain.specialization.Specialization;
 
 @Service
 public class ResponsibleServiceImpl implements ResponsibleService {
@@ -60,16 +61,16 @@ public class ResponsibleServiceImpl implements ResponsibleService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public String forWhichSpecializationType(String login) {
+	public int forWhichSpecializationType(String login) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ImprovementCourse.class);
 		criteria.add(Restrictions.eq("responsibleLogin", login));
 		ImprovementCourse improvementCourse = (ImprovementCourse) criteria.uniqueResult();
 		if (improvementCourse != null){
-			return "ic";
+			return Specialization.IMPROVEMENT_COURSE;
 		}
 		else {
-			return "js";
+			return Specialization.JOB_SECTOR;
 		}
 	}
 	

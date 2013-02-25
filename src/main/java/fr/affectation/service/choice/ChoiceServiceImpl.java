@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.affectation.domain.choice.Choice;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
+import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
 
 @Service
@@ -74,7 +75,7 @@ public class ChoiceServiceImpl implements ChoiceService {
 	@Transactional(readOnly = true)
 	public List<String> findLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
 		String querySpecialization = "from ";
-		querySpecialization += specialization.getType().equals("JobSector") ? "JobSectorChoice" : "ImprovementCourseChoice";
+		querySpecialization += specialization instanceof JobSector ? "JobSectorChoice" : "ImprovementCourseChoice";
 		querySpecialization += " where choice" + orderChoice + "=:abbreviation";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(querySpecialization);
