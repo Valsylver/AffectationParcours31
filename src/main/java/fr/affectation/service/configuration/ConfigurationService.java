@@ -9,7 +9,7 @@ import fr.affectation.domain.configuration.Configuration;
 
 public interface ConfigurationService {
 
-	public void initialize() throws ClassNotFoundException, NoSuchMethodException, ParseException, SchedulerException;
+	public boolean initialize();
 
 	public void stopProcess() throws SchedulerException;
 

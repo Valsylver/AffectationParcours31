@@ -69,12 +69,10 @@
 				<div class="span4">
 					<h2>Dates</h2>
 					<c:if test="${not empty alertMessage}">
-						<div class="alert alert-block">${alertMessage}</div>
-						<br>
+						<div class="alert alert-error">${alertMessage}</div>
 					</c:if>
 					<label for="firstEmail">Envoi du premier mail de rappel <form:errors path="firstEmail">
-							<br />
-							<a style="color: red">La date n'a pas le bon format</a>
+							<div class="alert alert-error">La date n'a pas le bon format.</div>
 						</form:errors>
 					</label>
 					<div class="input-append">
@@ -82,8 +80,7 @@
 						<span class="add-on">dd/MM/yyyy HH:mm</span>
 					</div>
 					<br /> <label for="secondEmail">Envoi du second mail de rappel <form:errors path="secondEmail">
-							<br />
-							<a style="color: red">La date n'a pas le bon format</a>
+							<div class="alert alert-error">La date n'a pas le bon format.</div>
 						</form:errors>
 					</label>
 					<div class="input-append">
@@ -91,8 +88,7 @@
 						<span class="add-on">dd/MM/yyyy HH:mm</span>
 					</div>
 					<br /> <label for="endSubmission">Fin des soumissions <form:errors path="endSubmission">
-							<br />
-							<a style="color: red">La date n'a pas le bon format</a>
+							<div class="alert alert-error">La date n'a pas le bon format.</div>
 						</form:errors>
 					</label>
 					<div class="input-append">
@@ -101,8 +97,7 @@
 					</div>
 
 					<br /> <label for="endValidation">Fin de la validation par les responsables <form:errors path="endValidation">
-							<br />
-							<a style="color: red">La date n'a pas le bon format</a>
+							<div class="alert alert-error">La date n'a pas le bon format.</div>
 						</form:errors>
 					</label>
 					<div class="input-append">

@@ -24,8 +24,8 @@
 					<li><a href="/admin/run/settings/admins">Administrateurs</a></li>
 					<li><a href="/admin/run/settings/students">Elèves</a></li>
 					<li><a href="/admin/run/settings/export">Export</a></li>
-					<li><a href="/admin/run/settings/mail1">Mail 1</a></li>
-					<li><a href="/admin/run/settings/mail2">Mail 2</a></li>
+					<li><a href="/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>
+					<li><a href="/admin/run/settings/mail2">Mail 2 <c:choose><c:when test="${mail2Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a></li>
 					<li class="active"><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
 					<li><a href="/admin/run/settings/process">Processus</a></li>
 					<li><a href="/admin/run/settings/specializations">Spécialisations</a></li>

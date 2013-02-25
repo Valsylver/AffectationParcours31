@@ -54,31 +54,38 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	@Override
 	@Transactional
-	public void initialize() throws ClassNotFoundException, NoSuchMethodException, ParseException, SchedulerException {
-		MethodInvokingJobDetailFactoryBean jobDetailFirstEmail = createJobDetail("sendFirstEmail", "jobDetailFirstEmail");
-		MethodInvokingJobDetailFactoryBean jobDetailSecondEmail = createJobDetail("sendSecondEmail", "jobDetailSecondEmail");
-		MethodInvokingJobDetailFactoryBean jobDetailEndSubmission = createJobDetail("endSubmission", "jobDetailEndSubmission");
-		MethodInvokingJobDetailFactoryBean jobDetailEndValidation = createJobDetail("endValidation", "jobDetailEndValidation");
-		
-		SimpleTriggerBean triggerFirstEmail = createTrigger("triggerFirstEmail", when.getFirstEmail(), jobDetailFirstEmail);
-		SimpleTriggerBean triggerSecondEmail = createTrigger("triggerSecondEmail", when.getSecondEmail(), jobDetailSecondEmail);
-		SimpleTriggerBean triggerEndSubmission = createTrigger("triggerEndSubmission", when.getEndSubmission(), jobDetailEndSubmission);
-		SimpleTriggerBean triggerEndValidation = createTrigger("triggerEndValidation", when.getEndValidation(), jobDetailEndValidation);
-		
-		Scheduler scheduler = schedulerFactoryBean.getScheduler();
-		scheduler.scheduleJob((JobDetail) jobDetailFirstEmail.getObject(), triggerFirstEmail);
-		scheduler.scheduleJob((JobDetail) jobDetailSecondEmail.getObject(), triggerSecondEmail);
-		scheduler.scheduleJob((JobDetail) jobDetailEndSubmission.getObject(), triggerEndSubmission);
-		scheduler.scheduleJob((JobDetail) jobDetailEndValidation.getObject(), triggerEndValidation);
-		
+	public boolean initialize() {
+		MethodInvokingJobDetailFactoryBean jobDetailFirstEmail;
+		try {
+			jobDetailFirstEmail = createJobDetail("sendFirstEmail", "jobDetailFirstEmail");
+			MethodInvokingJobDetailFactoryBean jobDetailSecondEmail = createJobDetail("sendSecondEmail", "jobDetailSecondEmail");
+			MethodInvokingJobDetailFactoryBean jobDetailEndSubmission = createJobDetail("endSubmission", "jobDetailEndSubmission");
+			MethodInvokingJobDetailFactoryBean jobDetailEndValidation = createJobDetail("endValidation", "jobDetailEndValidation");
+			
+			SimpleTriggerBean triggerFirstEmail = createTrigger("triggerFirstEmail", when.getFirstEmail(), jobDetailFirstEmail);
+			SimpleTriggerBean triggerSecondEmail = createTrigger("triggerSecondEmail", when.getSecondEmail(), jobDetailSecondEmail);
+			SimpleTriggerBean triggerEndSubmission = createTrigger("triggerEndSubmission", when.getEndSubmission(), jobDetailEndSubmission);
+			SimpleTriggerBean triggerEndValidation = createTrigger("triggerEndValidation", when.getEndValidation(), jobDetailEndValidation);
+			
+			Scheduler scheduler = schedulerFactoryBean.getScheduler();
+			scheduler.scheduleJob((JobDetail) jobDetailFirstEmail.getObject(), triggerFirstEmail);
+			scheduler.scheduleJob((JobDetail) jobDetailSecondEmail.getObject(), triggerSecondEmail);
+			scheduler.scheduleJob((JobDetail) jobDetailEndSubmission.getObject(), triggerEndSubmission);
+			scheduler.scheduleJob((JobDetail) jobDetailEndValidation.getObject(), triggerEndValidation);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
 		running = true;
 		config = false;
 		submissionAvailable = true;
-		
+			
 		Configuration configuration = new Configuration(when.getFirstEmail(), when.getSecondEmail(), when.getEndSubmission(), when.getEndValidation());
 		saveConfiguration(configuration);
-		
+			
 		studentService.populateValidation();
+		
+		return true;
 	}
 	
 	@Override

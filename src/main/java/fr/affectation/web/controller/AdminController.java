@@ -60,13 +60,13 @@ public class AdminController {
 
 	@Inject
 	private StudentService studentService;
-	
+
 	@Inject
 	private AgapService agapService;
-	
+
 	@Inject
 	private ValidationService validationService;
-	
+
 	@Inject
 	private ChoiceService choiceService;
 
@@ -87,7 +87,7 @@ public class AdminController {
 
 	@Inject
 	private MailService mailService;
-	
+
 	@Inject
 	private AdminService adminService;
 
@@ -102,37 +102,41 @@ public class AdminController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormatter, true));
 	}
 
-	@RequestMapping(value = "/run/settings/process-students-exclusion", method = RequestMethod.POST)
+	@RequestMapping(value = "/common/process-students-exclusion", method = RequestMethod.POST)
 	public String editExclusion(StudentsExclusion studentExclusion) {
-		if (configurationService.isRunning()) {
-			List<String> newExcluded = new ArrayList<String>();
-			List<String> oldExcluded = exclusionService.findStudentToExcludeLogins();
-			for (String login : studentExclusion.getExcluded()) {
-				if (!login.equals("")) {
-					newExcluded.add(login);
-				}
+		List<String> newExcluded = new ArrayList<String>();
+		List<String> oldExcluded = exclusionService.findStudentToExcludeLogins();
+		for (String login : studentExclusion.getExcluded()) {
+			if (!login.equals("")) {
+				newExcluded.add(login);
 			}
-			for (String login : newExcluded) {
-				if (!oldExcluded.contains(login)) {
-					exclusionService.save(login);
-				}
-			}
-			for (String login : oldExcluded) {
-				if (!newExcluded.contains(login)) {
-					exclusionService.remove(login);
-				}
-			}
-			return "redirect:/admin/run/settings/students";
-		} else {
-			return "redirect:/admin/";
 		}
+		for (String login : newExcluded) {
+			if (!oldExcluded.contains(login)) {
+				exclusionService.save(login);
+			}
+		}
+		for (String login : oldExcluded) {
+			if (!newExcluded.contains(login)) {
+				exclusionService.remove(login);
+			}
+		}
+		return configurationService.isRunning() ? "redirect:/admin/run/settings/students" : "redirect:/admin/config/exclude";
 	}
 
 	@RequestMapping("/config/exclude")
 	public String excludeStudent(Model model) {
 		if (!configurationService.isRunning()) {
-			model.addAttribute("studentsToExclude", studentService.findStudentsToExcludeName());
-			return "admin/config/exclude-students";
+			// model.addAttribute("studentsToExclude",
+			// studentService.findStudentsToExcludeName());
+			// return "admin/config/exclude-students-from-file";
+			model.addAttribute("run", false);
+			model.addAttribute("studentsConcerned", studentService.findCurrentPromotionStudentsConcerned());
+			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
+			model.addAttribute("studentsCesure", studentService.findCesureStudentsConcerned());
+			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
+			model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
+			return "admin/common/exclude-students";
 		} else {
 			return "redirect:/admin";
 		}
@@ -199,7 +203,7 @@ public class AdminController {
 			if (result.hasErrors()) {
 				model.addAttribute("paAvailable", specializationService.findImprovementCourses());
 				model.addAttribute("fmAvailable", specializationService.findJobSectors());
-				return "admin/configure-index";
+				return "admin/config/index";
 			} else {
 				List<Date> allDates = new ArrayList<Date>();
 				allDates.add(when.getFirstEmail());
@@ -218,22 +222,25 @@ public class AdminController {
 					model.addAttribute("paAvailable", specializationService.findImprovementCourses());
 					model.addAttribute("fmAvailable", specializationService.findJobSectors());
 					model.addAttribute("alertMessage", "Les dates doivent êtres successives.");
-					return "admin/configure-index";
+					return "admin/config/index";
+				} else {
+					if (!((specializationService.findImprovementCourses().size() >= 5) && (specializationService.findJobSectors().size() >= 5))) {
+						model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+						model.addAttribute("fmAvailable", specializationService.findJobSectors());
+						model.addAttribute("alertMessage",
+								"Pour pouvoir lancer le processus, il est nécessaire qu'il y ait au moins 5 parcours d'approfondissement et 5 filières métier.");
+						return "admin/config/index";
+					} else {
+						configurationService.setWhen(when);
+						if (!configurationService.initialize()) {
+							model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+							model.addAttribute("fmAvailable", specializationService.findJobSectors());
+							model.addAttribute("alertMessage", "Impossible de sauvegarder la configuration.");
+							return "admin/config/index";
+						}
+					}
 				}
 			}
-			try {
-				configurationService.setWhen(when);
-				configurationService.initialize();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			} catch (SchedulerException e) {
-				e.printStackTrace();
-			}
-
 			return "redirect:/admin";
 		} else {
 			return "redirect:/admin";
@@ -331,10 +338,12 @@ public class AdminController {
 			return "redirect:/admin";
 		}
 	}
-	
+
 	@RequestMapping("/run/settings/admins")
 	public String manageAdmins(Model model) {
 		if (configurationService.isRunning()) {
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("currentAdmins", adminService.findAdminLogins());
 			model.addAttribute("newAdmin", new Admin());
 			return "admin/run/settings/admins";
@@ -342,15 +351,15 @@ public class AdminController {
 			return "redirect:/admin";
 		}
 	}
-	
+
 	@RequestMapping("/run/settings/admins/delete/{login}")
 	public String deleteAdmins(Model model, @PathVariable String login, RedirectAttributes redirectAttributes) {
 		if (configurationService.isRunning()) {
 			int numberOfAdmins = adminService.findAdminLogins().size();
-			if (numberOfAdmins == 1){
-				redirectAttributes.addFlashAttribute("errorMessage", "Impossible de supprimer cet administrateur. Il doit toujours rester au moins un administrateur.");
-			}
-			else{
+			if (numberOfAdmins == 1) {
+				redirectAttributes.addFlashAttribute("errorMessage",
+						"Impossible de supprimer cet administrateur. Il doit toujours rester au moins un administrateur.");
+			} else {
 				adminService.delete(login);
 				redirectAttributes.addFlashAttribute("successMessage", "L'administrateur dont le login était " + login + " a bien été supprimé.");
 			}
@@ -359,16 +368,16 @@ public class AdminController {
 			return "redirect:/admin";
 		}
 	}
-	
+
 	@RequestMapping(value = "/run/settings/admins/new", method = RequestMethod.POST)
 	public String addNewAdmin(Model model, @ModelAttribute Admin admin, RedirectAttributes redirectAttributes) {
 		if (configurationService.isRunning()) {
-			if (admin.getLogin().equals("") || admin.getLogin() == null){
+			if (admin.getLogin().equals("") || admin.getLogin() == null) {
 				redirectAttributes.addFlashAttribute("alertMessage", "Impossible de sauvegarder un administrateur dont le login est vide.");
-			}
-			else{
+			} else {
 				adminService.save(admin.getLogin());
-				redirectAttributes.addFlashAttribute("successMessage", "Un nouvel administrateur dont le login est " + admin.getLogin() + " a bien été ajouté.");
+				redirectAttributes
+						.addFlashAttribute("successMessage", "Un nouvel administrateur dont le login est " + admin.getLogin() + " a bien été ajouté.");
 			}
 			return "redirect:/admin/run/settings/admins";
 		} else {
@@ -395,6 +404,8 @@ public class AdminController {
 			model.addAttribute("modifyEndSubmission", calendar.before(calendarEndSubmission));
 			model.addAttribute("modifyEndValidation", calendar.before(calendarEndValidation));
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("firstEmail", dateFormat.format(whenToModify.getFirstEmail()));
 			model.addAttribute("secondEmail", dateFormat.format(whenToModify.getSecondEmail()));
 			model.addAttribute("endSubmission", dateFormat.format(whenToModify.getEndSubmission()));
@@ -409,6 +420,8 @@ public class AdminController {
 	@RequestMapping("/run/settings/specializations")
 	public String manageSpecialization(Model model) {
 		if (configurationService.isRunning()) {
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("paAvailable", specializationService.findImprovementCourses());
 			model.addAttribute("fmAvailable", specializationService.findJobSectors());
 			return "admin/run/settings/specializations";
@@ -420,12 +433,15 @@ public class AdminController {
 	@RequestMapping("/run/settings/students")
 	public String manageStudents(Model model) {
 		if (configurationService.isRunning()) {
+			model.addAttribute("run", true);
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("studentsConcerned", studentService.findCurrentPromotionStudentsConcerned());
 			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
 			model.addAttribute("studentsCesure", studentService.findCesureStudentsConcerned());
 			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
 			model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
-			return "admin/run/settings/students";
+			return "admin/common/exclude-students";
 		} else {
 			return "redirect:/admin";
 		}
@@ -435,6 +451,8 @@ public class AdminController {
 	public String exportResults(Model model, HttpServletRequest request) {
 		if (configurationService.isRunning()) {
 			exportService.generatePdfResults(request.getSession().getServletContext().getRealPath("/"));
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			return "admin/run/settings/export";
 		} else {
 			return "redirect:/admin";
@@ -444,6 +462,8 @@ public class AdminController {
 	@RequestMapping("/run/settings/mail{number}")
 	public String editMails(Model model, HttpServletRequest request, @PathVariable int number) {
 		if (configurationService.isRunning()) {
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("mail", number == 1 ? mailService.getFirstMail() : mailService.getSecondMail());
 			model.addAttribute("number", number);
 			model.addAttribute("activated", number == 1 ? configurationService.isFirstMailActivated() : configurationService.isSecondMailActivated());
@@ -456,10 +476,9 @@ public class AdminController {
 	@RequestMapping("/run/settings/inverse-activation{number}")
 	public String inverseMailActivation(Model model, HttpServletRequest request, @PathVariable int number) {
 		if (configurationService.isRunning() && ((number == 1) || (number == 2))) {
-			if (number == 1){
+			if (number == 1) {
 				configurationService.setFirstMailActivated(!configurationService.isFirstMailActivated());
-			}
-			else if (number == 2){
+			} else if (number == 2) {
 				configurationService.setSecondMailActivated(!configurationService.isSecondMailActivated());
 			}
 			return "redirect:/admin/run/settings/mail" + number;
@@ -583,7 +602,7 @@ public class AdminController {
 				return "admin/run/settings/process";
 			} else {
 				List<Date> allDates = new ArrayList<Date>();
-				switch(when.getNumber()){
+				switch (when.getNumber()) {
 				case 1:
 					allDates.add(when.getEndValidation());
 					break;
@@ -755,7 +774,7 @@ public class AdminController {
 			return "redirect:/admin";
 		}
 	}
-	
+
 	@RequestMapping("/run/main/statistics/inverse-repartition/ic/{abbreviation}")
 	public String inverseRepartitionIc(@PathVariable String abbreviation, Model model) {
 		if (configurationService.isRunning()) {
@@ -769,7 +788,7 @@ public class AdminController {
 			return "redirect:/admin";
 		}
 	}
-	
+
 	@RequestMapping("/run/main/statistics/inverse-repartition/js/{abbreviation}")
 	public String inverseRepartitionJs(@PathVariable String abbreviation, Model model) {
 		if (configurationService.isRunning()) {
@@ -821,14 +840,14 @@ public class AdminController {
 
 	@PostConstruct
 	public void initialize() {
-		fakeData.createFakeSpecialization();
-		fakeData.createFakeAdmin();
+		// fakeData.createFakeSpecialization();
 		adminService.save("admin");
-		adminService.save("jmrossi");
-		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-		mailService.save(first);
-		mailService.save(second);
+		// Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A",
+		// "Bonjour, vous n'avez pas ...");
+		// Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A",
+		// "Bonjour, vous n'avez pas ...");
+		// mailService.save(first);
+		// mailService.save(second);
 		configurationService.initializeFromDataBase();
 	}
 

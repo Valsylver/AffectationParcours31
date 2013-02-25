@@ -30,7 +30,7 @@
 			</bean>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="fr.affectation.domain.choice, fr.affectation.domain.student" />
+		<property name="packagesToScan" value="fr.affectation.domain.choice, fr.affectation.domain.student, fr.affectation.domain.specialization" />
 	</bean>
 	
 	<import resource="agap.xml" />

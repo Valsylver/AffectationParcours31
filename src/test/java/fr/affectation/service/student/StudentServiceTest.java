@@ -18,8 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.affectation.domain.choice.Choice;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
+import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.service.choice.ChoiceService;
+import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.validation.ValidationService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,6 +36,9 @@ public class StudentServiceTest {
 	
 	@Inject
 	private ValidationService validationService;
+	
+	@Inject
+	private SpecializationService specializationService;
 	
 	@Test
 	public void repartitionOtherTypeJs(){
@@ -107,16 +112,27 @@ public class StudentServiceTest {
 		Assert.assertTrue(validationService.isValidatedJs("login"));
 	}
 	
+	@Test
+	public void inverseRepartitionWhenNoChoices(){
+		JobSector js = new JobSector();
+		js.setAbbreviation("JS1");
+		js.setName("Job sector 1");
+		specializationService.save(js);
+		studentService.findInverseRepartition(js);
+	}
+	
 	@Before
 	public void deleteBefore(){
 		choiceService.deleteAll();
 		validationService.removeAll();
+		specializationService.deleteAll();
 	}
 	
 	@After
 	public void deleteAfter(){
 		choiceService.deleteAll();
 		validationService.removeAll();
+		specializationService.deleteAll();
 	}
 
 }

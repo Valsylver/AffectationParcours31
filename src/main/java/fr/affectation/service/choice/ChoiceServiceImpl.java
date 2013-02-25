@@ -247,27 +247,29 @@ public class ChoiceServiceImpl implements ChoiceService {
 	@Transactional(readOnly=true)
 	public Map<String, List<String>> findInverseRepartitionForAListOfLogin(List<String> loginsConcerned, int specializationType) {
 		Map<String, List<String>> results = new HashMap<String, List<String>>();
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(ImprovementCourseChoice.class);
-		switch (specializationType) {
-		case Specialization.IMPROVEMENT_COURSE:
-			criteria = session.createCriteria(JobSectorChoice.class);
-			break;
-		case Specialization.JOB_SECTOR:
-			criteria = session.createCriteria(ImprovementCourseChoice.class);
-		}
-		criteria.add(Restrictions.in("login", loginsConcerned));
-		criteria.add(Restrictions.isNotNull("choice1"));
-		List<Choice> choices = (List<Choice>) criteria.list();
-		for (Choice choice : choices) {
-			String abbChoice = choice.getChoice1();
-			if (!results.containsKey(abbChoice)) {
-				List<String> logins = new ArrayList<String>();
-				logins.add(choice.getLogin());
-				results.put(abbChoice, logins);
+		if (!(loginsConcerned.size() == 0)){
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(ImprovementCourseChoice.class);
+			switch (specializationType) {
+			case Specialization.IMPROVEMENT_COURSE:
+				criteria = session.createCriteria(JobSectorChoice.class);
+				break;
+			case Specialization.JOB_SECTOR:
+				criteria = session.createCriteria(ImprovementCourseChoice.class);
 			}
-			else{
-				results.get(abbChoice).add(choice.getLogin());
+			criteria.add(Restrictions.in("login", loginsConcerned));
+			criteria.add(Restrictions.isNotNull("choice1"));
+			List<Choice> choices = (List<Choice>) criteria.list();
+			for (Choice choice : choices) {
+				String abbChoice = choice.getChoice1();
+				if (!results.containsKey(abbChoice)) {
+					List<String> logins = new ArrayList<String>();
+					logins.add(choice.getLogin());
+					results.put(abbChoice, logins);
+				}
+				else{
+					results.get(abbChoice).add(choice.getLogin());
+				}
 			}
 		}
 		return results;

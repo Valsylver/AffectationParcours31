@@ -133,8 +133,7 @@ public class StudentServiceImpl implements StudentService {
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
 		for (String login : allLogins) {
 			if (!studentsToExcludeLogins.contains(login)) {
-				boolean isValidated = specialization instanceof JobSector ? validationService.isValidatedJs(login) : validationService
-						.isValidatedIc(login);
+				boolean isValidated = specialization instanceof JobSector ? validationService.isValidatedJs(login) : validationService.isValidatedIc(login);
 				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.findNameFromLogin(login), isValidated));
 			}
 		}
@@ -443,17 +442,19 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<SimpleSpecializationWithList> findInverseRepartition(Specialization specialization) {
 		int type = specialization instanceof JobSector ? Specialization.JOB_SECTOR : Specialization.IMPROVEMENT_COURSE;
-		Map<String, List<String>> inverseRepartition = findChoiceRepartitionForTheOtherType(specialization.getAbbreviation(),
-				type);
+		Map<String, List<String>> inverseRepartition = findChoiceRepartitionForTheOtherType(specialization.getAbbreviation(), type);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
-		for (String abbreviation : inverseRepartition.keySet()){
+		for (String abbreviation : inverseRepartition.keySet()) {
 			List<String> logins = inverseRepartition.get(abbreviation);
 			List<String> names = new ArrayList<String>();
-			for (String login : logins){
-				names.add(agapService.findNameFromLogin(login));
+			for (String login : logins) {
+				if (isStudentConcerned(login)) {
+					names.add(agapService.findNameFromLogin(login));
+				}
 			}
 			Collections.sort(names, new ComparatorName());
-			String specializationName = type == Specialization.IMPROVEMENT_COURSE ? specializationService.findNameFromJsAbbreviation(abbreviation) : specializationService.findNameFromIcAbbreviation(abbreviation);
+			String specializationName = type == Specialization.IMPROVEMENT_COURSE ? specializationService.findNameFromJsAbbreviation(abbreviation)
+					: specializationService.findNameFromIcAbbreviation(abbreviation);
 			results.add(new SimpleSpecializationWithList(abbreviation, specializationName, names));
 		}
 		Collections.sort(results);
