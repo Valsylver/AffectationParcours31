@@ -20,7 +20,6 @@
 					<li class="nav-header">Statistiques</li>
 					<li><a href="/admin/run/main/statistics/choice1">Choix</a></li>
 					<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
-					<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
 					<li class="dropdown-submenu"><a href="#">Répartition parcours</a>
 						<ul class="dropdown-menu">
 							<c:forEach var="js" items="${allJs}">
@@ -47,7 +46,7 @@
 					</c:forEach>
 				</ul>
 			</div>
-			<div class="span8">
+			<div class="span7">
 				<ul class="nav nav-pills">
 					<c:forEach var="i" begin="1" end="5" step="1">
 						<c:choose>
@@ -127,7 +126,7 @@
 					</c:choose>
 				</c:forEach>
 			</div>
-			<div class="span2">
+			<div class="span3">
 				<tags:rightColumnAdmin />
 			</div>
 		</div>

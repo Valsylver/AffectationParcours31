@@ -206,7 +206,9 @@
 				<br /> <br />
 			</div>
 
-			<tags:rightColumnAdmin />
+			<div class="span3">
+				<tags:rightColumnResponsible specialization="${specialization}"></tags:rightColumnResponsible>
+			</div>
 		</div>
 	</div>
 

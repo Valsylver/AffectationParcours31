@@ -68,6 +68,10 @@
 				</div>
 				<input id="spec" value="${specialization.abbreviation}" style="display: none"> <input id="type" value="${specialization.type}" style="display: none">
 			</div>
+			
+			<div class="span3">
+				<tags:rightColumnAdmin />
+			</div>
 		</div>
 	</div>
 </body>

@@ -75,6 +75,10 @@
 					style="display: none"> <input id="type"
 					value="${specialization.type}" style="display: none">
 			</div>
+			
+			<div class="span3">
+				<tags:rightColumnResponsible specialization="${specialization}"></tags:rightColumnResponsible>
+			</div>
 		</div>
 	</div>
 </body>

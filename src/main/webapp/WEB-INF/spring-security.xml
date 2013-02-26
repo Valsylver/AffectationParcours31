@@ -65,6 +65,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
     <http>
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/student/**" access="ROLE_ELEVE" />
+        <intercept-url pattern="/files/admin/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/files/**" access="ROLE_ADMIN, ROLE_RESPONSABLE" />
         <intercept-url pattern="/filestudent/**" access="ROLE_ELEVE" />
         <intercept-url pattern="/responsable/**" access="ROLE_RESPONSABLE" />

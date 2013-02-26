@@ -13,7 +13,6 @@
 </head>
 <body>
 	<div class="container">
-		
 		<tags:headerResponsible title="${specialization.name} (${specialization.abbreviation})" />
 		
 		<div class="row">
@@ -120,6 +119,10 @@
 						</p>	
 					</c:otherwise>
 				</c:choose>
+			</div>
+			
+			<div class="span3">
+				<tags:rightColumnResponsible specialization="${specialization}"></tags:rightColumnResponsible>
 			</div>
 		</div>
 	</div>
