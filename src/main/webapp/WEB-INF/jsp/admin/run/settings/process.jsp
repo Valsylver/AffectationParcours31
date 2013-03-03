@@ -46,7 +46,6 @@
 			<div class="span10">
 				<c:if test="${not empty successMessage}">
 					<div class="alert alert-error">
-						<h4>Modifications</h4>
 						${successMessage}
 					</div>
 				</c:if>
@@ -55,8 +54,7 @@
 						<form:form action="/admin/run/settings/edit-process" method="post"
 							commandName="when">
 							<c:if test="${not empty alertMessage}">
-								<div class="alert alert-block">
-									<h4>Dates</h4>
+								<div class="alert alert-error">
 									${alertMessage}
 								</div>
 							</c:if>
@@ -66,8 +64,7 @@
 										style="display:none" />
 									<label for="firstEmail">Envoi du premier mail de rappel
 										<form:errors path="firstEmail">
-											<br />
-											<a style="color: red">La date n'a pas le bon format</a>
+											<div class="alert alert-error">La date n'a pas le bon format.</div>
 										</form:errors>
 									</label>
 									<div class="input-append">
@@ -78,8 +75,7 @@
 									<br />
 									<label for="secondEmail">Envoi du second mail de rappel
 										<form:errors path="secondEmail">
-											<br />
-											<a style="color: red">La date n'a pas le bon format</a>
+											<div class="alert alert-error">La date n'a pas le bon format.</div>
 										</form:errors>
 									</label>
 									<div class="input-append">
@@ -90,8 +86,7 @@
 									<br />
 									<label for="endSubmission">Envoi du premier mail de
 										rappel <form:errors path="endSubmission">
-											<br />
-											<a style="color: red">La date n'a pas le bon format</a>
+											<div class="alert alert-error">La date n'a pas le bon format.</div>
 										</form:errors>
 									</label>
 									<div class="input-append">
@@ -102,8 +97,7 @@
 									<br />
 									<label for="endValidation">Fin de la validation par les
 										responsables <form:errors path="endValidation">
-											<br />
-											<a style="color: red">La date n'a pas le bon format</a>
+											<div class="alert alert-error">La date n'a pas le bon format.</div>
 										</form:errors>
 									</label>
 									<div class="input-append">
@@ -125,8 +119,7 @@
 											</div>
 											<label for="secondEmail">Envoi du second mail de
 												rappel <form:errors path="secondEmail">
-													<br />
-													<a style="color: red">La date n'a pas le bon format</a>
+													<div class="alert alert-error">La date n'a pas le bon format.</div>
 												</form:errors>
 											</label>
 											<div class="input-append">
@@ -136,8 +129,7 @@
 											</div>
 											<br />
 											<label for="endSubmission">Fin des soumissions <form:errors path="endSubmission">
-													<br />
-													<a style="color: red">La date n'a pas le bon format</a>
+													<div class="alert alert-error">La date n'a pas le bon format.</div>
 												</form:errors>
 											</label>
 											<div class="input-append">
@@ -148,8 +140,7 @@
 											<br />
 											<label for="endValidation">Fin de la validation par
 												les responsables <form:errors path="endValidation">
-													<br />
-													<a style="color: red">La date n'a pas le bon format</a>
+													<div class="alert alert-error">La date n'a pas le bon format.</div>
 												</form:errors>
 											</label>
 											<div class="input-append">
@@ -176,8 +167,7 @@
 													</div>
 													<label for="endSubmission">Fin des soumissions <form:errors
 															path="endSubmission">
-															<br />
-															<a style="color: red">La date n'a pas le bon format</a>
+															<div class="alert alert-error">La date n'a pas le bon format.</div>
 														</form:errors>
 													</label>
 													<div class="input-append">
@@ -188,8 +178,7 @@
 													<br />
 													<label for="endValidation">Fin de la validation par
 														les responsables <form:errors path="endValidation">
-															<br />
-															<a style="color: red">La date n'a pas le bon format</a>
+															<div class="alert alert-error">La date n'a pas le bon format.</div>
 														</form:errors>
 													</label>
 													<div class="input-append">
@@ -219,8 +208,7 @@
 													</div>
 													<label for="endValidation">Fin de la validation par
 														les responsables <form:errors path="endValidation">
-															<br />
-															<a style="color: red">La date n'a pas le bon format</a>
+															<div class="alert alert-error">La date n'a pas le bon format.</div>
 														</form:errors>
 													</label>
 													<div class="input-append">

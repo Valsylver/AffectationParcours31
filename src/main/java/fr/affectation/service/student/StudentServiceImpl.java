@@ -66,6 +66,7 @@ public class StudentServiceImpl implements StudentService {
 	private Map<String, Integer> sizeOfCategories;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean populateStudentToExcludeFromFile(MultipartFile file) {
 		try {
 			InputStream inputStream = file.getInputStream();
@@ -76,7 +77,6 @@ public class StudentServiceImpl implements StudentService {
 
 			HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
 			HSSFSheet sheet = workBook.getSheetAt(0);
-			@SuppressWarnings("unchecked")
 			Iterator<HSSFRow> rows = sheet.rowIterator();
 
 			while (rows.hasNext()) {
@@ -370,18 +370,19 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void sendSimpleMail(SimpleMail mail, String path) {
 		List<String> addressees = new ArrayList<String>();
-		if (mail.getAddressee().charAt(0) == 'E') {
-			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
-			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
-			for (Map<String, Object> map : partialMap) {
-				addressees.add((String) map.get("login"));
-			}
-			for (Map<String, Object> map : noMap) {
-				addressees.add((String) map.get("login"));
-			}
-		} else {
-			addressees = findAllStudentsConcernedLogin();
-		}
+//		if (mail.getAddressee().charAt(0) == 'E') {
+//			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
+//			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
+//			for (Map<String, Object> map : partialMap) {
+//				addressees.add((String) map.get("login"));
+//			}
+//			for (Map<String, Object> map : noMap) {
+//				addressees.add((String) map.get("login"));
+//			}
+//		} else {
+//			addressees = findAllStudentsConcernedLogin();
+//		}
+		addressees.add("vmarmousez");
 		mailService.sendSimpleMail(mail, addressees);
 	}
 
@@ -459,5 +460,29 @@ public class StudentServiceImpl implements StudentService {
 		}
 		Collections.sort(results);
 		return results;
+	}
+
+	@Override
+	public List<Specialization> findIcChoicesFullSpecByLogin(String login) {
+		ImprovementCourseChoice icc = choiceService.findIcChoicesByLogin(login);
+		List<Specialization> specs = new ArrayList<Specialization>();
+		specs.add(icc.getChoice1() != null ? specializationService.getImprovementCourseByAbbreviation(icc.getChoice1()) : null);
+		specs.add(icc.getChoice2() != null ? specializationService.getImprovementCourseByAbbreviation(icc.getChoice2()) : null);
+		specs.add(icc.getChoice3() != null ? specializationService.getImprovementCourseByAbbreviation(icc.getChoice3()) : null);
+		specs.add(icc.getChoice4() != null ? specializationService.getImprovementCourseByAbbreviation(icc.getChoice4()) : null);
+		specs.add(icc.getChoice5() != null ? specializationService.getImprovementCourseByAbbreviation(icc.getChoice5()) : null);
+		return specs;
+	}
+
+	@Override
+	public List<Specialization> findJsChoicesFullSpecByLogin(String login) {
+		JobSectorChoice jsc = choiceService.findJsChoicesByLogin(login);
+		List<Specialization> specs = new ArrayList<Specialization>();
+		specs.add(jsc.getChoice1() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice1()) : null);
+		specs.add(jsc.getChoice2() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice2()) : null);
+		specs.add(jsc.getChoice3() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice3()) : null);
+		specs.add(jsc.getChoice4() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice4()) : null);
+		specs.add(jsc.getChoice5() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice5()) : null);
+		return specs;
 	}
 }

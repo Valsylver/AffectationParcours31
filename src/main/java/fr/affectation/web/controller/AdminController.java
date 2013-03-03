@@ -448,9 +448,8 @@ public class AdminController {
 	}
 
 	@RequestMapping("/run/settings/export")
-	public String exportResults(Model model, HttpServletRequest request) {
+	public String exportResults(Model model) {
 		if (configurationService.isRunning()) {
-			exportService.generatePdfResults(request.getSession().getServletContext().getRealPath("/"));
 			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
 			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			return "admin/run/settings/export";
@@ -490,6 +489,8 @@ public class AdminController {
 	@RequestMapping("/run/settings/spontaneous-mail")
 	public String spontaneousMail(Model model) {
 		if (configurationService.isRunning()) {
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("simpleMail", new SimpleMail());
 			return "admin/run/settings/spontaneous-mail";
 		} else {
@@ -593,6 +594,8 @@ public class AdminController {
 				model.addAttribute("modifySecondEmail", calendar.before(calendarSecondEmail));
 				model.addAttribute("modifyEndSubmission", calendar.before(calendarEndSubmission));
 				model.addAttribute("modifyEndValidation", calendar.before(calendarEndValidation));
+				model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+				model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				model.addAttribute("firstEmail", dateFormat.format(whenToModify.getFirstEmail()));
 				model.addAttribute("secondEmail", dateFormat.format(whenToModify.getSecondEmail()));
@@ -630,7 +633,7 @@ public class AdminController {
 					}
 				}
 				if (!areDatesSuccessive) {
-					model.addAttribute("alertMessage", "Les dates doivent êtres successives.");
+					model.addAttribute("alertMessage", "Impossible de sauvegarder cette configuration, les dates doivent êtres successives.");
 					When whenToModify = configurationService.getWhen();
 					Calendar calendar = Calendar.getInstance();
 					calendar.add(Calendar.HOUR, 1);
@@ -651,6 +654,8 @@ public class AdminController {
 					model.addAttribute("secondEmail", dateFormat.format(whenToModify.getSecondEmail()));
 					model.addAttribute("endSubmission", dateFormat.format(whenToModify.getEndSubmission()));
 					model.addAttribute("endValidation", dateFormat.format(whenToModify.getEndValidation()));
+					model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+					model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 					model.addAttribute("when", new When());
 					return "admin/run/settings/process";
 				}
@@ -840,7 +845,7 @@ public class AdminController {
 
 	@PostConstruct
 	public void initialize() {
-		// fakeData.createFakeSpecialization();
+		fakeData.createFakeSpecialization();
 		adminService.save("admin");
 		// Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A",
 		// "Bonjour, vous n'avez pas ...");

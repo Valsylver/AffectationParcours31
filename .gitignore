@@ -36,6 +36,7 @@ target/
 src/main/webapp/resources/cv/*.pdf
 src/main/webapp/resources/lettres/*.pdf
 src/main/webapp/resources/pdf/*.pdf
+src/main/webapp/resources/xls/*.xls
 derby.log
 
 #################

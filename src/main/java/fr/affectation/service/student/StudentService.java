@@ -64,4 +64,8 @@ public interface StudentService {
 
 	public Map<String, List<String>> findChoiceRepartitionForTheOtherType(String abbreviation, int specializationType);
 
+	public List<Specialization> findIcChoicesFullSpecByLogin(String login);
+
+	public List<Specialization> findJsChoicesFullSpecByLogin(String login);
+
 }

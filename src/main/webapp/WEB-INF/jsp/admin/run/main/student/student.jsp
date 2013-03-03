@@ -94,7 +94,7 @@
 				<h4>Documents</h4>
 				<c:choose>
 					<c:when test="${student.hasFilledResume}">
-						<a href="/files/cv_${student.login}.pdf">CV</a>
+						<a href="/files/cv_${student.login}">CV</a>
 					</c:when>
 					<c:otherwise>
 Cet élève n'a pas encore déposé son CV.
@@ -104,7 +104,7 @@ Cet élève n'a pas encore déposé son CV.
 
 				<c:choose>
 					<c:when test="${student.hasFilledLetterIc}">
-						<a href="/files/lettre_parcours_${student.login}.pdf">Lettre parcours</a>
+						<a href="/files/lettre_parcours_${student.login}">Lettre parcours</a>
 					</c:when>
 					<c:otherwise>
 Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
@@ -114,7 +114,7 @@ Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de pa
 
 				<c:choose>
 					<c:when test="${student.hasFilledLetterJs}">
-						<a href="/files/lettre_filiere_${student.login}.pdf">Lettre filière</a>
+						<a href="/files/lettre_filiere_${student.login}">Lettre filière</a>
 					</c:when>
 					<c:otherwise>
 Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.

@@ -26,6 +26,7 @@ import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.specialization.SpecializationService;
+import fr.affectation.service.student.StudentService;
 
 @Controller
 @RequestMapping("/student")
@@ -44,6 +45,9 @@ public class StudentController {
 
 	@Inject
 	private ConfigurationService configurationService;
+	
+	@Inject
+	private StudentService studentService;
 
 	@RequestMapping({ "/", "" })
 	public String index() {
@@ -146,11 +150,11 @@ public class StudentController {
 			model.addAttribute("notFilledJsNumber", notFilledJs);
 			model.addAttribute("notFilledIc", nfIc);
 			model.addAttribute("notFilledIcNumber", notFilledIc);
-
+			
+			model.addAttribute("icChoices", studentService.findIcChoicesFullSpecByLogin(login));
+			model.addAttribute("jsChoices", studentService.findJsChoicesFullSpecByLogin(login));
+			
 			String path = request.getSession().getServletContext().getRealPath("/");
-			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
-			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
-			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
 
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
 			String dateEnd = dateFormat.format(configurationService.getWhen().getEndSubmission());
@@ -175,10 +179,9 @@ public class StudentController {
 							cond = documentService.saveLetterJs(path, login, letterJs);
 						}
 						if (!cond) {
-							redirectAttributes.addFlashAttribute(fileName + "Error", "Une erreur est survenue lors de la lecture du fichier.");
-						} else {
 							filesOk = false;
-						}
+							redirectAttributes.addFlashAttribute(fileName + "Error", "Une erreur est survenue lors de la lecture du fichier.");
+						} 
 					} else {
 						redirectAttributes.addFlashAttribute(fileName + "Error", "Seuls les fichiers pdf sont acceptés.");
 						filesOk = false;
@@ -190,6 +193,11 @@ public class StudentController {
 			if (!filesOk) {
 				return "redirect:/student/add";
 			}
+			
+			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
+			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
+			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
+			
 			return "student/success";
 		} else {
 			return "student/noSubmission";

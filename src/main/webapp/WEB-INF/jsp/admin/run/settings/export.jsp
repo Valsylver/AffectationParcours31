@@ -33,7 +33,9 @@
 			</div>
 
 			<div class="span10">
-				<a href="/files/results/index" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en pdf</a> <br />
+				<a href="/files/results/resultats-pdf.pdf" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en pdf</a> <br /><br />
+				<a href="/files/results/resultats-xls-eleves.xls" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en xls (élèves)</a> <br /> <br />
+				<a href="/files/results/resultats-xls-spec.xls" class="btn btn-primary"><i class="icon-white icon-download-alt"></i> Télécharger les résultats en xls (spécialisations)</a> <br />
 			</div>
 		</div>
 	</div>
