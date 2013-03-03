@@ -42,6 +42,7 @@ import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
+import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.export.ExportService;
 import fr.affectation.service.fake.FakeDataService;
@@ -91,6 +92,9 @@ public class AdminController {
 	@Inject
 	private AdminService adminService;
 
+	@Inject
+	private DocumentService documentService;
+
 	@RequestMapping({ "/", "" })
 	public String redirect(Model mode) {
 		return configurationService.isRunning() ? "redirect:/admin/run/main/statistics/choice1" : "redirect:/admin/config";
@@ -127,9 +131,6 @@ public class AdminController {
 	@RequestMapping("/config/exclude")
 	public String excludeStudent(Model model) {
 		if (!configurationService.isRunning()) {
-			// model.addAttribute("studentsToExclude",
-			// studentService.findStudentsToExcludeName());
-			// return "admin/config/exclude-students-from-file";
 			model.addAttribute("run", false);
 			model.addAttribute("studentsConcerned", studentService.findCurrentPromotionStudentsConcerned());
 			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
@@ -137,6 +138,17 @@ public class AdminController {
 			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
 			model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
 			return "admin/common/exclude-students";
+		} else {
+			return "redirect:/admin";
+		}
+	}
+
+	@RequestMapping("/config/exclude-from-file")
+	public String excludeStudentFromFile(Model model) {
+		if (!configurationService.isRunning()) {
+			model.addAttribute("studentsToExclude", studentService.findStudentsToExcludeName());
+			model.addAttribute("run", false);
+			return "admin/config/exclude-students-from-file";
 		} else {
 			return "redirect:/admin";
 		}
@@ -679,12 +691,13 @@ public class AdminController {
 	}
 
 	@RequestMapping("/run/settings/stop-process")
-	public String stopProcess() {
+	public String stopProcess(HttpServletRequest request) {
 		if (configurationService.isRunning()) {
 			try {
 				configurationService.stopProcess();
 				choiceService.deleteAll();
 				validationService.removeAll();
+				documentService.deleteAll(request.getSession().getServletContext().getRealPath("/"));
 			} catch (SchedulerException e) {
 				e.printStackTrace();
 			}

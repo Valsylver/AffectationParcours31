@@ -12,7 +12,8 @@
 						<li><a href="/admin/run/settings/students">Administration</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="/admin/config/exclude">Elèves</a></li>
+						<li><a href="/admin/config/exclude">Elèves (liste)</a></li>
+						<li><a href="/admin/config/exclude-from-file">Elèves (fichier xls)</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><a href="/logout">Deconnexion</a></li>

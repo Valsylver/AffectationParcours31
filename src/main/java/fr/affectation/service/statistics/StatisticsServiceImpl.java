@@ -1,6 +1,5 @@
 package fr.affectation.service.statistics;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +14,6 @@ import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.entity.StandardEntityCollection;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +40,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			data.setValue(key, icStats.get(key));
 		}
 		JFreeChart chart = ChartFactory.createPieChart("", data, true, true, true);
-		File file = new File(path + "/img/jspchart/piechartPa.png");
+		File file = new File(path + "/WEB-INF/resources/jspchart/piechartPa.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 		try{
 			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);
@@ -63,7 +60,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			data.setValue(key, icStats.get(key));
 		}
 		JFreeChart chart = ChartFactory.createPieChart("", data, true, true, true);
-		File file = new File(path + "/img/jspchart/piechartFm.png");
+		File file = new File(path + "/WEB-INF/resources/jspchart/piechartFm.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 		try{
 			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);
@@ -90,52 +87,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 		return icStats;
 	}
-
-
-
-	@Override
-	public void generateBarChartIc(String path) {
-		DefaultCategoryDataset data = new DefaultCategoryDataset();
-		Map<String, Integer> icStats = findIcStats(1);
-		for (String key : icStats.keySet()){
-			data.addValue(icStats.get(key), "Parcours", key);
-		}
-		JFreeChart chart = ChartFactory.createBarChart3D(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
-		chart.setBackgroundPaint(Color.white);
-		chart.getCategoryPlot().setRenderer(new ColorsRenderer()); 
-		File file = new File(path + "/img/jspchart/barchartPa.png");
-		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-		try{
-			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-	}
-	
-
-
-
-	@Override
-	public void generateBarChartJs(String path) {
-		DefaultCategoryDataset data = new DefaultCategoryDataset();
-		Map<String, Integer> jsStats = findJsStats(1);
-		for (String key : jsStats.keySet()){
-			data.addValue(jsStats.get(key), "Parcours", key);
-		}
-		JFreeChart chart = ChartFactory.createBarChart3D(null, null, null, data, PlotOrientation.HORIZONTAL, false, false, false);
-		chart.setBackgroundPaint(Color.white);
-		chart.getCategoryPlot().setRenderer(new ColorsRenderer()); 
-		File file = new File(path + "/img/jspchart/barchartFm.png");
-		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-		try{
-			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-	}
-
 
 
 	@Override

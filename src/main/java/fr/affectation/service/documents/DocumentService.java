@@ -23,4 +23,6 @@ public interface DocumentService {
 	public boolean deleteLetterIc(String path, String letterIc);
 	
 	public boolean deleteLetterJs(String path, String letterJs);
+	
+	public void deleteAll(String path);
 }

@@ -65,8 +65,6 @@
 				</span>
 			</div>
 
-			<tags:rightColumnAdmin />
-
 		</div>
 
 	</div>

@@ -79,4 +79,20 @@ public class DocumentServiceImpl implements DocumentService {
 		return letterJs.delete();
 	}
 
+	@Override
+	public void deleteAll(String path) {
+		File letterJs = new File(path + "WEB-INF/resources/lettres/filieres");
+		for (File file : letterJs.listFiles()){
+			file.delete();
+		}
+		File letterIc = new File(path + "WEB-INF/resources/lettres/parcours");
+		for (File file : letterIc.listFiles()){
+			file.delete();
+		}
+		File resume = new File(path + "WEB-INF/resources/cv");
+		for (File file : resume.listFiles()){
+			file.delete();
+		}
+	}
+
 }

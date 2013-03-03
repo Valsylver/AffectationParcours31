@@ -16,8 +16,6 @@ local.properties
 .settings/
 .loadpath
 .idea/*
-src/main/webapp/img/jspchart/piechartPa.png
-src/main/webapp/img/jspchart/piechartFm.png
 src/main/webapp/WEB-INF/resources/other/*.zip
 
 # External tool builders
@@ -34,9 +32,12 @@ src/main/webapp/WEB-INF/resources/other/*.zip
 
 target/
 src/main/webapp/resources/cv/*.pdf
-src/main/webapp/resources/lettres/*.pdf
+src/main/webapp/resources/lettres/parcours/*.pdf
+src/main/webapp/resources/lettres/filieres/*.pdf
 src/main/webapp/resources/pdf/*.pdf
 src/main/webapp/resources/xls/*.xls
+src/main/webapp/resources/jspchart/piechartPa.png
+src/main/webapp/resources/jspchart/piechartFm.png
 derby.log
 
 #################

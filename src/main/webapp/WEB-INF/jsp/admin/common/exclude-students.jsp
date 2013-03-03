@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="container">
-		<tags:headerAdmin run="<%=true%>" />
+		<tags:headerAdmin run="${run}" />
 
 		<form:form action="/admin/common/process-students-exclusion" method="POST" commandName="studentExclusion" enctype="multipart/form-data">
 

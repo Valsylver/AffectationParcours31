@@ -73,7 +73,7 @@ public class ExportServiceImpl implements ExportService {
 			Paragraph title11 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
 			Section section1 = chapter1.addSection(title11);
 			statisticsService.generatePieChartIc(path);
-			Image pieChartIc = Image.getInstance(path + "/img/jspchart/piechartPa.png");
+			Image pieChartIc = Image.getInstance(path + "/WEB-INF/resources/jspchart/piechartPa.png");
 			pieChartIc.setAlignment(Element.ALIGN_CENTER);
 			pieChartIc.scalePercent(50);
 			section1.add(pieChartIc);
@@ -142,7 +142,7 @@ public class ExportServiceImpl implements ExportService {
 			Paragraph title21 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
 			Section section3 = chapter2.addSection(title21);
 			statisticsService.generatePieChartJs(path);
-			Image pieChartJs = Image.getInstance(path + "/img/jspchart/piechartFm.png");
+			Image pieChartJs = Image.getInstance(path + "/WEB-INF/resources/jspchart/piechartFm.png");
 			pieChartJs.scalePercent(50);
 			pieChartJs.setAlignment(Element.ALIGN_CENTER);
 			section3.add(pieChartJs);
