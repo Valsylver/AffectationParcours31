@@ -330,18 +330,23 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student retrieveStudentByLogin(String login, String path) {
-		Student student = new Student();
-		student.setLogin(login);
-		student.setName(agapService.findNameFromLogin(login));
-		student.setContentious(agapService.findContentious(login));
-		student.setGpaMeans(agapService.findGpaMeans(login));
-		student.setResults(agapService.findUeResults(login));
-		student.setHasFilledResume(documentService.hasFilledResume(path, login));
-		student.setHasFilledLetterIc(documentService.hasFilledLetterIc(path, login));
-		student.setHasFilledLetterJs(documentService.hasFilledLetterJs(path, login));
-		student.setIcChoices(choiceService.findIcChoicesByLogin(login) == null ? new ImprovementCourseChoice() : choiceService.findIcChoicesByLogin(login));
-		student.setJsChoices(choiceService.findJsChoicesByLogin(login) == null ? new JobSectorChoice() : choiceService.findJsChoicesByLogin(login));
-		return student;
+		if (isStudentConcerned(login)) {
+			Student student = new Student();
+			student.setLogin(login);
+			student.setName(agapService.findNameFromLogin(login));
+			student.setContentious(agapService.findContentious(login));
+			student.setGpaMeans(agapService.findGpaMeans(login));
+			student.setResults(agapService.findUeResults(login));
+			student.setHasFilledResume(documentService.hasFilledResume(path, login));
+			student.setHasFilledLetterIc(documentService.hasFilledLetterIc(path, login));
+			student.setHasFilledLetterJs(documentService.hasFilledLetterJs(path, login));
+			student.setIcChoices(choiceService.findIcChoicesByLogin(login) == null ? new ImprovementCourseChoice() : choiceService.findIcChoicesByLogin(login));
+			student.setJsChoices(choiceService.findJsChoicesByLogin(login) == null ? new JobSectorChoice() : choiceService.findJsChoicesByLogin(login));
+			return student;
+		}
+		else{
+			return null;
+		}
 	}
 
 	@Override
@@ -370,18 +375,20 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void sendSimpleMail(SimpleMail mail, String path) {
 		List<String> addressees = new ArrayList<String>();
-//		if (mail.getAddressee().charAt(0) == 'E') {
-//			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
-//			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
-//			for (Map<String, Object> map : partialMap) {
-//				addressees.add((String) map.get("login"));
-//			}
-//			for (Map<String, Object> map : noMap) {
-//				addressees.add((String) map.get("login"));
-//			}
-//		} else {
-//			addressees = findAllStudentsConcernedLogin();
-//		}
+		// if (mail.getAddressee().charAt(0) == 'E') {
+		// List<Map<String, Object>> partialMap =
+		// findStudentsForCategorySynthese("partial", path);
+		// List<Map<String, Object>> noMap =
+		// findStudentsForCategorySynthese("no", path);
+		// for (Map<String, Object> map : partialMap) {
+		// addressees.add((String) map.get("login"));
+		// }
+		// for (Map<String, Object> map : noMap) {
+		// addressees.add((String) map.get("login"));
+		// }
+		// } else {
+		// addressees = findAllStudentsConcernedLogin();
+		// }
 		addressees.add("vmarmousez");
 		mailService.sendSimpleMail(mail, addressees);
 	}
