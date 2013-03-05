@@ -16,7 +16,9 @@ local.properties
 .settings/
 .loadpath
 .idea/*
-src/main/webapp/WEB-INF/resources/other/*.zip
+src/main/webapp/WEB-INF/resources/other/full-results-responsible.zip
+src/main/webapp/WEB-INF/resources/other/results-responsible-letters.zip
+src/main/webapp/WEB-INF/resources/other/results-responsible-resume.zip
 
 # External tool builders
 .externalToolBuilders/
