@@ -196,7 +196,7 @@
 					<br />
 
 					<legend>
-						<h3>Documents</h3>
+						<h3>Documents (fichiers pdf)</h3>
 					</legend>
 
 					<label for="resume"><h4>CV</h4></label>
@@ -220,10 +220,10 @@
 						</c:otherwise>
 					</c:choose>
 
+					<label for="letterIc"><h4>Lettre de motivation parcours</h4></label>
 					<c:if test="${not empty letterIcError}">
 						<div class="alert alert-error">${letterIcError}</div>
 					</c:if>
-					<span id="letterIc2"> <label for="letterIc"><h4>Lettre de motivation parcours</h4></label>
 					<c:choose>
 						<c:when test="${!hasFilledLetterIc}">
 							<input id="letterIc" name="letterIc" type="file" style="display: none">
@@ -242,10 +242,10 @@
 						</c:otherwise>
 					</c:choose>
 
+					<label for="letterJs"><h4>Lettre de motivation filière métier</h4></label>
 					<c:if test="${not empty letterJsError}">
 						<div class="alert alert-error">${letterJsError}</div>
 					</c:if>
-					<label for="letterJs"><h4>Lettre de motivation filière métier</h4></label>
 					<c:choose>
 						<c:when test="${!hasFilledLetterJs}">
 							<input id="letterJs" name="letterJs" type="file" style="display: none">

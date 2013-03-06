@@ -197,19 +197,19 @@ public class AdminController {
 	public String post(@ModelAttribute When when, BindingResult result, Model model) {
 		if (!configurationService.isRunning()) {
 			if (when.getFirstEmail() == null) {
-				FieldError fieldError = new FieldError("when", "firstEmail", "lol");
+				FieldError fieldError = new FieldError("when", "firstEmail", "");
 				result.addError(fieldError);
 			}
 			if (when.getSecondEmail() == null) {
-				FieldError fieldError = new FieldError("when", "secondEmail", "lol");
+				FieldError fieldError = new FieldError("when", "secondEmail", "");
 				result.addError(fieldError);
 			}
 			if (when.getEndSubmission() == null) {
-				FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+				FieldError fieldError = new FieldError("when", "endSubmission", "");
 				result.addError(fieldError);
 			}
 			if (when.getEndValidation() == null) {
-				FieldError fieldError = new FieldError("when", "endValidation", "lol");
+				FieldError fieldError = new FieldError("when", "endValidation", "");
 				result.addError(fieldError);
 			}
 			if (result.hasErrors()) {
@@ -545,48 +545,48 @@ public class AdminController {
 	public String editProcess(@ModelAttribute When when, BindingResult result, Model model) {
 		if (configurationService.isRunning()) {
 			if ((when.getNumber() == 1) && (when.getEndValidation() == null)) {
-				FieldError fieldError = new FieldError("when", "endValidation", "lol");
+				FieldError fieldError = new FieldError("when", "endValidation", "");
 				result.addError(fieldError);
 			}
 			if (when.getNumber() == 2) {
 				if (when.getEndSubmission() == null) {
-					FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+					FieldError fieldError = new FieldError("when", "endSubmission", "");
 					result.addError(fieldError);
 				}
 				if (when.getEndValidation() == null) {
-					FieldError fieldError = new FieldError("when", "endValidation", "lol");
+					FieldError fieldError = new FieldError("when", "endValidation", "");
 					result.addError(fieldError);
 				}
 			}
 			if (when.getNumber() == 3) {
 				if (when.getSecondEmail() == null) {
-					FieldError fieldError = new FieldError("when", "secondEmail", "lol");
+					FieldError fieldError = new FieldError("when", "secondEmail", "");
 					result.addError(fieldError);
 				}
 				if (when.getEndSubmission() == null) {
-					FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+					FieldError fieldError = new FieldError("when", "endSubmission", "");
 					result.addError(fieldError);
 				}
 				if (when.getEndValidation() == null) {
-					FieldError fieldError = new FieldError("when", "endValidation", "lol");
+					FieldError fieldError = new FieldError("when", "endValidation", "");
 					result.addError(fieldError);
 				}
 			}
 			if (when.getNumber() == 4) {
 				if (when.getFirstEmail() == null) {
-					FieldError fieldError = new FieldError("when", "firstEmail", "lol");
+					FieldError fieldError = new FieldError("when", "firstEmail", "");
 					result.addError(fieldError);
 				}
 				if (when.getSecondEmail() == null) {
-					FieldError fieldError = new FieldError("when", "secondEmail", "lol");
+					FieldError fieldError = new FieldError("when", "secondEmail", "");
 					result.addError(fieldError);
 				}
 				if (when.getEndSubmission() == null) {
-					FieldError fieldError = new FieldError("when", "endSubmission", "lol");
+					FieldError fieldError = new FieldError("when", "endSubmission", "");
 					result.addError(fieldError);
 				}
 				if (when.getEndValidation() == null) {
-					FieldError fieldError = new FieldError("when", "endValidation", "lol");
+					FieldError fieldError = new FieldError("when", "endValidation", "");
 					result.addError(fieldError);
 				}
 			}
@@ -697,6 +697,7 @@ public class AdminController {
 				configurationService.stopProcess();
 				choiceService.deleteAll();
 				validationService.removeAll();
+				exclusionService.removeAll();
 				documentService.deleteAll(request.getSession().getServletContext().getRealPath("/"));
 			} catch (SchedulerException e) {
 				e.printStackTrace();
@@ -790,6 +791,23 @@ public class AdminController {
 			return "admin/run/main/statistics/choice";
 		} else {
 			return "redirect:/admin";
+		}
+	}
+	
+	@RequestMapping("/run/main/statistics/repartition-other-choice{choice}/{type}/{abbreviation}")
+	public String pieChartsForOtherChoice(@PathVariable int choice, @PathVariable String abbreviation, @PathVariable int type, Model model) {
+		if (configurationService.isRunning()) {
+			Specialization specialization = type == Specialization.IMPROVEMENT_COURSE ? specializationService
+					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
+			model.addAttribute("specialization", specialization);
+			model.addAttribute("choiceNumber", choice);
+			model.addAttribute("type", type);
+			model.addAttribute("specializations", studentService.findChoiceRepartitionKnowingOne(1, choice, specialization));
+			model.addAttribute("allIc", specializationService.findImprovementCourses());
+			model.addAttribute("allJs", specializationService.findJobSectors());
+			return "admin/run/main/statistics/repartition-other-choice";
+		} else {
+			return "redirect:/admin/";
 		}
 	}
 

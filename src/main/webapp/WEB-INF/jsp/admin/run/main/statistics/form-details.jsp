@@ -21,19 +21,32 @@
 					<li><a href="/admin/run/main/statistics/choice1">Choix</a></li>
 					<li class="active"><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
 					<li class="dropdown-submenu"><a href="#">Répartition parcours</a>
-					<ul class="dropdown-menu">
-						<c:forEach var="js" items="${allJs}">
-							<li><a href="/admin/run/main/statistics/inverse-repartition/js/${js.abbreviation}">${js.abbreviation}</a></li>
-						</c:forEach>
-					</ul>
-					</li>
+						<ul class="dropdown-menu">
+							<c:forEach var="js" items="${allJs}">
+								<li><a href="/admin/run/main/statistics/inverse-repartition/js/${js.abbreviation}">${js.abbreviation}</a></li>
+							</c:forEach>
+						</ul></li>
 					<li class="dropdown-submenu"><a href="#">Répartition filières</a>
-					<ul class="dropdown-menu">
-						<c:forEach var="ic" items="${allIc}">
-							<li><a href="/admin/run/main/statistics/inverse-repartition/ic/${ic.abbreviation}">${ic.abbreviation}</a></li>
-						</c:forEach>
-					</ul>
-					</li>
+						<ul class="dropdown-menu">
+							<c:forEach var="ic" items="${allIc}">
+								<li><a href="/admin/run/main/statistics/inverse-repartition/ic/${ic.abbreviation}">${ic.abbreviation}</a></li>
+							</c:forEach>
+						</ul></li>
+					<li class="dropdown-submenu"><a href="#">Autres choix</a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-submenu"><a href="#">Parcours</a>
+								<ul class="dropdown-menu">
+									<c:forEach var="ic" items="${allIc}">
+										<li><a href="/admin/run/main/statistics/repartition-other-choice2/1/${ic.abbreviation}">${ic.abbreviation}</a></li>
+									</c:forEach>
+								</ul></li>
+							<li class="dropdown-submenu"><a href="#">Filières</a>
+								<ul class="dropdown-menu">
+									<c:forEach var="js" items="${allJs}">
+										<li><a href="/admin/run/main/statistics/repartition-other-choice2/2/${js.abbreviation}">${js.abbreviation}</a></li>
+									</c:forEach>
+								</ul></li>
+						</ul></li>
 
 					<li class="nav-header">Parcours</li>
 					<li><a href="/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
@@ -96,7 +109,7 @@
 				</c:forEach>
 
 			</div>
-			
+
 			<div class="span3">
 				<tags:rightColumnAdmin />
 			</div>

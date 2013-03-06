@@ -9,12 +9,12 @@
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="/css/student-admin-page.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="/js/admin/run/main/statistics/form/pie-chart.js"></script>
 <script type="text/javascript" src="/js/jquery/jquery-latest.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript" src="/js/responsible/repartition-other-choice.js"></script>
+
 </head>
 <body>
 	<div class="container">
@@ -25,7 +25,7 @@
 				<ul class="nav nav-list">
 					<li class="nav-header">Statistiques</li>
 					<li><a href="/admin/run/main/statistics/choice1">Choix</a></li>
-					<li class="active"><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
+					<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
 					<li class="dropdown-submenu"><a href="#">Répartition parcours</a>
 						<ul class="dropdown-menu">
 							<c:forEach var="js" items="${allJs}">
@@ -67,21 +67,35 @@
 					</c:forEach>
 				</ul>
 			</div>
-
 			<div class="span7">
 				<ul class="nav nav-pills">
-					<li class="active"><a href="/admin/run/main/statistics/form/synthese">Statistiques</a></li>
-					<li><a href="/admin/run/main/statistics/form/details/all">Dossiers complets (${nbreAll})</a></li>
-					<li><a href="/admin/run/main/statistics/form/details/partial">Dossiers incomplets (${nbrePartial})</a></li>
-					<li><a href="/admin/run/main/statistics/form/details/no">Dossiers vides (${nbreNo})</a></li>
+					<c:forEach var="i" begin="2" end="5" step="1">
+						<c:choose>
+							<c:when test="${i == choiceNumber}">
+								<li class="active"><a href="/admin/run/main/statistics/repartition-other-choice${i}/${type}/${specialization.abbreviation}">Choix ${i}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="/admin/run/main/statistics/repartition-other-choice${i}/${type}/${specialization.abbreviation}">Choix ${i}</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 				</ul>
 
 				<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
-			</div>
+				<div id="results">
+					<c:forEach var="spec" items="${specializations}" varStatus="status">
+						<div>
+							<input value="${spec.name};${spec.abbreviation}" style="display: none">
+							<c:forEach var="student" items="${spec.students}">
+								<input value="${student}" style="display: none">
+							</c:forEach>
+						</div>
+					</c:forEach>
+				</div>
+				<input id="spec" value="${specialization.abbreviation}" style="display: none"> <input id="number" value="${choiceNumber}" style="display: none">
 
-			<input id="noSubmission" value="${nbreNo}" style="display: none"> <input id="partialSubmission" value="${nbrePartial}" style="display: none"> <input id="totalSubmission" value="${nbreAll}"
-				style="display: none">
+			</div>
 
 			<div class="span3">
 				<tags:rightColumnAdmin />
