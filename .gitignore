@@ -16,7 +16,7 @@ local.properties
 .settings/
 .loadpath
 .idea/*
-src/main/webapp/WEB-INF/resources/other/full-results.zip
+src\main\webapp\WEB-INF\resources\other\full-results.zip
 src/main/webapp/WEB-INF/resources/other/full-results-responsible.zip
 src/main/webapp/WEB-INF/resources/other/results-responsible-letters.zip
 src/main/webapp/WEB-INF/resources/other/results-responsible-resume.zip
