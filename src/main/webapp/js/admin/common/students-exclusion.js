@@ -15,7 +15,7 @@ function removePromoStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/img/plus-new.png");
+	newI.setAttribute("src", "/affectation-3A/img/plus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:addPromoStudent(this.id);");
@@ -126,7 +126,7 @@ function removeCesureStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/img/plus-new.png");
+	newI.setAttribute("src", "/affectation-3A/img/plus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:addCesureStudent(this.id);");
@@ -282,7 +282,7 @@ function addPromoStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/img/minus-new.png");
+	newI.setAttribute("src", "/affectation-3A/img/minus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:void(0);");
@@ -391,7 +391,7 @@ function addCesureStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/img/minus-new.png");
+	newI.setAttribute("src", "/affectation-3A/img/minus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:void(0);");

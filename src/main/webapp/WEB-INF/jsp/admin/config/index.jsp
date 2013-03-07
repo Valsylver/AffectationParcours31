@@ -8,27 +8,27 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 
-<link href="/css/dot-luv/jquery-ui-1.9.2.custom.css" rel="stylesheet">
-<link href="/css/date-time-picker/jquery-ui-timepicker-addon.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/dot-luv/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/date-time-picker/jquery-ui-timepicker-addon.css" rel="stylesheet">
 <script>
 	$(function() {
 		$.datepicker.setDefaults($.extend($.datepicker.regional["fr"]));
 		$("#datepicker").datepicker();
 	});
 </script>
-<script src="/js/jquery/jquery-1.8.3.js"></script>
-<script src="/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="/js/date-time-picker/jquery-ui-timepicker-addon.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/date-time-picker/jquery-ui-timepicker-addon.js"></script>
 </head>
 <body>
 	<div class="container">
 		<tags:headerAdmin run="<%=false%>" />
 
 
-		<form:form action="/admin/config/process-config-saving" method="POST" commandName="when">
+		<form:form action="${pageContext.request.contextPath}/admin/config/process-config-saving" method="POST" commandName="when">
 			<center>
 				<button class="btn btn-success btn-large" name="commit" type="submit">
 					<i class="icon-white icon-play"></i><br /> Lancer le processus
@@ -40,28 +40,28 @@
 			<div class="row">
 				<div class="span4">
 					<h2>
-						Parcours <a href="/admin/config/new/improvement-course" class="btn btn-info"><i class="icon-white icon-plus"></i></a>
+						Parcours <a href="${pageContext.request.contextPath}/admin/config/new/improvement-course" class="btn btn-info"><i class="icon-white icon-plus"></i></a>
 					</h2>
 					<br />
 
 					<c:forEach var="pa" items="${paAvailable}">
-					${pa.stringForForm}
-					<br />
-						<a href="/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+${pa.stringForForm}
+<br />
+						<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
 						<br />
 						<br />
 					</c:forEach>
 				</div>
 				<div class="span4">
 					<h2>
-						Filières <a href="/admin/config/new/job-sector" class="btn btn-info"><i class="icon-white icon-plus"></i></a>
+						Filières <a href="${pageContext.request.contextPath}/admin/config/new/job-sector" class="btn btn-info"><i class="icon-white icon-plus"></i></a>
 					</h2>
 					<br />
 
 					<c:forEach var="fm" items="${fmAvailable}">
-					${fm.stringForForm}
-					<br />
-						<a href="/admin/common/edit/js/${fm.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+${fm.stringForForm}
+<br />
+						<a href="${pageContext.request.contextPath}/admin/common/edit/js/${fm.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
 						<br />
 						<br />
 					</c:forEach>

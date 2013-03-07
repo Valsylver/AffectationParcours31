@@ -7,8 +7,8 @@
 <html>
 <head>
 <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-combobox.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-combobox.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -84,14 +84,14 @@
 				</div>
 				<div class="alert alert-info">
 					<h4>Modification</h4>
-					Vous pouvez modifier vos choix et vos documents jusqu'au ${dateEnd}<br /> <a class="btn btn-primary pull-right" href="/student/add">Modifier</a> <br /> <br /></div>
+					Vous pouvez modifier vos choix et vos documents jusqu'au ${dateEnd}<br /> <a class="btn btn-primary pull-right" href="${pageContext.request.contextPath}/student/add">Modifier</a> <br /> <br /></div>
 					
 			</div>
 		</div>
 		<div class="row">
 			<div class="span2 offset10">
 				<div class="pull right">
-					<a href="/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
+					<a href="${pageContext.request.contextPath}/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
 				</div>
 			</div>
 		</div>

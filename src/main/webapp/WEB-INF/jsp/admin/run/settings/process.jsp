@@ -9,10 +9,10 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="/css/dot-luv/jquery-ui-1.9.2.custom.css" rel="stylesheet">
-<link href="/css/date-time-picker/jquery-ui-timepicker-addon.css"
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/dot-luv/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/date-time-picker/jquery-ui-timepicker-addon.css"
 	rel="stylesheet">
 <script>
 	$(function() {
@@ -20,9 +20,9 @@
 		$("#datepicker").datepicker();
 	});
 </script>
-<script src="/js/jquery/jquery-1.8.3.js"></script>
-<script src="/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="/js/date-time-picker/jquery-ui-timepicker-addon.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/date-time-picker/jquery-ui-timepicker-addon.js"></script>
 
 </head>
 <body>
@@ -32,14 +32,14 @@
 		<div class="row">
 			<div class="span2">
 				<ul class="nav nav-list">
-					<li><a href="/admin/run/settings/admins">Administrateurs</a></li>
-					<li><a href="/admin/run/settings/students">Elèves</a></li>
-					<li><a href="/admin/run/settings/export">Export</a></li>
-					<li><a href="/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>
-					<li><a href="/admin/run/settings/mail2">Mail 2 <c:choose><c:when test="${mail2Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a></li>
-					<li><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
-					<li class="active"><a href="/admin/run/settings/process">Processus</a></li>
-					<li><a href="/admin/run/settings/specializations">Spécialisations</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail2">Mail 2 <c:choose><c:when test="${mail2Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
+					<li class="active"><a href="${pageContext.request.contextPath}/admin/run/settings/process">Processus</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/specializations">Spécialisations</a></li>
 				</ul>
 			</div>
 
@@ -51,7 +51,7 @@
 				</c:if>
 				<c:choose>
 					<c:when test="${modifyEndValidation}">
-						<form:form action="/admin/run/settings/edit-process" method="post"
+						<form:form action="${pageContext.request.contextPath}/admin/run/settings/edit-process" method="post"
 							commandName="when">
 							<c:if test="${not empty alertMessage}">
 								<div class="alert alert-error">
@@ -237,7 +237,7 @@
 					</c:otherwise>
 				</c:choose>
 
-				<a href="/admin/run/settings/stop-process" class="btn btn-danger"><i
+				<a href="${pageContext.request.contextPath}/admin/run/settings/stop-process" class="btn btn-danger"><i
 					class="icon-white icon-stop"></i> Arrêter le processus en cours</a> <br />
 			</div>
 		</div>

@@ -8,13 +8,13 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript"
-	src="/js/responsible/repartition-other-choice.js"></script>
-<script type="text/javascript" src="/js/jquery/jquery-latest.js"></script>
+	src="${pageContext.request.contextPath}/js/responsible/repartition-other-choice.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-latest.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 </head>
@@ -30,26 +30,26 @@
 
 					<li class="nav-header">${specialization.abbreviation}</li>
 					<c:forEach var="i" begin="1" end="5" step="1">
-						<li><a href="/responsable/${i}">Choix ${i}</a></li>
+						<li><a href="${pageContext.request.contextPath}/responsable/${i}">Choix ${i}</a></li>
 					</c:forEach>
 
 					<li class="nav-header">Statistiques</li>
-					<li><a href="/responsable/run/statistics/choice1">Parcours/filière</a></li>
+					<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/choice1">Parcours/filière</a></li>
 					<c:choose>
 						<c:when test="${specialization.type == 'JobSector' }">
 							<li class="active"><a
-								href="/responsable/run/statistics/repartition-other-choice2">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition
 									filières</a></li>
 							<li><a
-								href="/responsable/run/statistics/inverse-repartition">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition
 									parcours</a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="active"><a
-								href="/responsable/run/statistics/repartition-other-choice2">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition
 									parcours</a></li>
 							<li><a
-								href="/responsable/run/statistics/inverse-repartition">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition
 									filières</a></li>
 						</c:otherwise>
 					</c:choose>
@@ -62,12 +62,12 @@
 						<c:choose>
 							<c:when test="${i == choiceNumber}">
 								<li class="active"><a
-									href="/responsable/run/statistics/repartition-other-choice${i}">Choix
+									href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice${i}">Choix
 										${i}</a></li>
 							</c:when>
 							<c:otherwise>
 								<li><a
-									href="/responsable/run/statistics/repartition-other-choice${i}">Choix
+									href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice${i}">Choix
 										${i}</a></li>
 							</c:otherwise>
 						</c:choose>

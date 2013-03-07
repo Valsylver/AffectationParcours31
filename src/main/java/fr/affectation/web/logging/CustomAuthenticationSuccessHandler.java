@@ -25,20 +25,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
 			HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		System.out.println("authenticationSuccess");
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) authentication.getAuthorities();
 		if (isRolePresent(authorities, "ROLE_ELEVE")){
-			response.sendRedirect("student/");
+			response.sendRedirect("/affectation-3A/student/");
 		}
 		else{
 			if (isRolePresent(authorities, "ROLE_ADMIN")){
-				response.sendRedirect("admin/");
+				response.sendRedirect("/affectation-3A/admin/");
 			}
 			else{
 				if (isRolePresent(authorities, "ROLE_RESPONSABLE")){
-					response.sendRedirect("responsable/");
+					response.sendRedirect("/affectation-3A/responsable/");
 				}
 				else{
-					response.sendRedirect("noauthorities");
+					response.sendRedirect("/affectation-3A/noauthorities");
 				}
 			}
 		}

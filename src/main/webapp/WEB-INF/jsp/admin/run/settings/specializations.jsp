@@ -8,10 +8,10 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
-<script src="/js/jquery/jquery-1.8.3.js"></script>
-<script src="/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
 
 </head>
 <body>
@@ -21,15 +21,15 @@
 		<div class="row">
 			<div class="span2">
 				<ul class="nav nav-list">
-					<li><a href="/admin/run/settings/admins">Administrateurs</a></li>
-					<li><a href="/admin/run/settings/students">Elèves</a></li>
-					<li><a href="/admin/run/settings/export">Export</a></li>
-					<li><a href="/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>
-					<li><a href="/admin/run/settings/mail2">Mail 2 <c:choose><c:when test="${mail2Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a></li>
-					<li><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
-					<li><a href="/admin/run/settings/process">Processus</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail2">Mail 2 <c:choose><c:when test="${mail2Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/process">Processus</a></li>
 					<li class="active"><a
-						href="/admin/run/settings/specializations">Spécialisations</a></li>
+						href="${pageContext.request.contextPath}/admin/run/settings/specializations">Spécialisations</a></li>
 				</ul>
 			</div>
 
@@ -43,7 +43,7 @@
 					</c:choose>
 					${pa.stringForForm}
 					<br />
-					<a href="/admin/common/edit/ic/${pa.abbreviation}"
+					<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}"
 						class="btn btn-primary btn-small pull-right">Modfier</a>
 					<br />
 				</c:forEach>
@@ -60,7 +60,7 @@
 					</c:choose>
 					${fm.stringForForm}
 					<br />
-					<a href="/admin/common/edit/js/${fm.abbreviation}"
+					<a href="${pageContext.request.contextPath}/admin/common/edit/js/${fm.abbreviation}"
 						class="btn btn-primary btn-small pull-right">Modfier</a>
 					<br />
 				</c:forEach>

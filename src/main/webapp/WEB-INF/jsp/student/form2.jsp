@@ -6,12 +6,12 @@
 <html>
 <head>
 <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/student/bootstrap-select.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/student/bootstrap-select.css" rel="stylesheet">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script src="/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="/js/student/bootstrap-select.js" type="text/javascript"></script>
-<script src="/js/student/dynamic_select.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/student/bootstrap-select.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/student/dynamic_select.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container">
@@ -19,7 +19,7 @@
 
 		<div class="row">
 			<div class="span8 offset2">
-				<form:form action="/student/processForm" method="POST" commandName="fullChoice" class="well form-horizontal" enctype="multipart/form-data">
+				<form:form action="${pageContext.request.contextPath}/student/processForm" method="POST" commandName="fullChoice" class="well form-horizontal" enctype="multipart/form-data">
 					<legend>
 						<h3>Parcours d'approfondissement</h3>
 					</legend>
@@ -280,7 +280,7 @@
 
 			<div class="span2">
 				<div class="pull right">
-					<a href="/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
+					<a href="${pageContext.request.contextPath}/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
 				</div>
 			</div>
 		</div>

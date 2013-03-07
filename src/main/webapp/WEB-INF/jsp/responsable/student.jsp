@@ -8,9 +8,9 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <!-- Bootstrap -->
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="/css/student-admin-page.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/student-admin-page.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -22,19 +22,19 @@
 				<ul class="nav nav-list">
 					<li class="nav-header">${specialization.abbreviation}</li>
 					<c:forEach var="i" begin="1" end="5" step="1">
-						<li><a href="/responsable/${i}">Choix ${i}</a></li>
+						<li><a href="${pageContext.request.contextPath}/responsable/${i}">Choix ${i}</a></li>
 					</c:forEach>
 
 					<li class="nav-header">Statistiques</li>
-					<li><a href="/responsable/run/statistics/choice1">Parcours/filières</a></li>
+					<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/choice1">Parcours/filières</a></li>
 					<c:choose>
 						<c:when test="${specialization.type == 'JobSector' }">
-							<li><a href="/responsable/run/statistics/repartition-other-choice2">Répartition filières</a></li>
-							<li><a href="/responsable/run/statistics/inverse-repartition">Répartition parcours</a></li>
+							<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition filières</a></li>
+							<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition parcours</a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="/responsable/run/statistics/repartition-other-choice2">Répartition parcours</a></li>
-							<li><a href="/responsable/run/statistics/inverse-repartition">Répartition filières</a></li>
+							<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition parcours</a></li>
+							<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition filières</a></li>
 						</c:otherwise>
 					</c:choose>
 				</ul>
@@ -87,7 +87,7 @@
 						<h4>Documents</h4>
 						<c:choose>
 							<c:when test="${student.hasFilledResume}">
-								<a href="/files/cv_${student.login}.pdf">CV</a>
+								<a href="${pageContext.request.contextPath}/files/cv_${student.login}.pdf">CV</a>
 							</c:when>
 							<c:otherwise>
 							Cet élève n'a pas encore déposé son CV.
@@ -97,7 +97,7 @@
 
 						<c:choose>
 							<c:when test="${student.hasFilledLetterIc}">
-								<a href="/files/lettre_parcours_${student.login}.pdf">Lettre parcours</a>
+								<a href="${pageContext.request.contextPath}/files/lettre_parcours_${student.login}.pdf">Lettre parcours</a>
 							</c:when>
 							<c:otherwise>
 							Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
@@ -107,7 +107,7 @@
 
 						<c:choose>
 							<c:when test="${student.hasFilledLetterJs}">
-								<a href="/files/lettre_filiere_${student.login}.pdf">Lettre filière</a>
+								<a href="${pageContext.request.contextPath}/files/lettre_filiere_${student.login}.pdf">Lettre filière</a>
 							</c:when>
 							<c:otherwise>
 							Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.

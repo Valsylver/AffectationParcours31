@@ -7,13 +7,13 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="/js/jquery/jquery-latest.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-latest.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
-<script type="text/javascript" src="/js/responsible/repartition-other-choice.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/responsible/repartition-other-choice.js"></script>
 
 </head>
 <body>
@@ -24,18 +24,18 @@
 			<div class="span2">
 				<ul class="nav nav-list">
 					<li class="nav-header">Statistiques</li>
-					<li><a href="/admin/run/main/statistics/choice1">Choix</a></li>
-					<li><a href="/admin/run/main/statistics/form/synthese">Dossiers</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/choice1">Choix</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/form/synthese">Dossiers</a></li>
 					<li class="dropdown-submenu"><a href="#">Répartition parcours</a>
 						<ul class="dropdown-menu">
 							<c:forEach var="js" items="${allJs}">
-								<li><a href="/admin/run/main/statistics/inverse-repartition/js/${js.abbreviation}">${js.abbreviation}</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/inverse-repartition/js/${js.abbreviation}">${js.abbreviation}</a></li>
 							</c:forEach>
 						</ul></li>
 					<li class="dropdown-submenu"><a href="#">Répartition filières</a>
 						<ul class="dropdown-menu">
 							<c:forEach var="ic" items="${allIc}">
-								<li><a href="/admin/run/main/statistics/inverse-repartition/ic/${ic.abbreviation}">${ic.abbreviation}</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/inverse-repartition/ic/${ic.abbreviation}">${ic.abbreviation}</a></li>
 							</c:forEach>
 						</ul></li>
 					<li class="dropdown-submenu"><a href="#">Autres choix</a>
@@ -43,27 +43,27 @@
 							<li class="dropdown-submenu"><a href="#">Parcours</a>
 								<ul class="dropdown-menu">
 									<c:forEach var="ic" items="${allIc}">
-										<li><a href="/admin/run/main/statistics/repartition-other-choice2/1/${ic.abbreviation}">${ic.abbreviation}</a></li>
+										<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/repartition-other-choice2/1/${ic.abbreviation}">${ic.abbreviation}</a></li>
 									</c:forEach>
 								</ul></li>
 							<li class="dropdown-submenu"><a href="#">Filières</a>
 								<ul class="dropdown-menu">
 									<c:forEach var="js" items="${allJs}">
-										<li><a href="/admin/run/main/statistics/repartition-other-choice2/2/${js.abbreviation}">${js.abbreviation}</a></li>
+										<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/repartition-other-choice2/2/${js.abbreviation}">${js.abbreviation}</a></li>
 									</c:forEach>
 								</ul></li>
 						</ul></li>
 
 					<li class="nav-header">Parcours</li>
-					<li><a href="/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allIc}">
-						<li><a href="/admin/run/main/choices/improvement-course/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/run/main/choices/improvement-course/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
 					</c:forEach>
 
 					<li class="nav-header">Filières</li>
-					<li><a href="/admin/run/main/choices/job-sector/synthese/choice1">Synthèse</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/main/choices/job-sector/synthese/choice1">Synthèse</a></li>
 					<c:forEach var="spec" items="${allJs}" varStatus="status">
-						<li><a href="/admin/run/main/choices/job-sector/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/run/main/choices/job-sector/details/${spec.abbreviation}/choice1">${spec.abbreviation}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -72,10 +72,10 @@
 					<c:forEach var="i" begin="2" end="5" step="1">
 						<c:choose>
 							<c:when test="${i == choiceNumber}">
-								<li class="active"><a href="/admin/run/main/statistics/repartition-other-choice${i}/${type}/${specialization.abbreviation}">Choix ${i}</a></li>
+								<li class="active"><a href="${pageContext.request.contextPath}/admin/run/main/statistics/repartition-other-choice${i}/${type}/${specialization.abbreviation}">Choix ${i}</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="/admin/run/main/statistics/repartition-other-choice${i}/${type}/${specialization.abbreviation}">Choix ${i}</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/repartition-other-choice${i}/${type}/${specialization.abbreviation}">Choix ${i}</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>

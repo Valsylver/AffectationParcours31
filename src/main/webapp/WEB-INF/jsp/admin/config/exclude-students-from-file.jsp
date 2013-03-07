@@ -10,8 +10,8 @@
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
 
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 
 </head>
 <body>
@@ -23,7 +23,7 @@
 
 			<div class="span7">
 				<span id="letterJs2"> <form:form
-						action="/admin/config/process-students-exclusion" method="POST"
+						action="${pageContext.request.contextPath}/admin/config/process-students-exclusion" method="POST"
 						class="well form-horizontal" enctype="multipart/form-data">
 						<c:if test="${not empty alertMessage}">
 							<div class="alert alert-block">${alertMessage}</div>
@@ -72,7 +72,7 @@
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
 	type="text/javascript"></script>
-<script src="/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
 <script>
 	$(document).ready(function() {
 		$('input[id=exclusion]').change(function() {

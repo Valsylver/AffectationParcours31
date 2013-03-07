@@ -793,12 +793,12 @@ public class AdminController {
 			return "redirect:/admin";
 		}
 	}
-	
+
 	@RequestMapping("/run/main/statistics/repartition-other-choice{choice}/{type}/{abbreviation}")
 	public String pieChartsForOtherChoice(@PathVariable int choice, @PathVariable String abbreviation, @PathVariable int type, Model model) {
 		if (configurationService.isRunning()) {
-			Specialization specialization = type == Specialization.IMPROVEMENT_COURSE ? specializationService
-					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
+			Specialization specialization = type == Specialization.IMPROVEMENT_COURSE ? specializationService.getImprovementCourseByAbbreviation(abbreviation)
+					: specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			model.addAttribute("choiceNumber", choice);
 			model.addAttribute("type", type);
@@ -878,12 +878,14 @@ public class AdminController {
 	public void initialize() {
 		fakeData.createFakeSpecialization();
 		adminService.save("admin");
-		// Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A",
-		// "Bonjour, vous n'avez pas ...");
-		// Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A",
-		// "Bonjour, vous n'avez pas ...");
-		// mailService.save(first);
-		// mailService.save(second);
+		adminService.save("jmrossi");
+		adminService.save("vmarmousez");
+//		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
+//		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
+//		mailService.save(first);
+//		mailService.save(second);
+		configurationService.setFirstMailActivated(false);
+		configurationService.setSecondMailActivated(false);
 		configurationService.initializeFromDataBase();
 	}
 

@@ -10,8 +10,8 @@
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
 <!-- Bootstrap -->
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -27,32 +27,32 @@
 					<c:forEach var="i" begin="1" end="5" step="1">
 						<c:choose>
 							<c:when test="${i == order}">
-								<li class="active"><a href="/responsable/${i}">Choix
+								<li class="active"><a href="${pageContext.request.contextPath}/responsable/${i}">Choix
 										${i}</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="/responsable/${i}">Choix ${i}</a></li>
+								<li><a href="${pageContext.request.contextPath}/responsable/${i}">Choix ${i}</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<li class="nav-header">Statistiques</li>
-					<li><a href="/responsable/run/statistics/choice1">Parcours/filières</a></li>
+					<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/choice1">Parcours/filières</a></li>
 					<c:choose>
 						<c:when test="${specialization.type == 'JobSector' }">
 							<li><a
-								href="/responsable/run/statistics/repartition-other-choice2">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition
 									filières</a></li>
 							<li><a
-								href="/responsable/run/statistics/inverse-repartition">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition
 									parcours</a></li>
 						</c:when>
 						<c:otherwise>
 							<li><a
-								href="/responsable/run/statistics/repartition-other-choice2">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition
 									parcours</a></li>
 							<li><a
-								href="/responsable/run/statistics/inverse-repartition">Répartition
+								href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition
 									filières</a></li>
 						</c:otherwise>
 					</c:choose>
@@ -62,7 +62,7 @@
 			<div class="span7">
 				<c:choose>
 					<c:when test="${fn:length(allStudents) > 0}">
-						<form:form action="/responsable/edit-validation" method="POST"
+						<form:form action="${pageContext.request.contextPath}/responsable/edit-validation" method="POST"
 							commandName="studentsValidation" enctype="multipart/form-data">
 							<button class="btn btn-primary" name="commit" type="submit">
 								<i class="icon-white icon-ok"></i> Sauvegarder les modifications
@@ -90,7 +90,7 @@
 									<c:forEach var="student" items="${allStudents}"
 										varStatus="status">
 										<tr>
-											<td><a href="/responsable/student/${student.login}">${student.name}</a></td>
+											<td><a href="${pageContext.request.contextPath}/responsable/student/${student.login}">${student.name}</a></td>
 											<td><form:checkbox path="validated[${status.index}]"></form:checkbox></td>
 										</tr>
 									</c:forEach>

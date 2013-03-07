@@ -8,18 +8,18 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
-<script src="/js/jquery/jquery-1.8.3.js"></script>
-<script src="/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="/js/admin/common/students-exclusion.js" type="text/javascript"></script>
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin/common/students-exclusion.js" type="text/javascript"></script>
 
 </head>
 <body>
 	<div class="container">
 		<tags:headerAdmin run="${run}" />
 
-		<form:form action="/admin/common/process-students-exclusion" method="POST" commandName="studentExclusion" enctype="multipart/form-data">
+		<form:form action="${pageContext.request.contextPath}/admin/common/process-students-exclusion" method="POST" commandName="studentExclusion" enctype="multipart/form-data">
 
 			<div id="exclusionInputs">
 				<c:forEach begin="0" end="${fn:length(studentExclusion.currentPromotion)-1}" var="i">
@@ -38,14 +38,14 @@
 				<div class="span2">
 					<c:if test="${run}">
 						<ul class="nav nav-list">
-							<li><a href="/admin/run/settings/admins">Administrateurs</a></li>
-							<li class="active"><a href="/admin/run/settings/students">Elèves</a></li>
-							<li><a href="/admin/run/settings/export">Export</a></li>
-							<li><a href="/admin/run/settings/mail1">Mail 1</a></li>
-							<li><a href="/admin/run/settings/mail2">Mail 2</a></li>
-							<li><a href="/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
-							<li><a href="/admin/run/settings/process">Processus</a></li>
-							<li><a href="/admin/run/settings/specializations">Spécialisations</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
+							<li class="active"><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail2">Mail 2</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/spontaneous-mail">Mail Spontané</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/process">Processus</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/run/settings/specializations">Spécialisations</a></li>
 						</ul>
 					</c:if>
 				</div>
@@ -59,7 +59,7 @@
 							<h4>Promo ${promo}</h4>
 							<ul id="promo" class="unstyled">
 								<c:forEach var="student" items="${studentsConcerned}" varStatus="status">
-									<li><a id="promo${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removePromoStudent(this.id);"><img src="/img/minus-new.png"></img></a> ${student.name}</li>
+									<li><a id="promo${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removePromoStudent(this.id);"><img src="${pageContext.request.contextPath}/img/minus-new.png"></img></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>
@@ -69,10 +69,10 @@
 								<c:forEach var="student" items="${studentsToExclude}" varStatus="status">
 									<c:choose>
 										<c:when test="${student.origin == 'promo'}">
-											<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addPromoStudent(this.id);"><img src="/img/plus-new.png"></img></a> ${student.name}</li>
+											<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addPromoStudent(this.id);"><img src="${pageContext.request.contextPath}/img/plus-new.png"></img></a> ${student.name}</li>
 										</c:when>
 										<c:otherwise>
-											<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addCesureStudent(this.id);"><img src="/img/plus-new.png"></img></a> ${student.name}</li>
+											<li><a id="exclusion${status.index}" title="${student.login}" href="javascript:void(0);" onclick="addCesureStudent(this.id);"><img src="${pageContext.request.contextPath}/img/plus-new.png"></img></a> ${student.name}</li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -82,7 +82,7 @@
 							<h4>Elèves en césure</h4>
 							<ul id="cesure" class="unstyled">
 								<c:forEach var="student" items="${studentsCesure}" varStatus="status">
-									<li><a id="cesure${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removeCesureStudent(this.id);"><img src="/img/minus-new.png"></img></a> ${student.name}</li>
+									<li><a id="cesure${status.index}" title="${student.login}" href="javascript:void(0);" onclick="removeCesureStudent(this.id);"><img src="${pageContext.request.contextPath}/img/minus-new.png"></img></a> ${student.name}</li>
 								</c:forEach>
 							</ul>
 						</div>

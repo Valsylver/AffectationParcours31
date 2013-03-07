@@ -6,8 +6,8 @@
 <html>
 <head>
 <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link href="/css/select2.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/select3.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -15,7 +15,7 @@
 
 		<div class="row">
 			<div class="span8 offset2">
-				<form:form action="/student/processForm" method="POST" commandName="fullChoice" class="well form-horizontal" enctype="multipart/form-data">
+				<form:form action="${pageContext.request.contextPath}/student/processForm" method="POST" commandName="fullChoice" class="well form-horizontal" enctype="multipart/form-data">
 					<legend>
 						<h3>Parcours d'approfondissement</h3>
 					</legend>
@@ -213,8 +213,8 @@
 						<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-							<a class="btn btn-primary" href="/filestudent/cv"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
-							<a class="btn btn-danger" href="/student/deleteResume"><i class="icon-white icon-remove"></i> Supprimer</a>
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/cv"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+							<a class="btn btn-danger" href="${pageContext.request.contextPath}/student/deleteResume"><i class="icon-white icon-remove"></i> Supprimer</a>
 							<input id="resume" name="resume" type="file" style="display: none">
 							<br />
 						</c:otherwise>
@@ -235,8 +235,8 @@
 						<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-							<a class="btn btn-primary" href="/filestudent/lettre-parcours"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
-							<a class="btn btn-danger" href="/student/deleteLetterIc"><i class="icon-white icon-remove"></i> Supprimer</a>
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-parcours"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+							<a class="btn btn-danger" href="${pageContext.request.contextPath}/student/deleteLetterIc"><i class="icon-white icon-remove"></i> Supprimer</a>
 							<input id="letterIc" name="letterIc" type="file" style="display: none">
 							<br />
 						</c:otherwise>
@@ -256,8 +256,8 @@
 						<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-							<a class="btn btn-primary" href="/filestudent/lettre-filiere"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
-							<a class="btn btn-danger" href="/student/deleteLetterJs"><i class="icon-white icon-remove"></i> Supprimer</a>
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-filiere"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+							<a class="btn btn-danger" href="${pageContext.request.contextPath}/student/deleteLetterJs"><i class="icon-white icon-remove"></i> Supprimer</a>
 							<input id="letterJs" name="letterJs" type="file" style="display: none">
 							<br />
 						</c:otherwise>
@@ -277,16 +277,16 @@
 
 			<div class="span2">
 				<div class="pull right">
-					<a href="/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
+					<a href="${pageContext.request.contextPath}/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-	<script src="/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
-	<script src="/js/select2.min.js" type="text/javascript"></script>
-	<script src="/js/student/dynamic_select.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/select2.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/student/dynamic_select.js" type="text/javascript"></script>
 
 </body>
 </html>
