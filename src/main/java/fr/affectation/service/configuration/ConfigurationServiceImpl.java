@@ -26,6 +26,8 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	public static final int CONFIGURATION_ID = 42;
 	
+	private static final String EMAIL_SENDING_ADDRESS = "jmrossi@centrale-marseille.fr";
+	
 	@Inject
 	private SessionFactory sessionFactory;
 	
@@ -379,13 +381,11 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	@Override
 	public void sendFirstEmail(){
 		System.out.println("firstEmail");
-		//mailService.sendMail("valery.marmousez@centrale-marseille.fr", "valery.marmousez@gmail.com", "Rappel", "1er rappel");
 	}
 	
 	@Override
 	public void sendSecondEmail(){
 		System.out.println("secondEmail");
-		//mailService.sendMail("valery.marmousez@centrale-marseille.fr", "valery.marmousez@gmail.com", "Rappel", "2ème rappel");
 	}
 	
 	@Override

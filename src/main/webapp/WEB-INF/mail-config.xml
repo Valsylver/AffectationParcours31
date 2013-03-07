@@ -6,9 +6,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.centrale-marseille.fr"/>
 		<property name="port" value="587"/>
-		<property name="username" value="vmarmousez"/>
-		<!-- Password has to be changed -->
-		<property name="password" value="F7J2T5T4F4"/>
+		<property name="username" value="direction3A"/>
+		<property name="password" value=""/>
 		<property name="javaMailProperties">
 			<props>
 				<!-- Use SMTP transport protocol -->
