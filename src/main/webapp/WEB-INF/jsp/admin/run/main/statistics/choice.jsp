@@ -51,7 +51,7 @@
 							<li class="dropdown-submenu"><a href="#">Filières</a>
 								<ul class="dropdown-menu">
 								<c:forEach var="js" items="${allJs}">
-									<li><a href="/admin/run/main/statistics/repartition-other-choice2/2/${js.abbreviation}">${.abbreviation}</a>
+									<li><a href="/admin/run/main/statistics/repartition-other-choice2/2/${js.abbreviation}">${js.abbreviation}</a>
 									</li>
 								</c:forEach>
 								</ul>

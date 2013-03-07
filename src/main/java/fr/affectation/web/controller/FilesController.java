@@ -640,6 +640,7 @@ public class FilesController {
 				if ((choice1 != null) && (studentService.isStudentConcerned(login))) {
 					if (documentService.hasFilledResume(path, login)) {
 						addToZipFile(realPath + "cv\\cv_" + login + ".pdf", zos, "Parcours\\" + choice1 + "\\" + login + "\\cv_" + login + ".pdf");
+						System.out.println("zip added to file");
 					}
 					if (documentService.hasFilledLetterIc(path, login)) {
 						addToZipFile(realPath + "lettres\\parcours\\lettre_parcours_" + login + ".pdf", zos, "Parcours\\" + choice1 + "\\" + login
