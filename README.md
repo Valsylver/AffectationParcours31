@@ -25,7 +25,7 @@ localhost:3306/affectation2 correspond à la base de données où sont stockés 
 <br />
 
 ================================
-Dans le fichier src\main\webapp\WEB-INF\spring-security.xml, il faut remplacer http://localhost:8080/affectation-3A/j_spring_cas_security_check par l'adresse réelle suivie /j_spring_cas_security_check.
+Dans le fichier src\main\webapp\WEB-INF\spring-security.xml, il faut remplacer http://localhost:8080/affectation-3A/j_spring_cas_security_check par l'adresse réelle suivie de /j_spring_cas_security_check.
 <br />
 
 ================================
@@ -42,3 +42,7 @@ Les fichiers des élèves sont stockés dans les répertoires :
 ================================
 Des fichiers d'export (pdf, xls, zip, img) sont stockés temporairement dans le répertoire :
 * src\main\webapp\WEB-INF\resources\temp
+<br />
+
+================================
+L'application se déploie sur /affectation-3A (configuré dans pom.xml).
