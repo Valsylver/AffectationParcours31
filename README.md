@@ -21,3 +21,13 @@ localhost:3306/affectation2 correspond à la base de données où sont stockés 
 	src\test\java\fr\affectation\service\validation\ValidationServiceTest-context.xml
 
 Dans le fichier src\main\webapp\WEB-INF\spring-security.xml, il faut remplacer http://localhost:8080/affectation-3A/j_spring_cas_security_check par l'adresse réelle suivie /j_spring_cas_security_check.
+
+L'addresse d'envoi de mail est configurée dans le fichier src\main\webapp\WEB-INF\mail-config.xml.
+
+Les fichiers des élèves sont stockés dans les répertoires :
+	src\main\webapp\WEB-INF\resources\cv
+	src\main\webapp\WEB-INF\resources\lettres\filieres
+	src\main\webapp\WEB-INF\resources\lettres\parcours
+
+Des fichiers d'export (pdf, xls, zip, img) sont stockés temporairement dans le répertoire :
+	src\main\webapp\WEB-INF\resources\temp
