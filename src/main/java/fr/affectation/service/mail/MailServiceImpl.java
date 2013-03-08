@@ -18,6 +18,9 @@ import fr.affectation.domain.util.SimpleMail;
 public class MailServiceImpl implements MailService {
 	
 	@Inject
+	private String from;
+	
+	@Inject
 	private JavaMailSenderImpl mailSender;
 	
 	@Inject
@@ -59,11 +62,8 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public void sendSimpleMail(SimpleMail mail, List<String> addressees) {
 		for (String login : addressees){
-			//sendMail("vmarmousez@centrale-marseille.fr", login + "@centrale-marseille.fr", mail.getObject(), mail.getMessage());
-			sendMail("vmarmousez@centrale-marseille.fr", "valery.marmousez@gmail.com", mail.getObject(), mail.getMessage());
-			//sendMail("Valéry Marmousez", "valery.marmousez@gmail.com", mail.getObject(), mail.getMessage());
+			sendMail(from, login + "@centrale-marseille.fr", mail.getObject(), mail.getMessage());
 		}
 	}
-
 
 }

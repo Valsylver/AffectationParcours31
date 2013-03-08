@@ -26,8 +26,6 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	public static final int CONFIGURATION_ID = 42;
 	
-	private static final String EMAIL_SENDING_ADDRESS = "jmrossi@centrale-marseille.fr";
-	
 	@Inject
 	private SessionFactory sessionFactory;
 	
@@ -39,6 +37,8 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	@Inject
 	private MailService mailService;
+	
+	private String path;
 	
 	private boolean submissionAvailable = false;
 	
@@ -56,7 +56,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	@Override
 	@Transactional
-	public boolean initialize() {
+	public boolean initialize(String path) {
 		MethodInvokingJobDetailFactoryBean jobDetailFirstEmail;
 		try {
 			jobDetailFirstEmail = createJobDetail("sendFirstEmail", "jobDetailFirstEmail");
@@ -86,6 +86,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 		saveConfiguration(configuration);
 			
 		studentService.populateValidation();
+		this.path = path;
 		
 		return true;
 	}
@@ -381,11 +382,17 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	@Override
 	public void sendFirstEmail(){
 		System.out.println("firstEmail");
+		if (firstMailActivated){			
+			studentService.sendSimpleMail(mailService.getFirstMail().toSimpleMail(), path);
+		}
 	}
 	
 	@Override
 	public void sendSecondEmail(){
 		System.out.println("secondEmail");
+		if (secondMailActivated){			
+			studentService.sendSimpleMail(mailService.getSecondMail().toSimpleMail(), path);
+		}
 	}
 	
 	@Override

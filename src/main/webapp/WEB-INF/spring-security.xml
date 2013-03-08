@@ -53,7 +53,7 @@
 
 </beans:beans>
 
-<!-- 
+<!--  
 <beans:beans xmlns="http://www.springframework.org/schema/security"
                   xmlns:beans="http://www.springframework.org/schema/beans"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -83,4 +83,4 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
     <beans:import resource="affectation-servlet.xml"/>
 
 </beans:beans>
- --> 
+-->

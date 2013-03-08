@@ -194,7 +194,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/config/process-config-saving", method = RequestMethod.POST)
-	public String post(@ModelAttribute When when, BindingResult result, Model model) {
+	public String post(@ModelAttribute When when, BindingResult result, Model model, HttpServletRequest request) {
 		if (!configurationService.isRunning()) {
 			if (when.getFirstEmail() == null) {
 				FieldError fieldError = new FieldError("when", "firstEmail", "");
@@ -244,7 +244,7 @@ public class AdminController {
 						return "admin/config/index";
 					} else {
 						configurationService.setWhen(when);
-						if (!configurationService.initialize()) {
+						if (!configurationService.initialize(request.getSession().getServletContext().getRealPath("/"))) {
 							model.addAttribute("paAvailable", specializationService.findImprovementCourses());
 							model.addAttribute("fmAvailable", specializationService.findJobSectors());
 							model.addAttribute("alertMessage", "Impossible de sauvegarder la configuration.");

@@ -52,5 +52,13 @@ public class Mail {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	public SimpleMail toSimpleMail(){
+		SimpleMail simpleMail = new SimpleMail();
+		simpleMail.setMessage(this.message);
+		simpleMail.setObject(this.message);
+		simpleMail.setAddressee("Elèves");
+		return simpleMail;
+	}
 
 }

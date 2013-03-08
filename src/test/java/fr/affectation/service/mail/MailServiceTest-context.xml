@@ -59,6 +59,10 @@
 		</property>
 	</bean>
 	
+	<bean id="from" class="java.lang.String">
+		<constructor-arg value="ne_pas_repondre@centrale-marseille.fr" />
+	</bean>
+	
   	<bean class="fr.affectation.service.mail.MailServiceImpl" />
 
 </beans>

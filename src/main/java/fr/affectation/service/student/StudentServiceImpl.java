@@ -343,8 +343,7 @@ public class StudentServiceImpl implements StudentService {
 			student.setIcChoices(choiceService.findIcChoicesByLogin(login) == null ? new ImprovementCourseChoice() : choiceService.findIcChoicesByLogin(login));
 			student.setJsChoices(choiceService.findJsChoicesByLogin(login) == null ? new JobSectorChoice() : choiceService.findJsChoicesByLogin(login));
 			return student;
-		}
-		else{
+		} else {
 			return null;
 		}
 	}
@@ -375,21 +374,18 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void sendSimpleMail(SimpleMail mail, String path) {
 		List<String> addressees = new ArrayList<String>();
-		// if (mail.getAddressee().charAt(0) == 'E') {
-		// List<Map<String, Object>> partialMap =
-		// findStudentsForCategorySynthese("partial", path);
-		// List<Map<String, Object>> noMap =
-		// findStudentsForCategorySynthese("no", path);
-		// for (Map<String, Object> map : partialMap) {
-		// addressees.add((String) map.get("login"));
-		// }
-		// for (Map<String, Object> map : noMap) {
-		// addressees.add((String) map.get("login"));
-		// }
-		// } else {
-		// addressees = findAllStudentsConcernedLogin();
-		// }
-		addressees.add("vmarmousez");
+		if (mail.getAddressee().charAt(0) == 'E') {
+			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
+			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
+			for (Map<String, Object> map : partialMap) {
+				addressees.add((String) map.get("login"));
+			}
+			for (Map<String, Object> map : noMap) {
+				addressees.add((String) map.get("login"));
+			}
+		} else {
+			addressees = findAllStudentsConcernedLogin();
+		}
 		mailService.sendSimpleMail(mail, addressees);
 	}
 

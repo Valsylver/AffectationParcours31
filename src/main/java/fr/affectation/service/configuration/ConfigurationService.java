@@ -9,7 +9,7 @@ import fr.affectation.domain.configuration.Configuration;
 
 public interface ConfigurationService {
 
-	public boolean initialize();
+	public boolean initialize(String path);
 
 	public void stopProcess() throws SchedulerException;
 

@@ -1,24 +1,27 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.centrale-marseille.fr"/>
-		<property name="port" value="587"/>
-		<property name="username" value="direction3A"/>
-		<property name="password" value=""/>
+		<property name="host" value="smtp.centrale-marseille.fr" />
+		<property name="port" value="587" />
+		<property name="username" value="" />
+		<property name="password" value="" />
 		<property name="javaMailProperties">
 			<props>
 				<!-- Use SMTP transport protocol -->
 				<prop key="mail.transport.protocol">smtp</prop>
 				<!-- Use SMTP-AUTH to authenticate to SMTP server -->
-				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.auth">false</prop>
 				<!-- Use TLS to encrypt communication with SMTP server -->
 				<prop key="mail.smtp.starttls.enable">true</prop>
 				<prop key="mail.debug">false</prop>
 			</props>
 		</property>
+	</bean>
+
+	<bean id="from" class="java.lang.String">
+		<constructor-arg value="Direction 3A <do_no_reply@centrale-marseille.fr>" />
 	</bean>
 
 </beans>
