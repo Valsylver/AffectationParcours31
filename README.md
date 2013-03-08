@@ -29,7 +29,7 @@ Dans le fichier src\main\webapp\WEB-INF\spring-security.xml, il faut remplacer h
 <br />
 
 ================================
-L'addresse d'envoi de mail est configurée dans le fichier src\main\webapp\WEB-INF\mail-config.xml.
+L'adresse d'envoi de mail est configurée dans le fichier src\main\webapp\WEB-INF\mail-config.xml.
 <br />
 
 ================================
