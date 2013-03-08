@@ -1,6 +1,6 @@
 localhost:3306/affectation correspond à AGAP<br />
 5 fichiers à modifier :
-	src\main\webapp\WEB-INF\agap.xml
+	<t />src\main\webapp\WEB-INF\agap.xml
 	src\test\java\fr\affectation\service\agap\agap.xml
 	src\test\java\fr\affectation\service\configuration\agap.xml
 	src\test\java\fr\affectation\service\statistics\agap.xml
