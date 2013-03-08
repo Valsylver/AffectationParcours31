@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
-import fr.affectation.domain.comparator.ComparatorName;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.SimpleSpecializationWithList;
@@ -324,7 +323,7 @@ public class StudentServiceImpl implements StudentService {
 		for (String login : studentsLogin) {
 			studentsName.add(agapService.findNameFromLogin(login));
 		}
-		Collections.sort(studentsName, new ComparatorName());
+		Collections.sort(studentsName);
 		return studentsName;
 	}
 
@@ -428,7 +427,7 @@ public class StudentServiceImpl implements StudentService {
 			for (String login : logins) {
 				names.add(agapService.findNameFromLogin(login));
 			}
-			Collections.sort(names, new ComparatorName());
+			Collections.sort(names);
 			String specializationName = isAnIc ? specializationService.findNameFromIcAbbreviation(abbreviation) : specializationService
 					.findNameFromJsAbbreviation(abbreviation);
 			results.add(new SimpleSpecializationWithList(abbreviation, specializationName, names));
@@ -456,7 +455,7 @@ public class StudentServiceImpl implements StudentService {
 					names.add(agapService.findNameFromLogin(login));
 				}
 			}
-			Collections.sort(names, new ComparatorName());
+			Collections.sort(names);
 			String specializationName = type == Specialization.IMPROVEMENT_COURSE ? specializationService.findNameFromJsAbbreviation(abbreviation)
 					: specializationService.findNameFromIcAbbreviation(abbreviation);
 			results.add(new SimpleSpecializationWithList(abbreviation, specializationName, names));

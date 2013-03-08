@@ -222,45 +222,15 @@ function removeCesureStudent(id) {
 };
 
 function compareNames(fullName1, fullName2) {
-	if (fullName1.split(" ").length > 1){
-		var name1 = "";
-		for (var i=2; i<fullName1.split(" ").length; i++){
-			name1 += fullName1.split(" ")[i];
-		}
-	}
-	else{
-		var name1 = fullName1;
-	}
-	if (fullName2.split(" ").length > 1){
-		var name2 = "";
-		for (var i=2; i<fullName2.split(" ").length; i++){
-			name2 += fullName2.split(" ")[i];
-		}
-	}
-	else{
-		var name2 = fullName2;
-	}
-	if (name1 < name2){
+	if (fullName1 < fullName2){
 		return 1;
 	}
 	else{
-		if (name1 == name2){
-			var firstName1 = fullName1.split(" ")[1];
-			var firstName2 = fullName2.split(" ")[1];
-			if (firstName1 < firstName2){
-				return 1;
-			}
-			else{
-				if (firstName1 == firstName2){
-					return 0;
-				}
-				else{
-					return -1;
-				}
-			}
+		if (fullName1 > fullName2){
+			return -1;
 		}
 		else{
-			return -1;
+			return 0;
 		}
 	}
 };
