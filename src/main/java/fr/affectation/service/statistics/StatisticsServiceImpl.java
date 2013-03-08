@@ -40,7 +40,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			data.setValue(key, icStats.get(key));
 		}
 		JFreeChart chart = ChartFactory.createPieChart("", data, true, true, true);
-		File file = new File(path + "/WEB-INF/resources/jspchart/piechartPa.png");
+		File file = new File(path + "/WEB-INF/resources/temp/piechartPa.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 		try{
 			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);
@@ -60,7 +60,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			data.setValue(key, icStats.get(key));
 		}
 		JFreeChart chart = ChartFactory.createPieChart("", data, true, true, true);
-		File file = new File(path + "/WEB-INF/resources/jspchart/piechartFm.png");
+		File file = new File(path + "/WEB-INF/resources/temp/piechartFm.png");
 		ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 		try{
 			ChartUtilities.saveChartAsPNG(file, chart, 600, 400, info);

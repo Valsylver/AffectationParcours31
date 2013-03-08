@@ -78,5 +78,9 @@
 			</props>
 		</property>
 	</bean>
+	
+	<bean id="from" class="java.lang.String">
+		<constructor-arg value="ne_pas_repondre@centrale-marseille.fr" />
+	</bean>
 
 </beans>

@@ -9,7 +9,7 @@
 			<ul class="nav">
 				<c:choose>
 					<c:when test="${run}">
-						<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Administration</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administration</a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="${pageContext.request.contextPath}/admin/config/exclude">Elèves (liste)</a></li>

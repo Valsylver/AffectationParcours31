@@ -55,7 +55,7 @@ public class ExportServiceImpl implements ExportService {
 	public void generatePdfResults(String path) {
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream(path + "/WEB-INF/resources/pdf/resultats_affectation.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(path + "/WEB-INF/resources/temp/resultats_affectation.pdf"));
 			document.open();
 			Image logo = Image.getInstance(path + "/img/logo_ecm.png");
 			logo.scalePercent(50);
@@ -73,7 +73,7 @@ public class ExportServiceImpl implements ExportService {
 			Paragraph title11 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
 			Section section1 = chapter1.addSection(title11);
 			statisticsService.generatePieChartIc(path);
-			Image pieChartIc = Image.getInstance(path + "/WEB-INF/resources/jspchart/piechartPa.png");
+			Image pieChartIc = Image.getInstance(path + "/WEB-INF/resources/temp/piechartPa.png");
 			pieChartIc.setAlignment(Element.ALIGN_CENTER);
 			pieChartIc.scalePercent(50);
 			section1.add(pieChartIc);
@@ -142,7 +142,7 @@ public class ExportServiceImpl implements ExportService {
 			Paragraph title21 = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, Color.BLACK));
 			Section section3 = chapter2.addSection(title21);
 			statisticsService.generatePieChartJs(path);
-			Image pieChartJs = Image.getInstance(path + "/WEB-INF/resources/jspchart/piechartFm.png");
+			Image pieChartJs = Image.getInstance(path + "/WEB-INF/resources/temp/piechartFm.png");
 			pieChartJs.scalePercent(50);
 			pieChartJs.setAlignment(Element.ALIGN_CENTER);
 			section3.add(pieChartJs);

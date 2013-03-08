@@ -21,7 +21,7 @@
 	</bean>
 
 	<bean id="from" class="java.lang.String">
-		<constructor-arg value="Direction 3A <do_no_reply@centrale-marseille.fr>" />
+		<constructor-arg value="ne_pas_repondre@centrale-marseille.fr" />
 	</bean>
 
 </beans>

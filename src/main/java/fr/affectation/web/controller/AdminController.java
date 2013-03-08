@@ -189,7 +189,7 @@ public class AdminController {
 			model.addAttribute("now", dateFormat.format(date));
 			return "admin/config/index";
 		} else {
-			return "redirect:/admin";
+			return "redirect:/admin/run/settings/admins";
 		}
 	}
 
