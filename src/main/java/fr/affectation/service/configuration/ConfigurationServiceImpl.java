@@ -17,6 +17,7 @@ import org.springframework.scheduling.quartz.SimpleTriggerBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.affectation.domain.configuration.AlreadyLaunched;
 import fr.affectation.domain.configuration.Configuration;
 import fr.affectation.service.mail.MailService;
 import fr.affectation.service.student.StudentService;
@@ -500,5 +501,20 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	public void setSecondMailActivated(boolean secondMailActivated) {
 		this.secondMailActivated = secondMailActivated;
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public boolean hasAlreadyBeenLaunched() {
+		Session session = sessionFactory.getCurrentSession();
+		AlreadyLaunched al = (AlreadyLaunched) session.get(AlreadyLaunched.class, CONFIGURATION_ID);
+		return al != null;
+	}
 	
+	@Override
+	@Transactional
+	public void setAlreadyBeenLaunched() {
+		Session session = sessionFactory.getCurrentSession();
+		AlreadyLaunched al = new AlreadyLaunched();
+		session.saveOrUpdate(al);
+	}
 }

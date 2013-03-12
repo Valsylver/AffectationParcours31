@@ -38,13 +38,11 @@ import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.admin.AdminService;
-import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
-import fr.affectation.service.export.ExportService;
 import fr.affectation.service.fake.FakeDataService;
 import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
@@ -63,9 +61,6 @@ public class AdminController {
 	private StudentService studentService;
 
 	@Inject
-	private AgapService agapService;
-
-	@Inject
 	private ValidationService validationService;
 
 	@Inject
@@ -79,9 +74,6 @@ public class AdminController {
 
 	@Inject
 	private ConfigurationService configurationService;
-
-	@Inject
-	private ExportService exportService;
 
 	@Inject
 	private FakeDataService fakeData;
@@ -876,14 +868,17 @@ public class AdminController {
 
 	@PostConstruct
 	public void initialize() {
-		fakeData.createFakeSpecialization();
+		if (!configurationService.hasAlreadyBeenLaunched()){
+			fakeData.createFakeSpecialization();
+			configurationService.setAlreadyBeenLaunched();
+		}
 		adminService.save("admin");
 		adminService.save("jmrossi");
 		adminService.save("vmarmousez");
-//		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-//		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-//		mailService.save(first);
-//		mailService.save(second);
+		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
+		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
+		mailService.save(first);
+		mailService.save(second);
 		configurationService.setFirstMailActivated(false);
 		configurationService.setSecondMailActivated(false);
 		configurationService.initializeFromDataBase();

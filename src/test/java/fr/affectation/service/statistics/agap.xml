@@ -14,7 +14,7 @@
 		<property name="password" value="route" />
 	</bean>
 	
-	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+	<bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSourceAgap" />
 	</bean>
 

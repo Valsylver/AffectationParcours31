@@ -66,5 +66,9 @@ public interface ConfigurationService {
 	public void deleteConfiguration();
 
 	public void initializeFromDataBase();
+	
+	public boolean hasAlreadyBeenLaunched();
+
+	public void setAlreadyBeenLaunched();
 
 }
