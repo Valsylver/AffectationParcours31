@@ -9,11 +9,7 @@
    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<import resource="agap.xml" />
-	
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-     	<constructor-arg ref="dataSource" />
-  	</bean>
-  	
+
   	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
      	<constructor-arg ref="dataSource" />
   	</bean>

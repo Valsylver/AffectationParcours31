@@ -20,6 +20,7 @@ import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
+import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.validation.ValidationService;
@@ -39,6 +40,9 @@ public class StudentServiceTest {
 	
 	@Inject
 	private SpecializationService specializationService;
+	
+	@Inject
+	private AgapService agapService;
 	
 	@Test
 	public void repartitionOtherTypeJs(){
@@ -119,6 +123,23 @@ public class StudentServiceTest {
 		js.setName("Job sector 1");
 		specializationService.save(js);
 		studentService.findInverseRepartition(js);
+	}
+	
+	@Test
+	public void testRetrieveStudentDataFromAgap(){
+		String login = findRandomExistingLogin();
+		if (!login.equals("")){
+			studentService.retrieveStudentByLogin(login, "");
+		}
+	}
+	
+	public String findRandomExistingLogin() {
+		List<String> existingLogins = agapService.findStudentConcernedLogins();
+		if (existingLogins.size() != 0) {
+			return existingLogins.get((int) (Math.random() * existingLogins
+					.size()));
+		}
+		return "";
 	}
 	
 	@Before

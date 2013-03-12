@@ -40,10 +40,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<import resource="agap.xml" />
 
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<constructor-arg ref="dataSourceAgap" />
-	</bean>
-
 	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSourceAgap" />
 	</bean>
