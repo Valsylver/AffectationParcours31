@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,7 +37,6 @@ import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
-import fr.affectation.domain.util.StudentsExclusion;
 import fr.affectation.service.admin.AdminService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
@@ -98,26 +98,14 @@ public class AdminController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormatter, true));
 	}
 
-	@RequestMapping(value = "/common/process-students-exclusion", method = RequestMethod.POST)
-	public String editExclusion(StudentsExclusion studentExclusion) {
-		List<String> newExcluded = new ArrayList<String>();
-		List<String> oldExcluded = exclusionService.findStudentToExcludeLogins();
-		for (String login : studentExclusion.getExcluded()) {
-			if (!login.equals("")) {
-				newExcluded.add(login);
-			}
-		}
-		for (String login : newExcluded) {
-			if (!oldExcluded.contains(login)) {
-				exclusionService.save(login);
-			}
-		}
-		for (String login : oldExcluded) {
-			if (!newExcluded.contains(login)) {
-				exclusionService.remove(login);
-			}
-		}
-		return configurationService.isRunning() ? "redirect:/admin/run/settings/students" : "redirect:/admin/config/exclude";
+	@RequestMapping(value = "/common/exclude-student", method=RequestMethod.GET)
+	public @ResponseBody void excludeByLogin(@RequestParam String login) {
+		exclusionService.save(login);
+	}
+	
+	@RequestMapping(value = "/common/add-student",method=RequestMethod.GET)
+	public @ResponseBody void addByLogin(@RequestParam String login) {
+		exclusionService.remove(login);
 	}
 
 	@RequestMapping("/config/exclude")
@@ -128,7 +116,6 @@ public class AdminController {
 			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
 			model.addAttribute("studentsCesure", studentService.findCesureStudentsConcerned());
 			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
-			model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
 			return "admin/common/exclude-students";
 		} else {
 			return "redirect:/admin";
@@ -444,7 +431,6 @@ public class AdminController {
 			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
 			model.addAttribute("studentsCesure", studentService.findCesureStudentsConcerned());
 			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
-			model.addAttribute("studentExclusion", new StudentsExclusion(studentService.findNecessarySizeForStudentExclusion()));
 			return "admin/common/exclude-students";
 		} else {
 			return "redirect:/admin";
@@ -868,7 +854,7 @@ public class AdminController {
 
 	@PostConstruct
 	public void initialize() {
-		if (!configurationService.hasAlreadyBeenLaunched()){
+		if (!configurationService.hasAlreadyBeenLaunched()) {
 			fakeData.createFakeSpecialization();
 			configurationService.setAlreadyBeenLaunched();
 		}

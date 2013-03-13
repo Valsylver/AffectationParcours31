@@ -62,11 +62,6 @@
 				<c:choose>
 					<c:when test="${fn:length(allStudents) > 0}">  
 						<table id="student" class="table table-bordered table-striped tablesorter">
-							<thead>
-								<tr>
-									<th>Nom</th>
-								</tr>
-							</thead>
 							<c:choose>
 								<c:when test="${state == 'after'}">
 									<tbody>
@@ -101,7 +96,7 @@
 					<c:otherwise>
 						<p>
 							<c:choose>
-								<c:when test="${specialization.type == 'ic'}">
+								<c:when test="${specialization.type == 1}">
 									Aucun elève n'a pour l'instant choisi ce parcours d'approfondissement en 
 								</c:when>
 								<c:otherwise>

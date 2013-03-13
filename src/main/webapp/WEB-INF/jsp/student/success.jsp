@@ -82,10 +82,26 @@
 						</tbody>
 					</table>
 				</div>
+				<c:if test="${((hasFilledLetterIc) || (hasFilledLetterJs) || (hasFilledResume))}">
+					<div class="alert alert-info">
+						<h4>Récapitulatif de vos documents</h4>
+						<br />
+						<c:if test="${hasFilledResume}">
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/cv"><i class="icon-white icon-download-alt"></i> CV</a>
+						</c:if>
+						<c:if test="${hasFilledLetterIc}">
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-parcours"><i class="icon-white icon-download-alt"></i> Lettre parcours</a>
+						</c:if>
+						<c:if test="${hasFilledLetterJs}">
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-filiere"><i class="icon-white icon-download-alt"></i> Lettre filière</a>
+						</c:if>
+					</div>
+				</c:if>
 				<div class="alert alert-info">
 					<h4>Modification</h4>
-					Vous pouvez modifier vos choix et vos documents jusqu'au ${dateEnd}<br /> <a class="btn btn-primary pull-right" href="${pageContext.request.contextPath}/student/add">Modifier</a> <br /> <br /></div>
-					
+					Vous pouvez modifier vos choix et vos documents jusqu'au ${dateEnd}<br /> <a class="btn btn-primary pull-right" href="${pageContext.request.contextPath}/student/add">Modifier</a> <br /> <br />
+				</div>
+
 			</div>
 		</div>
 		<div class="row">
@@ -95,8 +111,7 @@
 				</div>
 			</div>
 		</div>
-		<br />
-		<br />
+		<br /> <br />
 	</div>
 
 

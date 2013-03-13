@@ -16,7 +16,7 @@ public abstract class Specialization implements Comparable<Specialization>{
 	public static final int JOB_SECTOR = 2;
 	
 	@Id
-	@Size(min=1, max=6)
+	@Size(min=1, max=20)
 	private String abbreviation;
 	
 	@Column
@@ -54,6 +54,14 @@ public abstract class Specialization implements Comparable<Specialization>{
 		this.name = name;
 	}
 	
+	public int getJOB_SECTOR(){
+		return JOB_SECTOR;
+	}
+	
+	public int getIMPROVEMENT_COURSE(){
+		return JOB_SECTOR;
+	}
+	
 	@Override
 	public int compareTo(Specialization specialization) {
 		if ((name != null) && (specialization.getName() != null)){
@@ -67,5 +75,13 @@ public abstract class Specialization implements Comparable<Specialization>{
 				return 0;
 			}
 		}
+	}
+
+	public static int getImprovementCourse() {
+		return IMPROVEMENT_COURSE;
+	}
+
+	public static int getJobSector() {
+		return JOB_SECTOR;
 	}
 }

@@ -20,8 +20,6 @@ public interface StudentService {
 	
 	public List<SimpleStudent> findAllStudentsConcerned();
 
-	public int findNecessarySizeForStudentExclusion();
-
 	public boolean isStudentConcerned(String login);
 
 	public List<String> findAllStudentsConcernedLogin();

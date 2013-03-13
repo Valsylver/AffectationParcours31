@@ -275,13 +275,7 @@ public class StudentServiceImpl implements StudentService {
 		sizeOfCategories.put("total", nbreAll);
 		sizeOfCategories.put("partial", nbrePartial);
 		sizeOfCategories.put("empty", nbreNo);
-
 		return results;
-	}
-
-	@Override
-	public int findNecessarySizeForStudentExclusion() {
-		return findAllStudentsConcerned().size() + exclusionService.findStudentToExcludeLogins().size();
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,7 +46,7 @@ public class StudentController {
 
 	@Inject
 	private ConfigurationService configurationService;
-	
+
 	@Inject
 	private StudentService studentService;
 
@@ -150,19 +151,19 @@ public class StudentController {
 			model.addAttribute("notFilledJsNumber", notFilledJs);
 			model.addAttribute("notFilledIc", nfIc);
 			model.addAttribute("notFilledIcNumber", notFilledIc);
-			
+
 			model.addAttribute("icChoices", studentService.findIcChoicesFullSpecByLogin(login));
 			model.addAttribute("jsChoices", studentService.findJsChoicesFullSpecByLogin(login));
-			
+
 			String path = request.getSession().getServletContext().getRealPath("/");
 
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm.");
 			String dateEnd = dateFormat.format(configurationService.getWhen().getEndSubmission());
 			model.addAttribute("dateEnd", dateEnd);
 
 			boolean filesOk = true;
 			String[] fileListName = { "resume", "letterIc", "letterJs" };
-			MultipartFile[] fileList = {resume, letterIc, letterJs};
+			MultipartFile[] fileList = { resume, letterIc, letterJs };
 			int indexFile = 0;
 			for (String fileName : fileListName) {
 				MultipartFile file = fileList[indexFile];
@@ -181,7 +182,7 @@ public class StudentController {
 						if (!cond) {
 							filesOk = false;
 							redirectAttributes.addFlashAttribute(fileName + "Error", "Une erreur est survenue lors de la lecture du fichier.");
-						} 
+						}
 					} else {
 						redirectAttributes.addFlashAttribute(fileName + "Error", "Seuls les fichiers pdf sont acceptés.");
 						filesOk = false;
@@ -193,48 +194,36 @@ public class StudentController {
 			if (!filesOk) {
 				return "redirect:/student/add";
 			}
-			
+
 			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
 			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
 			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
-			
+
 			return "student/success";
 		} else {
 			return "student/noSubmission";
 		}
 	}
 
-	@RequestMapping("/deleteResume")
-	public String deleteResume(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/remove-document", method=RequestMethod.GET)
+	public @ResponseBody
+	String removeDocument(@RequestParam String type, HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String login = auth.getName();
 		String path = request.getSession().getServletContext().getRealPath("/");
-		if (!documentService.deleteResume(path, login)) {
-			redirectAttributes.addFlashAttribute("resumeError", "Une erreur est survenue lors de la suppression de ce fichier.");
-		}
-		return "redirect:/student/add";
-	}
-	
-	@RequestMapping("/deleteLetterIc")
-	public String deleteLetterIc(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String login = auth.getName();
-		String path = request.getSession().getServletContext().getRealPath("/");
-		if (!documentService.deleteLetterIc(path, login)) {
-			redirectAttributes.addFlashAttribute("letterIcError", "Une erreur est survenue lors de la suppression de ce fichier.");
+		System.out.println("Deletion of the " + type + " of " + login);
+		System.out.println("The path is : " + path);
+		boolean success = true;
+		if (type.equals("resume")) {
+			success  = documentService.deleteResume(path, login);
 		}
-		return "redirect:/student/add";
-	}
-	
-	@RequestMapping("/deleteLetterJs")
-	public String deleteLetterJs(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String login = auth.getName();
-		String path = request.getSession().getServletContext().getRealPath("/");
-		if (!documentService.deleteLetterJs(path, login)) {
-			redirectAttributes.addFlashAttribute("letterJsError", "Une erreur est survenue lors de la suppression de ce fichier.");
+		if (type.equals("letterIc")) {
+			success = documentService.deleteLetterIc(path, login);
 		}
-		return "redirect:/student/add";
+		if (type.equals("letterJs")) {
+			success = documentService.deleteLetterJs(path, login);
+		}
+		return success ? "true" : "false";
 	}
 
 	@RequestMapping("/add")

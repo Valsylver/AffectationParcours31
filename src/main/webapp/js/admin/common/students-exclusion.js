@@ -84,7 +84,6 @@ function removePromoStudent(id) {
 			}
 			else{
 				exclusion.insertBefore(newLi, exclusionElements[0]);
-				var resume = document.getElementById("resume");
 			}
 		}
 		else{
@@ -97,18 +96,28 @@ function removePromoStudent(id) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
 	}
 	
-	var allExclusionInputs = document.getElementById("exclusionInputs").getElementsByTagName("input");
-	for (var inputIndex = 0; inputIndex < allExclusionInputs.length; inputIndex++){
-		var input = allExclusionInputs[inputIndex];
-		if (input.value == ""){
-			input.setAttribute("value", login);
-			break;
-		}
-	}
-	
-	setNoSavedDataMessage();
-	
+	remove(login);
 };
+
+function remove(login){
+	$.ajax({
+		url: "/affectation-3A/admin/common/exclude-student",
+		data: "login="+login,
+		success: function(){
+			$('#info').html("L'élève dont le login est <b>" + login + "</b> est désormais <b>exclu</b> du processus.");
+		}
+	});
+}
+
+function add(login){
+	$.ajax({
+		url: "/affectation-3A/admin/common/add-student",
+		data: "login="+login,
+		success: function(){
+			$('#info').html("L'élève dont le login est <b>" + login + "</b> n'est désormais <b>plus exclu</b> du processus.");
+		}
+	});
+}
 
 function removeCesureStudent(id) {
 	var cesure = document.getElementById("cesure");
@@ -208,17 +217,7 @@ function removeCesureStudent(id) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
 	}
 	
-	var allExclusionInputs = document.getElementById("exclusionInputs").getElementsByTagName("input");
-	for (var inputIndex = 0; inputIndex < allExclusionInputs.length; inputIndex++){
-		var input = allExclusionInputs[inputIndex];
-		if (input.value == ""){
-			input.setAttribute("value", login);
-			break;
-		}
-	}
-	
-	setNoSavedDataMessage();
-	
+	remove(login);
 };
 
 function compareNames(fullName1, fullName2) {
@@ -332,16 +331,7 @@ function addPromoStudent(id) {
 		liPromoElements[childIndex].id = "promo" + childIndex;
 	}
 	
-	var allExclusionInputs = document.getElementById("exclusionInputs").getElementsByTagName("input");
-	for (var inputIndex = 0; inputIndex < allExclusionInputs.length; inputIndex++){
-		var input = allExclusionInputs[inputIndex];
-		if (input.value == login){
-			input.setAttribute("value", "");
-			break;
-		}
-	}
-	
-	setNoSavedDataMessage();
+	add(login);
 };
 
 function addCesureStudent(id) {
@@ -441,19 +431,5 @@ function addCesureStudent(id) {
 		licesureElements[childIndex].id = "cesure" + childIndex;
 	}
 	
-	var allExclusionInputs = document.getElementById("exclusionInputs").getElementsByTagName("input");
-	for (var inputIndex = 0; inputIndex < allExclusionInputs.length; inputIndex++){
-		var input = allExclusionInputs[inputIndex];
-		if (input.value == login){
-			input.setAttribute("value", "");
-			break;
-		}
-	}
-	
-	setNoSavedDataMessage();
-};
-
-function setNoSavedDataMessage() {
-	var button = document.getElementById("starNoSavedData");
-	button.innerHTML = "*";
+	add(login);
 };

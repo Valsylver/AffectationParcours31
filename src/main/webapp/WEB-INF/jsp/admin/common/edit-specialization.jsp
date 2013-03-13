@@ -25,7 +25,7 @@
 		
 		<div class="row">
 			<c:choose>
-				<c:when test="${specialization.type == 'JobSector'}">
+				<c:when test="${specialization.type == specialization.JOB_SECTOR}">
 					<c:set var="action" value="${pageContext.request.contextPath}/admin/common/process-edition/js" />
 				</c:when>
 				<c:otherwise>
@@ -47,7 +47,7 @@
 					<label for="abbreviation">
 					Abréviation
 					<form:errors path="abbreviation" >
-						<br /> <font color="red">L'abréviation ne doit pas dépasser 6 caractères, ni être vide.</font>
+						<br /> <font color="red">L'abréviation ne doit pas dépasser 20 caractères, ni être vide.</font>
 					</form:errors>
 					</label>
 					
@@ -70,7 +70,7 @@
 					<div class="btn-group pull-right">
 						<c:if test="${(alreadyExists) && (not (state == 'run'))}">
 							<c:choose>
-								<c:when test="${specialization.type == 'JobSector'}">
+								<c:when test="${specialization.type == specialization.JOB_SECTOR}">
 									<a name="delete" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/config/delete/job-sector/${abbreviation}">
 										Supprimer
 									</a>

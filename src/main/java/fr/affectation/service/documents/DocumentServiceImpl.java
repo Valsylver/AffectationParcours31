@@ -59,7 +59,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public boolean validatePdf(MultipartFile file) {
 		System.out.println("content type of the supposed pdf file : " + file.getContentType());
-		return file.getContentType().equals("application/pdf") || file.getContentType().equals("text/html");
+		return file.getContentType().equals("application/pdf") || file.getContentType().equals("application/x-pdf");
 	}
 
 	@Override

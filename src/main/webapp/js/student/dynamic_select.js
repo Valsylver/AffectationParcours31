@@ -14,6 +14,88 @@ $(document).ready(function() {
 	$("select").select2();
 });
 
+function removeResume() {
+	removeDocument("resume");
+	var ihtml = '<input id="resume" name="resume" type="file" style="display: none">';
+	ihtml += '<div class="input-append">';
+	ihtml += '<input id="resumeInput" type="text" style="min-width: 300px"><a class="btn" onclick="$(';
+	ihtml += "'input[id=resume]').click();";
+	ihtml += '">';
+	ihtml += "Parcourir...</a></div><br />";
+	document.getElementById('divResume').innerHTML = ihtml;
+	$('input[id=resume]').change(function() {
+		$('#resumeInput').val($(this).val());
+	});
+};
+
+function removeLetterIc() {
+	removeDocument("letterIc");
+	var ihtml = '<input id="letterIc" name="letterIc" type="file" style="display: none">';
+	ihtml += '<div class="input-append">';
+	ihtml += '<input id="letterIcInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$(';
+	ihtml += "'input[id=letterIc]').click();";
+	ihtml += '">';
+	ihtml += "Parcourir...</a></div><br />";
+	document.getElementById('divLetterIc').innerHTML = ihtml;
+	$('input[id=letterIc]').change(function() {
+		$('#letterIcInput').val($(this).val());
+	});
+};
+
+function removeLetterJs() {
+	removeDocument("letterJs");
+	var ihtml = '<input id="letterJs" name="letterJs" type="file" style="display: none">';
+	ihtml += '<div class="input-append">';
+	ihtml += '<input id="letterJsInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$(';
+	ihtml += "'input[id=letterJs]').click();";
+	ihtml += '">';
+	ihtml += "Parcourir...</a></div><br />";
+	document.getElementById('divLetterJs').innerHTML = ihtml;
+	$('input[id=letterJs]').change(function() {
+		$('#letterJsInput').val($(this).val());
+	});
+};
+
+function removeDocument(type) {
+	$.ajax({
+				url : "/affectation-3A/student/remove-document",
+				data : "type=" + type,
+				success : function(sucM) {
+					var suc;
+					if (sucM == "true"){
+						suc = true;
+					}
+					else{
+						suc = false;
+					}
+					if (type == "resume") {
+						var alert = document.getElementById("alertResume");
+						if (suc) {
+							alert.innerHTML = '<div class="alert alert-success">Votre CV a bien été supprimé.</div>';
+						} else {
+							alert.innerHTML = '<div class="alert alert-error">Une erreur est survenue lors de la suppression de votre CV.</div>';
+						}
+					}
+					if (type == "letterIc") {
+						var alert = document.getElementById("alertLetterIc");
+						if (suc) {
+							alert.innerHTML = '<div class="alert alert-success">Votre lettre de motivation pour votre choix de parcours d\'approfondissement a bien été supprimée.</div>';
+						} else {
+							alert.innerHTML = '<div class="alert alert-error">Une erreur est survenue lors la suppression de votre lettre de motivation pour votre choix de parcours d\'approfondissement.</div>';
+						}
+					}
+					if (type == "letterJs") {
+						var alert = document.getElementById("alertLetterJs");
+						if (suc) {
+							alert.innerHTML = '<div class="alert alert-success">Votre lettre de motivation pour votre choix de filière métier a bien été supprimée.</div>';
+						} else {
+							alert.innerHTML = '<div class="alert alert-error">Une erreur est survenue lors la suppression de votre lettre de motivation pour votre choix de filière métier.</div>';
+						}
+					}
+				}
+			});
+}
+
 $(document).ready(function() {
 	var pa1 = document.getElementById('selectPa1');
 	var pa2 = document.getElementById('selectPa2');
@@ -38,7 +120,7 @@ $(document).ready(function() {
 	updateFmSelect(fm3.options[fm3.selectedIndex].text, 'selectFm3');
 	updateFmSelect(fm4.options[fm4.selectedIndex].text, 'selectFm4');
 	updateFmSelect(fm5.options[fm5.selectedIndex].text, 'selectFm5');
-	
+
 });
 
 function updatePaSelect(value, id) {
@@ -57,8 +139,6 @@ function updatePaSelect(value, id) {
 				select.remove(index)
 			}
 		}
-//		var blocListe = document.getElementById('blocResultat');
-//		blocListe.innerHTML = texte;
 
 		var select = document.getElementById("selectPa" + currentId);
 		var optionManquante = "lol";
@@ -96,7 +176,6 @@ function updatePaSelect(value, id) {
 			}
 		}
 
-
 		if (optionManquante != "lol") {
 			for (i = 1; i < 6; i++) {
 				if (i != parseInt(id[id.length - 1])) {
@@ -122,8 +201,9 @@ function updatePaSelect(value, id) {
 							}
 						}
 					}
-					
-					document.getElementById("selectPa" + i).add(opt, select_other.options[where]);
+
+					document.getElementById("selectPa" + i).add(opt,
+							select_other.options[where]);
 				}
 			}
 		}
@@ -189,7 +269,8 @@ function updatePaSelect(value, id) {
 							}
 						}
 					}
-					document.getElementById("selectPa" + i).add(opt, select_other.options[where]);
+					document.getElementById("selectPa" + i).add(opt,
+							select_other.options[where]);
 				}
 			}
 		}

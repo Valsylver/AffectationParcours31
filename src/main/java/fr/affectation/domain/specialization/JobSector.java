@@ -5,16 +5,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class JobSector extends Specialization{
-	
-	private String type = "JobSector";
+public class JobSector extends Specialization {
 
-	public String getType() {
+	private int type = Specialization.JOB_SECTOR;
+
+	public int getType() {
 		return type;
 	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 }
-

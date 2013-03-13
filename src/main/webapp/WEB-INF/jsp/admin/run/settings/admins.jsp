@@ -45,7 +45,7 @@
 				<h4>Login des administrateurs actuels</h4>
 				<c:forEach var="admin" items="${currentAdmins}">
 							${admin}
-						<a class="btn btn-danger" href="${pageContext.request.contextPath}/admin/run/settings/admins/delete/${admin}">Supprimer</a>
+						<a class="btn btn-danger" href="${pageContext.request.contextPath}/admin/run/settings/admins/delete/${admin}"><i class="icon-white icon-remove"></i> Supprimer</a>
 						<br />
 						<br />
 				</c:forEach>

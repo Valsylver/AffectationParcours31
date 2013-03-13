@@ -8,13 +8,10 @@ import javax.persistence.Table;
 @Table
 public class ImprovementCourse extends Specialization{
 	
-	private String type = "ImprovementCourse";
-
-	public String getType() {
+	private int type = Specialization.IMPROVEMENT_COURSE;
+	
+	public int getType(){
 		return type;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
 }
