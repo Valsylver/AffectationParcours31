@@ -66,6 +66,7 @@ public class StudentController {
 		if (configurationService.isSubmissionAvailable()) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String login = auth.getName();
+			System.out.println("student : " + login);
 
 			ImprovementCourseChoice improvementCourseChoice = fullChoice.getImprovementCourseChoice();
 			JobSectorChoice jobSectorChoice = fullChoice.getJobSectorChoice();

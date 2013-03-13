@@ -16,10 +16,6 @@ local.properties
 .settings/
 .loadpath
 .idea/*
-src\main\webapp\WEB-INF\resources\other\full-results.zip
-src/main/webapp/WEB-INF/resources/other/full-results-responsible.zip
-src/main/webapp/WEB-INF/resources/other/results-responsible-letters.zip
-src/main/webapp/WEB-INF/resources/other/results-responsible-resume.zip
 
 # External tool builders
 .externalToolBuilders/
@@ -37,10 +33,6 @@ target/
 src/main/webapp/resources/cv/*.pdf
 src/main/webapp/resources/lettres/parcours/*.pdf
 src/main/webapp/resources/lettres/filieres/*.pdf
-src/main/webapp/resources/pdf/*.pdf
-src/main/webapp/resources/xls/*.xls
-src/main/webapp/resources/jspchart/piechartPa.png
-src/main/webapp/resources/jspchart/piechartFm.png
 derby.log
 
 #################

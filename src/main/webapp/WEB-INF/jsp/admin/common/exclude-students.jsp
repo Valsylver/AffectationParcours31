@@ -36,7 +36,7 @@
 			</div>
 
 			<div class="span10">
-				<div id="info" class="alert alert-info">Cliquez sur les icônes pour exclude/ne plus exclure les élèves.</div>
+				<div id="info" class="alert alert-info">Cliquez sur les icônes pour exclure/ne plus exclure les élèves.</div>
 				<div class="row">
 					<div class="span3">
 						<h4>Promo ${promo}</h4>
