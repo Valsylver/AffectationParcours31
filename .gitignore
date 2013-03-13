@@ -30,9 +30,6 @@ local.properties
 .buildpath
 
 target/
-src/main/webapp/resources/cv/*.pdf
-src/main/webapp/resources/lettres/parcours/*.pdf
-src/main/webapp/resources/lettres/filieres/*.pdf
 derby.log
 
 #################
