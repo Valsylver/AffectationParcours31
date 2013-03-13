@@ -36,13 +36,14 @@
 						<h4>Documents</h4>
 						<c:if test="${!hasFilledResume}">
 		            			Vous n'avez pas déposé votre CV. 
+		            			<br />
 		            		</c:if>
 						<c:if test="${!hasFilledLetterIc}">
-		            			Vous n'avez pas déposé votre lettre de motivation pour le parcours d'approfondissement. 
+		            			Vous n'avez pas déposé votre lettre de motivation pour votre choix de parcours d'approfondissement. 
 		            			<br />
 						</c:if>
 						<c:if test="${!hasFilledLetterJs}">
-		            			Vous n'avez pas déposé votre lettre de motivation pour la filière métier. 
+		            			Vous n'avez pas déposé votre lettre de motivation pour votre choix de filière métier. 
 		            			<br />
 						</c:if>
 					</div>

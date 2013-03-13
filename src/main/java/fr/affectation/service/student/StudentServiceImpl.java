@@ -441,11 +441,12 @@ public class StudentServiceImpl implements StudentService {
 		int type = specialization instanceof JobSector ? Specialization.JOB_SECTOR : Specialization.IMPROVEMENT_COURSE;
 		Map<String, List<String>> inverseRepartition = findChoiceRepartitionForTheOtherType(specialization.getAbbreviation(), type);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
+		List<String> studentsConcernedLogins = findAllStudentsConcernedLogin();
 		for (String abbreviation : inverseRepartition.keySet()) {
 			List<String> logins = inverseRepartition.get(abbreviation);
 			List<String> names = new ArrayList<String>();
 			for (String login : logins) {
-				if (isStudentConcerned(login)) {
+				if (studentsConcernedLogins.contains(login)) {
 					names.add(agapService.findNameFromLogin(login));
 				}
 			}
