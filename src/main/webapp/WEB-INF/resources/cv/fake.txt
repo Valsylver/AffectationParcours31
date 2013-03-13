@@ -1,0 +1,1 @@
+The purpose of this file is just to make its parent folder visible with git.
