@@ -47,7 +47,6 @@ import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.configuration.When;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
-import fr.affectation.service.fake.FakeDataService;
 import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.statistics.StatisticsService;
@@ -78,9 +77,6 @@ public class AdminController {
 
 	@Inject
 	private ConfigurationService configurationService;
-
-	@Inject
-	private FakeDataService fakeData;
 
 	@Inject
 	private MailService mailService;
@@ -1005,31 +1001,58 @@ public class AdminController {
 	@PostConstruct
 	public void initialize() {
 		if (!configurationService.hasAlreadyBeenLaunched()) {
-			fakeData.createFakeSpecialization();
-			configurationService.setAlreadyBeenLaunched();
+			createFakeSpecialization();
+			adminService.save("jmrossi");
+			adminService.save("vmarmousez");
+			Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
+			Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
+			mailService.save(first);
+			mailService.save(second);
+			configurationService.setFirstMailActivated(false);
+			configurationService.setSecondMailActivated(false);
 		}
-		adminService.save("admin");
-		adminService.save("jmrossi");
-		adminService.save("vmarmousez");
-		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-		mailService.save(first);
-		mailService.save(second);
-		configurationService.setFirstMailActivated(false);
-		configurationService.setSecondMailActivated(false);
 		configurationService.initializeFromDataBase();
 	}
+	
+	public void createFakeSpecialization(){
+		createAndSaveFakeIc("AISE",
+				"Acoustique Industrielle, Sons et Environnement");
+		createAndSaveFakeIc("M3S",
+				"Modélisation Mécanique des Matériaux et des Structures");
+		createAndSaveFakeIc("FETES",
+				"Fluides : Energie, Transport, Environnement, SantŽ");
+		createAndSaveFakeIc("GM", "Génie Mer");
+		createAndSaveFakeIc("CMV", "Chimie : Molécules et Vivant");
+		createAndSaveFakeIc("PM", "Procédés et Molécules");
+		createAndSaveFakeIc("MSA", "Micro Systèmes Avancés");
+		createAndSaveFakeIc("OP", "Optique et Photonique");
+		createAndSaveFakeIc("CSA", "Conception des Systèmes Automatisés");
+		createAndSaveFakeIc("I2T",
+				"Ingénierie des Images et Télécommunications");
+		createAndSaveFakeIc("MAF", "Mathématiques Appliquées Finance");
+		createAndSaveFakeIc("S2I", "Systèmes d'Information et Informatique");
 
-	@RequestMapping("/fake")
-	public String populateResults() {
-		fakeData.createFakeChoices();
-		return "redirect:/admin/";
+		createAndSaveFakeJs("R&D", "Recherche et développement");
+		createAndSaveFakeJs("CBE", "Conception, Bureau d'Etudes");
+		createAndSaveFakeJs("PRL", "Production, Logistique");
+		createAndSaveFakeJs("AC", "Audit et Conseil");
+		createAndSaveFakeJs("MEE", "Management d'Entreprise, Entreprenariat");
+	}
+	
+	public void createAndSaveFakeIc(String abbreviation, String name) {
+		ImprovementCourse improvementCourse = new ImprovementCourse();
+		improvementCourse.setAbbreviation(abbreviation);
+		improvementCourse.setName(name);
+		improvementCourse.setResponsibleLogin("respo_" + abbreviation);
+		specializationService.save(improvementCourse);
 	}
 
-	@RequestMapping("/fake2")
-	public String fakeValidation() {
-		fakeData.fakeValidation();
-		return "redirect:/admin/";
+	public void createAndSaveFakeJs(String abbreviation, String name) {
+		JobSector jobSector = new JobSector();
+		jobSector.setAbbreviation(abbreviation);
+		jobSector.setName(name);
+		jobSector.setResponsibleLogin("respo_" + abbreviation);
+		specializationService.save(jobSector);
 	}
 
 }
