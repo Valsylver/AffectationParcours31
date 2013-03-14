@@ -101,8 +101,8 @@ public class AgapServiceImpl implements AgapService {
 	@Override
 	public List<String> findCurrentPromotionStudentLogins() {
 		String cycle = getCurrentCycle();
-		String requeteEleves = "SELECT DISTINCT uid FROM 720_choix3A_eleves WHERE nom IN "
-				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Credits')";
+		String requeteEleves = "SELECT uid FROM 720_choix3A_eleves WHERE nom IN "
+				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("cycle", cycle);
 		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
@@ -115,7 +115,7 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	public List<String> getUeCodeFromSemester(String semester) {
-		String queryUeCode = "SELECT DISTINCT code_ue FROM 720_choix3A_notes_details WHERE cycle=:cycle AND sem=:semester";
+		String queryUeCode = "SELECT code_ue FROM 720_choix3A_notes_details WHERE cycle=:cycle AND sem=:semester";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		if (semester == "SEM-7") {
 			namedParameter.put("cycle", getCurrentCycle());

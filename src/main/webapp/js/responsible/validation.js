@@ -1,6 +1,7 @@
 function inverseValidation(login){
+	var path = document.getElementById("path").innerHTML;
 	$.ajax({
-		url: "/affectation-3A/responsable/inverse-validation",
+		url: path + "/responsable/inverse-validation",
 		data: "login="+login,
 		success: function(validated){
 			if (validated == "true"){

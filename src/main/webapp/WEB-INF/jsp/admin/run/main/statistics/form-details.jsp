@@ -92,15 +92,15 @@
 				</ul>
 
 				<c:if test="${category == 'all'}">
-					<div class="alert alert-success">Elèves ayant déposé leurs documents et effectué tous leurs choix</div>
+					<div class="alert alert-success">Elèves ayant déposé leurs documents et effectué tous leurs choix.</div>
 				</c:if>
 
 				<c:if test="${category == 'partial'}">
-					<div class="alert alert-block">Elèves n'ayant pas déposé tous leurs documents ou n'ayant pas effectué tous leurs choix</div>
+					<div class="alert alert-block">Elèves n'ayant pas déposé tous leurs documents ou n'ayant pas effectué tous leurs choix.</div>
 				</c:if>
 
 				<c:if test="${category == 'no'}">
-					<div class="alert alert-error">Elèves n'ayant pas déposé tous leurs documents ni effectué tous leurs choix</div>
+					<div class="alert alert-error">Elèves n'ayant pas déposé tous leurs documents ni effectué tous leurs choix.</div>
 				</c:if>
 
 				<c:forEach var="student" items="${results}">

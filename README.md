@@ -45,4 +45,6 @@ Des fichiers d'export (pdf, xls, zip, img) sont stockés temporairement dans le 
 <br />
 
 ================================
-L'application se déploie sur /affectation-3A (configuré dans pom.xml).
+L'application se déploie sur /affectation-3A (configuré dans le pom.xml). Si ce chemin est modifié, il est nécessaire de modifier : 
+* la valeur du champ path dans le fichier src\main\webapp\WEB-INF\affectation-servlet.xml
+* remplacer /affectation-3A par le vrai chemin dans src\main\webapp\css\select3.css

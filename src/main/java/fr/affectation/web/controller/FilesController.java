@@ -74,13 +74,14 @@ public class FilesController {
 	private ExportService exportService;
 
 	@RequestMapping(value = "/files/lettre_parcours_{login}", method = RequestMethod.GET)
-	public void getLetterIc(@PathVariable("file_name") String login, HttpServletResponse response, HttpServletRequest request) {
+	public void getLetterIc(@PathVariable("login") String login, HttpServletResponse response, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("/");
 		String realPath = path + "WEB-INF/resources/lettres/parcours/lettre_parcours_" + login;
 		realPath += ".pdf";
 		try {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
+			is.close();
 			response.flushBuffer();
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
@@ -88,13 +89,14 @@ public class FilesController {
 	}
 
 	@RequestMapping(value = "/files/lettre_filiere_{login}", method = RequestMethod.GET)
-	public void getLetterJs(@PathVariable("file_name") String login, HttpServletResponse response, HttpServletRequest request) {
+	public void getLetterJs(@PathVariable("login") String login, HttpServletResponse response, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("/");
 		String realPath = path + "WEB-INF/resources/lettres/filieres/lettre_filiere_" + login;
 		realPath += ".pdf";
 		try {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
+			is.close();
 			response.flushBuffer();
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
@@ -109,6 +111,7 @@ public class FilesController {
 		try {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
+			is.close();
 			response.flushBuffer();
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
@@ -124,6 +127,7 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 			File file = new File(path + "WEB-INF/resources/temp/resultats_affectation.pdf");
 			file.delete();
 			file = new File(path + "WEB-INF/resources/temp/pieChartPa.png");
@@ -499,6 +503,7 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 			File file = new File(realPath);
 			file.delete();
 		} catch (Exception e) {
@@ -628,6 +633,7 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 			File file = new File(realPath);
 			file.delete();
 		} catch (Exception e) {
@@ -677,11 +683,12 @@ public class FilesController {
 
 			InputStream is = new FileInputStream(realPath + "temp/full-results.zip");
 			IOUtils.copy(is, response.getOutputStream());
-
+			is.close();
 			response.flushBuffer();				
 			
-			File file = new File(realPath);
-			file.delete();
+			File file = new File(realPath + "temp/full-results.zip");
+			
+			System.out.println("success file deletion ? " + file.delete());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -709,7 +716,10 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath + "temp/full-resume.zip");
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
-
+			is.close();
+			
+			File file = new File(realPath + "temp/full-resume.zip");
+			file.delete();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -746,6 +756,10 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath + "temp/full-results-ic.zip");
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
+			
+			File file = new File(realPath + "temp/full-results-ic.zip");
+			file.delete();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -782,6 +796,10 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath + "temp/full-results-js.zip");
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
+			
+			File file = new File(realPath + "temp/full-results-js.zip");
+			file.delete();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -829,6 +847,10 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath + "temp/full-results-responsible.zip");
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
+			
+			File file = new File(realPath + "temp/full-results-responsible.zip");
+			file.delete();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -865,6 +887,10 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath + "temp/results-responsible-resume.zip");
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
+			
+			File file = new File(realPath + "temp/results-responsible-resume.zip");
+			file.delete();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -908,6 +934,7 @@ public class FilesController {
 			InputStream is = new FileInputStream(realPath + "temp/results-responsible-letters.zip");
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 			
 			File file = new File(realPath + "temp/results-responsible-letters.zip");
 			file.delete();

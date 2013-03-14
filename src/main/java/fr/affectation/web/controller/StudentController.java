@@ -33,7 +33,7 @@ import fr.affectation.service.student.StudentService;
 @RequestMapping("/student")
 public class StudentController {
 
-	private static final String noSelectionMessage = "------------------------- Pas de choix -------------------------";
+	public static final String noSelectionMessage = "------------------------- Pas de choix -------------------------";
 
 	@Inject
 	private ChoiceService choiceService;
@@ -212,8 +212,6 @@ public class StudentController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String path = request.getSession().getServletContext().getRealPath("/");
 		String login = auth.getName();
-		System.out.println("Deletion of the " + type + " of " + login);
-		System.out.println("The path is : " + path);
 		boolean success = true;
 		if (type.equals("resume")) {
 			success  = documentService.deleteResume(path, login);

@@ -7,7 +7,6 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<!-- Bootstrap -->
 <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/student-admin-page.css" rel="stylesheet">
@@ -34,6 +33,26 @@
 								<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/inverse-repartition/ic/${ic.abbreviation}">${ic.abbreviation}</a></li>
 							</c:forEach>
 						</ul></li>
+					
+					<li class="dropdown-submenu"><a href="#">Autres choix</a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-submenu"><a href="#">Parcours</a> 
+								<ul class="dropdown-menu">
+								<c:forEach var="ic" items="${allIc}">
+									<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/repartition-other-choice2/1/${ic.abbreviation}">${ic.abbreviation}</a>
+									</li>
+								</c:forEach>
+								</ul>
+							</li>
+							<li class="dropdown-submenu"><a href="#">Filières</a>
+								<ul class="dropdown-menu">
+								<c:forEach var="js" items="${allJs}">
+									<li><a href="${pageContext.request.contextPath}/admin/run/main/statistics/repartition-other-choice2/2/${js.abbreviation}">${js.abbreviation}</a>
+									</li>
+								</c:forEach>
+								</ul>
+							</li>
+						</ul></li>
 
 					<li class="nav-header">Parcours</li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/main/choices/improvement-course/synthese/choice1">Synthèse</a></li>
@@ -53,7 +72,7 @@
 				<c:choose>
 					<c:when test="${student != null}">
 						<h3>
-							<legend>${student.name}</legend>
+							<legend>${student.name} <a href="${pageContext.request.contextPath}/admin/run/main/student/edit-student-form/${login}" class="btn btn-primary btn-small pull-right"><i class="icon-white icon-pencil"></i></a></legend>
 						</h3>
 						<h4>Voeux</h4>
 						<table class="table table-bordered table-striped table-condensed">

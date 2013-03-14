@@ -2,6 +2,7 @@ package fr.affectation.service.mail;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.hibernate.Session;
@@ -17,7 +18,7 @@ import fr.affectation.domain.util.SimpleMail;
 @Service
 public class MailServiceImpl implements MailService {
 	
-	@Inject
+	@Resource(name="from")
 	private String from;
 	
 	@Inject

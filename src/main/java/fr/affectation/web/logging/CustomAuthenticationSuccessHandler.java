@@ -3,6 +3,7 @@ package fr.affectation.web.logging;
 import java.io.IOException;
 import java.util.Collection;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,26 +15,28 @@ import org.springframework.stereotype.Component;
 
 @Component("authenticationSuccessHandler")
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+	
+	@Resource(name="path")
+	private String path;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
 			HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		System.out.println("authenticationSuccess");
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) authentication.getAuthorities();
 		if (isRolePresent(authorities, "ROLE_ELEVE")){
-			response.sendRedirect("/affectation-3A/student/");
+			response.sendRedirect(path + "/student/");
 		}
 		else{
 			if (isRolePresent(authorities, "ROLE_ADMIN")){
-				response.sendRedirect("/affectation-3A/admin/");
+				response.sendRedirect(path + "/admin/");
 			}
 			else{
 				if (isRolePresent(authorities, "ROLE_RESPONSABLE")){
-					response.sendRedirect("/affectation-3A/responsable/");
+					response.sendRedirect(path + "/responsable/");
 				}
 				else{
-					response.sendRedirect("/affectation-3A/noauthorities");
+					response.sendRedirect(path + "/noauthorities");
 				}
 			}
 		}

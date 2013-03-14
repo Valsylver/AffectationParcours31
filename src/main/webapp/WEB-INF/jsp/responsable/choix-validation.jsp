@@ -16,6 +16,7 @@
 </head>
 <body>
 	<div class="container">
+		<div id="path" style="display:none">${pageContext.request.contextPath}</div>
 
 		<tags:headerResponsible title="${specialization.name} (${specialization.abbreviation})" />
 
@@ -75,7 +76,7 @@
 					<c:otherwise>
 						<p>
 							<c:choose>
-								<c:when test="${specialization.type == 'ic'}">
+								<c:when test="${specialization.type == specialization.IMPROVEMENT_COURSE}">
 									Aucun elève n'a pour l'instant choisi ce parcours d'approfondissement en 
 								</c:when>
 								<c:otherwise>

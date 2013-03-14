@@ -31,6 +31,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import fr.affectation.domain.choice.Choice;
+import fr.affectation.domain.choice.FullChoice;
+import fr.affectation.domain.choice.ImprovementCourseChoice;
+import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
@@ -98,13 +102,15 @@ public class AdminController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormatter, true));
 	}
 
-	@RequestMapping(value = "/common/exclude-student", method=RequestMethod.GET)
-	public @ResponseBody void excludeByLogin(@RequestParam String login) {
+	@RequestMapping(value = "/common/exclude-student", method = RequestMethod.GET)
+	public @ResponseBody
+	void excludeByLogin(@RequestParam String login) {
 		exclusionService.save(login);
 	}
-	
-	@RequestMapping(value = "/common/add-student",method=RequestMethod.GET)
-	public @ResponseBody void addByLogin(@RequestParam String login) {
+
+	@RequestMapping(value = "/common/add-student", method = RequestMethod.GET)
+	public @ResponseBody
+	void addByLogin(@RequestParam String login) {
 		exclusionService.remove(login);
 	}
 
@@ -328,6 +334,150 @@ public class AdminController {
 		} else {
 			return "redirect:/admin";
 		}
+	}
+
+	@RequestMapping("/run/main/student/edit-student-form/{login}")
+	public String add(Model model, @PathVariable String login, HttpServletRequest request) {
+		if (configurationService.isRunning()) {
+			String path = request.getSession().getServletContext().getRealPath("/");
+			Choice choiceIc = choiceService.findImprovementCourseChoiceByLogin(login);
+			Choice choiceJs = choiceService.findJobSectorChoiceByLogin(login);
+			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
+			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
+			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
+			model.addAttribute("choiceIc", choiceIc);
+			model.addAttribute("choiceJs", choiceJs);
+			model.addAttribute("fullChoice", new FullChoice());
+			model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+			model.addAttribute("fmAvailable", specializationService.findJobSectors());
+			model.addAttribute("login", login);
+			return "admin/run/main/student/edit-form";
+		} else {
+			return "redirect:/admin";
+		}
+	}
+
+	@RequestMapping(value = "/run/main/student/process-student-form-edition/{login}", method = RequestMethod.POST)
+	public String processForm(FullChoice fullChoice, Model model, @PathVariable String login, BindingResult bindingResult,
+			@RequestParam(value = "resume", required = false) MultipartFile resume, @RequestParam(value = "letterIc", required = false) MultipartFile letterIc,
+			@RequestParam(value = "letterJs", required = false) MultipartFile letterJs, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		if (configurationService.isRunning()) {
+			String noSelectionMessage = StudentController.noSelectionMessage;
+
+			ImprovementCourseChoice improvementCourseChoice = fullChoice.getImprovementCourseChoice();
+			JobSectorChoice jobSectorChoice = fullChoice.getJobSectorChoice();
+
+			improvementCourseChoice.setLogin(login);
+			jobSectorChoice.setLogin(login);
+
+			if (improvementCourseChoice.getChoice1().equals(noSelectionMessage)) {
+				improvementCourseChoice.setChoice1("");
+			}
+			if (improvementCourseChoice.getChoice2().equals(noSelectionMessage)) {
+				improvementCourseChoice.setChoice2("");
+			}
+			if (improvementCourseChoice.getChoice3().equals(noSelectionMessage)) {
+				improvementCourseChoice.setChoice3("");
+			}
+			if (improvementCourseChoice.getChoice4().equals(noSelectionMessage)) {
+				improvementCourseChoice.setChoice4("");
+			}
+			if (improvementCourseChoice.getChoice5().equals(noSelectionMessage)) {
+				improvementCourseChoice.setChoice5("");
+			}
+
+			if (jobSectorChoice.getChoice1().equals(noSelectionMessage)) {
+				jobSectorChoice.setChoice1("");
+			}
+			if (jobSectorChoice.getChoice2().equals(noSelectionMessage)) {
+				jobSectorChoice.setChoice2("");
+			}
+			if (jobSectorChoice.getChoice3().equals(noSelectionMessage)) {
+				jobSectorChoice.setChoice3("");
+			}
+			if (jobSectorChoice.getChoice4().equals(noSelectionMessage)) {
+				jobSectorChoice.setChoice4("");
+			}
+			if (jobSectorChoice.getChoice5().equals(noSelectionMessage)) {
+				jobSectorChoice.setChoice5("");
+			}
+
+			improvementCourseChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice1()));
+			improvementCourseChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice2()));
+			improvementCourseChoice.setChoice3(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice3()));
+			improvementCourseChoice.setChoice4(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice4()));
+			improvementCourseChoice.setChoice5(specializationService.getAbbreviationFromStringForForm(improvementCourseChoice.getChoice5()));
+
+			jobSectorChoice.setChoice1(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice1()));
+			jobSectorChoice.setChoice2(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice2()));
+			jobSectorChoice.setChoice3(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice3()));
+			jobSectorChoice.setChoice4(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice4()));
+			jobSectorChoice.setChoice5(specializationService.getAbbreviationFromStringForForm(jobSectorChoice.getChoice5()));
+
+			choiceService.save(improvementCourseChoice);
+			choiceService.save(jobSectorChoice);
+
+			String path = request.getSession().getServletContext().getRealPath("/");
+
+			boolean filesOk = true;
+			String[] fileListName = { "resume", "letterIc", "letterJs" };
+			MultipartFile[] fileList = { resume, letterIc, letterJs };
+			int indexFile = 0;
+			for (String fileName : fileListName) {
+				MultipartFile file = fileList[indexFile];
+				if (!file.isEmpty()) {
+					if (documentService.validatePdf(file)) {
+						boolean cond = true;
+						if (indexFile == 0) {
+							cond = documentService.saveResume(path, login, resume);
+						}
+						if (indexFile == 1) {
+							cond = documentService.saveLetterIc(path, login, letterIc);
+						}
+						if (indexFile == 2) {
+							cond = documentService.saveLetterJs(path, login, letterJs);
+						}
+						if (!cond) {
+							filesOk = false;
+							redirectAttributes.addFlashAttribute(fileName + "Error", "Une erreur est survenue lors de la lecture du fichier.");
+						}
+					} else {
+						redirectAttributes.addFlashAttribute(fileName + "Error", "Seuls les fichiers pdf sont acceptés.");
+						filesOk = false;
+					}
+				}
+				indexFile += 1;
+			}
+
+			if (!filesOk) {
+				return "redirect:/admin/run/main/edit-student-form/" + login;
+			}
+
+			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
+			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
+			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
+
+			return "redirect:/admin/run/main/student/" + login;
+		} else {
+			return "redirect:/admin";
+		}
+	}
+
+	@RequestMapping(value = "/run/main/student/remove-document", method = RequestMethod.GET)
+	public @ResponseBody
+	String removeDocument(@RequestParam String type, @RequestParam String login, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		boolean success = true;
+		if (type.equals("resume")) {
+			success = documentService.deleteResume(path, login);
+		}
+		if (type.equals("letterIc")) {
+			success = documentService.deleteLetterIc(path, login);
+		}
+		if (type.equals("letterJs")) {
+			success = documentService.deleteLetterJs(path, login);
+		}
+		return success ? "true" : "false";
 	}
 
 	@RequestMapping("/run/settings/admins")

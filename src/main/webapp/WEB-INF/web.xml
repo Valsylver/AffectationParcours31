@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
@@ -15,18 +14,10 @@
 		<servlet-name>affectation</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<session-config>
+		<session-timeout>45</session-timeout>
+	</session-config>
 
-	<!--  
-	<filter>
-		<filter-name>monitoring</filter-name>
-		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>monitoring</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	-->
-	<!-- Spring UTF-8 filter -->
 	<filter>
 		<filter-name>encoding-filter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -39,7 +30,7 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-	
+
 	<filter>
 		<filter-name>charsetFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -48,7 +39,7 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-		
+
 	<filter-mapping>
 		<filter-name>charsetFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -76,5 +67,5 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 </web-app>

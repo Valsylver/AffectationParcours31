@@ -13,9 +13,10 @@ function removePromoStudent(id) {
 	for ( var childIndex = 0; childIndex < liPromoElements.length; childIndex++) {
 		liPromoElements[childIndex].id = "promo" + childIndex;
 	}
-
+	
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/affectation-3A/img/plus-new.png");
+	var path = document.getElementById("path").innerHTML;
+	newI.setAttribute("src", path + "/img/plus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:addPromoStudent(this.id);");
@@ -100,8 +101,9 @@ function removePromoStudent(id) {
 };
 
 function remove(login){
+	var path = document.getElementById("path").innerHTML;
 	$.ajax({
-		url: "/affectation-3A/admin/common/exclude-student",
+		url: path + "/admin/common/exclude-student",
 		data: "login="+login,
 		success: function(){
 			$('#info').html("L'élève dont le login est <b>" + login + "</b> est désormais <b>exclu</b> du processus.");
@@ -110,8 +112,9 @@ function remove(login){
 }
 
 function add(login){
+	var path = document.getElementById("path").innerHTML;
 	$.ajax({
-		url: "/affectation-3A/admin/common/add-student",
+		url: path + "/admin/common/add-student",
 		data: "login="+login,
 		success: function(){
 			$('#info').html("L'élève dont le login est <b>" + login + "</b> n'est désormais <b>plus exclu</b> du processus.");
@@ -135,7 +138,8 @@ function removeCesureStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/affectation-3A/img/plus-new.png");
+	var path = document.getElementById("path").innerHTML;
+	newI.setAttribute("src", path + "/img/plus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:addCesureStudent(this.id);");
@@ -251,7 +255,8 @@ function addPromoStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/affectation-3A/img/minus-new.png");
+	var path = document.getElementById("path").innerHTML;
+	newI.setAttribute("src", path + "/img/minus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:void(0);");
@@ -351,7 +356,8 @@ function addCesureStudent(id) {
 	}
 
 	var newI = document.createElement("img");
-	newI.setAttribute("src", "/affectation-3A/img/minus-new.png");
+	var path = document.getElementById("path").innerHTML;
+	newI.setAttribute("src", path + "/img/minus-new.png");
 	var newA = document.createElement("a");
 	newA.title = login;
 	newA.setAttribute("href", "javascript:void(0);");

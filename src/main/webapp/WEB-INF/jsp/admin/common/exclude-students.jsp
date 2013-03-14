@@ -18,6 +18,7 @@
 <body>
 	<div class="container">
 		<tags:headerAdmin run="${run}" />
+		<div id="path" style="display:none">${pageContext.request.contextPath}</div>
 
 		<div class="row">
 			<div class="span2">

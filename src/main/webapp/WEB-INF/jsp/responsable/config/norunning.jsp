@@ -14,7 +14,7 @@
 			<br />
 			<div class="alert alert-block">Vous êtes répertorié en tant que responsable 
 				<c:choose>
-					<c:when test="${specialization.type == 'JobSector'}">
+					<c:when test="${specialization.type == specialization.JOB_SECTOR}">
 						de la filière métier ${specialization.name} (${specialization.abbreviation}).
 					</c:when>
 					<c:otherwise>

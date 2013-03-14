@@ -57,10 +57,11 @@ function removeLetterJs() {
 };
 
 function removeDocument(type) {
+	var login = document.getElementById("login").innerHTML;
 	var path = document.getElementById("path").innerHTML;
 	$.ajax({
-				url : path + "/student/remove-document",
-				data : "type=" + type,
+				url : path + "/admin/run/main/student/remove-document",
+				data : "type=" + type + "&login=" + login,
 				success : function(sucM) {
 					var suc;
 					if (sucM == "true"){

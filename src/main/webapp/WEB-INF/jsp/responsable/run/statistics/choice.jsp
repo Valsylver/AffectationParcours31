@@ -32,7 +32,7 @@
 					<li class="nav-header">Statistiques</li>
 					<li class="active"><a href="${pageContext.request.contextPath}/responsable/run/statistics/choice1">Parcours/filières</a></li>
 					<c:choose>
-						<c:when test="${specialization.type == 'JobSector' }">
+						<c:when test="${specialization.type == specialization.JOB_SECTOR }">
 							<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/repartition-other-choice2">Répartition filières</a></li>
 							<li><a href="${pageContext.request.contextPath}/responsable/run/statistics/inverse-repartition">Répartition parcours</a></li>
 						</c:when>

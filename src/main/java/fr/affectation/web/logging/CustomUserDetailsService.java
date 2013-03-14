@@ -24,7 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {		
 		ArrayList<GrantedAuthority> authority = new ArrayList<GrantedAuthority>();
-		System.out.println("loadUserByUserName");
 		if (isStudent(userName)){
 			authority.add(new SimpleGrantedAuthority("ROLE_ELEVE"));
 		}
