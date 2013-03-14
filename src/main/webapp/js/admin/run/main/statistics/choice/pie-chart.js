@@ -67,7 +67,7 @@ function generatePieChart(type) {
                     color: '#000000',
                     connectorColor: '#000000',
                     formatter: function() {
-                        return '<b>'+ this.point.name.split(";")[1] +'</b>: '+ Math.round(this.percentage*100)/100 +' %';
+                        return '<b>'+ this.point.name.split(";")[1] +'</b>: '+ this.point.y;
                     }
                 }
             }

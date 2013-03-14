@@ -72,7 +72,7 @@ function removeDocument(type) {
 					if (type == "resume") {
 						var alert = document.getElementById("alertResume");
 						if (suc) {
-							alert.innerHTML = '<div class="alert alert-success">Votre CV a bien été supprimé.</div>';
+							alert.innerHTML = '<div class="alert alert-info">Votre <b>CV</b> a bien été <b>supprimé</b>.</div>';
 						} else {
 							alert.innerHTML = '<div class="alert alert-error">Une erreur est survenue lors de la suppression de votre CV.</div>';
 						}
@@ -80,7 +80,7 @@ function removeDocument(type) {
 					if (type == "letterIc") {
 						var alert = document.getElementById("alertLetterIc");
 						if (suc) {
-							alert.innerHTML = '<div class="alert alert-success">Votre lettre de motivation pour votre choix de parcours d\'approfondissement a bien été supprimée.</div>';
+							alert.innerHTML = '<div class="alert alert-info">Votre <b>lettre de motivation</b> pour votre choix de <b>parcours d\'approfondissement</b> a bien été <b>supprimée</b>.</div>';
 						} else {
 							alert.innerHTML = '<div class="alert alert-error">Une erreur est survenue lors la suppression de votre lettre de motivation pour votre choix de parcours d\'approfondissement.</div>';
 						}
@@ -88,7 +88,7 @@ function removeDocument(type) {
 					if (type == "letterJs") {
 						var alert = document.getElementById("alertLetterJs");
 						if (suc) {
-							alert.innerHTML = '<div class="alert alert-success">Votre lettre de motivation pour votre choix de filière métier a bien été supprimée.</div>';
+							alert.innerHTML = '<div class="alert alert-info">Votre <b>lettre de motivation</b> pour votre choix de <b>filière métier</b> a bien été <b>supprimée</b>.</div>';
 						} else {
 							alert.innerHTML = '<div class="alert alert-error">Une erreur est survenue lors la suppression de votre lettre de motivation pour votre choix de filière métier.</div>';
 						}
