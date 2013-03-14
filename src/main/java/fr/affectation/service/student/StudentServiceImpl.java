@@ -112,12 +112,15 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<String> findAllStudentsConcernedLogin() {
-		List<SimpleStudent> allStudentsConcerned = findAllStudentsConcerned();
-		List<String> allStudentsConcernedLogin = new ArrayList<String>();
-		for (SimpleStudent student : allStudentsConcerned) {
-			allStudentsConcernedLogin.add(student.getLogin());
-		}
-		return allStudentsConcernedLogin;
+		List<String> studentsConcernedLoginsAgap = agapService.findStudentConcernedLogins();
+		List<String> studentsExcludedLogins = exclusionService.findStudentToExcludeLogins();
+		List<String> studentsConcernedLogins = new ArrayList<String>();
+		for (String login : studentsConcernedLoginsAgap){
+			if (!studentsExcludedLogins.contains(login)){
+				studentsConcernedLogins.add(login);
+			}
+		} 
+		return studentsConcernedLogins;
 	}
 
 	@Override

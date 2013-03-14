@@ -65,7 +65,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 	
 	<bean id="path" class="java.lang.String">
-		<constructor-arg value="/affectation-3A" />
+		<constructor-arg value="/affectation3A" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />

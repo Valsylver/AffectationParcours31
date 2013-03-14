@@ -1020,7 +1020,7 @@ public class AdminController {
 		createAndSaveFakeIc("M3S",
 				"Modélisation Mécanique des Matériaux et des Structures");
 		createAndSaveFakeIc("FETES",
-				"Fluides : Energie, Transport, Environnement, SantŽ");
+				"Fluides : Energie, Transport, Environnement, Santé");
 		createAndSaveFakeIc("GM", "Génie Mer");
 		createAndSaveFakeIc("CMV", "Chimie : Molécules et Vivant");
 		createAndSaveFakeIc("PM", "Procédés et Molécules");

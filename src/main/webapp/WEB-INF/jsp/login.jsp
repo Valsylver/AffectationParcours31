@@ -56,7 +56,7 @@
 
     <div class="container">
 
-      <form class="form-signin" action='/affectation-3A/j_spring_security_check' method='POST'>
+      <form class="form-signin" action='/affectation3A/j_spring_security_check' method='POST'>
         <h2 class="form-signin-heading">Connexion</h2>
         <input type="text" class="input-block-level" placeholder="login" name='j_username'>
         <input type="password" class="input-block-level" placeholder="password" name='j_password'>
