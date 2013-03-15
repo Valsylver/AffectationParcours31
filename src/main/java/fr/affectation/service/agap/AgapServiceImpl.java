@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class AgapServiceImpl implements AgapService {
 
 	@Inject
 	private NamedParameterJdbcTemplate namedParameterjdbcTemplate;
+	
+	@Inject
+	private JdbcTemplate jdbcTemplate;
 
 	public String getCurrentCycle() {
 		Calendar calendar = Calendar.getInstance();
@@ -113,6 +117,52 @@ public class AgapServiceImpl implements AgapService {
 		}
 		return allStudentLogin;
 	}
+	
+	@Override 
+	public List<SimpleStudent> findCurrentPromotionSimpleStudents(){
+		List<SimpleStudent> studentsConcerned = new ArrayList<SimpleStudent>();
+		String requeteEleves = "SELECT nom, uid FROM \"720_choix3A_eleves\" WHERE nom IN "
+				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("cycle", getCurrentCycle());
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
+		for (Map<String, Object> map : studentMap) {
+			String login = (String) map.get("uid");
+			String name = (String) map.get("nom");
+			studentsConcerned.add(new SimpleStudent(login, name));
+		}
+		return studentsConcerned;
+	}
+	
+	@Override
+	public List<String> findCesureStudentLogins() {
+		String queryCesure = "SELECT uid FROM \"720_choix3A_eleves\" WHERE nom IN (SELECT nom FROM \"720_choix3A_cesure\" WHERE nom IN "
+				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7'))";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("cycle", getLastCycle());
+		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryCesure, namedParameter);
+		List<String> logins = new ArrayList<String>();
+		for (Map<String, Object> map : resultsMap) {
+			logins.add((String) map.get("uid"));
+		}
+		return logins;
+	}
+	
+	@Override
+	public List<SimpleStudent> findCesureSimpleStudents() {
+		List<SimpleStudent> studentsConcerned = new ArrayList<SimpleStudent>();
+		String requeteEleves = "SELECT nom, uid FROM \"720_choix3A_eleves\" WHERE nom IN (SELECT nom FROM \"720_choix3A_cesure\" WHERE nom IN "
+				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7'))";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("cycle", getLastCycle());
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
+		for (Map<String, Object> map : studentMap) {
+			String login = (String) map.get("uid");
+			String name = (String) map.get("nom");
+			studentsConcerned.add(new SimpleStudent(login, name));
+		}
+		return studentsConcerned;
+	}
 
 	public List<String> getUeCodeFromSemester(String semester) {
 		String queryUeCode = "SELECT code_ue FROM \"720_choix3A_notes_details\" WHERE cycle=:cycle AND sem=:semester";
@@ -151,24 +201,19 @@ public class AgapServiceImpl implements AgapService {
 	@Override
 	public List<SimpleStudent> findStudentsConcerned() {
 		List<SimpleStudent> studentsConcerned = new ArrayList<SimpleStudent>();
-		List<String> currentPromotion = findCurrentPromotionStudentLogins();
-		List<String> cesure = findCesureStudentLogins();
-		for (String login : currentPromotion) {
-			SimpleStudent student = new SimpleStudent(login, findNameFromLogin(login));
-			studentsConcerned.add(student);
-		}
-		for (String login : cesure) {
-			SimpleStudent student = new SimpleStudent(login, findNameFromLogin(login));
-			studentsConcerned.add(student);
-		}
+		List<SimpleStudent> currentPromotion = findCurrentPromotionSimpleStudents();
+		List<SimpleStudent> cesure = findCesureSimpleStudents();
+		studentsConcerned.addAll(currentPromotion);
+		studentsConcerned.addAll(cesure);
 		Collections.sort(studentsConcerned);
 		return studentsConcerned;
 	}
-
+	
 	@Override
-	public boolean isAnExcludableStudent(String login) {
-		List<String> currentPromotion = findCurrentPromotionStudentLogins();
-		return currentPromotion.contains(login);
+	public List<String> findStudentConcernedLogins() {
+		List <String> logins = findCurrentPromotionStudentLogins();
+		logins.addAll(findCesureStudentLogins());
+		return logins;
 	}
 
 	@Override
@@ -195,38 +240,27 @@ public class AgapServiceImpl implements AgapService {
 	}
 
 	@Override
-	public List<String> findCesureStudentLogins() {
-		String queryCesure = "SELECT uid FROM \"720_choix3A_eleves\" WHERE nom IN (SELECT nom FROM \"720_choix3A_cesure\" WHERE nom IN "
-				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7'))";
-		Map<String, String> namedParameter = new HashMap<String, String>();
-		namedParameter.put("cycle", getLastCycle());
-		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryCesure, namedParameter);
-		List<String> logins = new ArrayList<String>();
-		for (Map<String, Object> map : resultsMap) {
-			logins.add((String) map.get("uid"));
+	public Map<String, String> findNamesForAListOfLogins(List<String> allLogins) {
+		Map<String, String> mapReturn = new HashMap<String, String>();
+		if (allLogins.size() > 0){
+			String query = "SELECT nom, uid FROM \"720_choix3A_eleves\" WHERE uid IN (";
+			int index = 0;
+			int size = allLogins.size();
+			for (String login : allLogins){
+				query += "'";
+				query += login;
+				query += "'";
+				if (index != size-1){
+					query += ", ";
+				}
+				index += 1;
+			}
+			query += ")";
+			List<Map<String, Object>> resultsMap = jdbcTemplate.queryForList(query);
+			for (Map<String, Object> map : resultsMap) {
+				mapReturn.put((String) map.get("uid"), (String) map.get("nom"));
+			}
 		}
-		return logins;
+		return mapReturn;
 	}
-
-	@Override
-	public List<String> findStudentConcernedLogins() {
-		List <String> logins = findCesureStudentLogins();
-		logins.addAll(findCurrentPromotionStudentLogins());
-		return logins;
-	}
-
-	@Override
-	public List<String> findCesureStudentNames() {
-		String queryCesure = "SELECT nom FROM \"720_choix3A_cesure\" WHERE nom IN "
-				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7')";
-		Map<String, String> namedParameter = new HashMap<String, String>();
-		namedParameter.put("cycle", getLastCycle());
-		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryCesure, namedParameter);
-		List<String> names = new ArrayList<String>();
-		for (Map<String, Object> map : resultsMap) {
-			names.add((String) map.get("nom"));
-		}
-		return names;
-	}
-
 }

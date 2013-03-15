@@ -77,6 +77,8 @@ public class StudentServiceImpl implements StudentService {
 			HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
 			HSSFSheet sheet = workBook.getSheetAt(0);
 			Iterator<HSSFRow> rows = sheet.rowIterator();
+			
+			List<String> excludableStudentLogins = agapService.findStudentConcernedLogins();
 
 			while (rows.hasNext()) {
 				HSSFRow row = rows.next();
@@ -84,7 +86,7 @@ public class StudentServiceImpl implements StudentService {
 				if (cell != null) {
 					if (!cell.toString().equals("")) {
 						String login = cell.toString();
-						if ((!login.equals("")) && (agapService.isAnExcludableStudent(login))) {
+						if ((!login.equals("")) && (excludableStudentLogins.contains(login))) {
 							exclusionService.save(login);
 						}
 					}
@@ -99,28 +101,21 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<SimpleStudent> findAllStudentsConcerned() {
 		List<SimpleStudent> allStudents = agapService.findStudentsConcerned();
+		List<String> excludedStudents = exclusionService.findStudentToExcludeLogins();
 		List<SimpleStudent> allStudentsConcerned = new ArrayList<SimpleStudent>();
-		List<String> allStudentsExcludedLogin = exclusionService.findStudentToExcludeLogins();
-		for (SimpleStudent student : allStudents) {
-			if (!allStudentsExcludedLogin.contains(student.getLogin())) {
+		for (SimpleStudent student : allStudents){
+			if (!excludedStudents.contains(student.getLogin())){
 				allStudentsConcerned.add(student);
 			}
 		}
-		Collections.sort(allStudentsConcerned);
 		return allStudentsConcerned;
 	}
 
 	@Override
 	public List<String> findAllStudentsConcernedLogin() {
-		List<String> studentsConcernedLoginsAgap = agapService.findStudentConcernedLogins();
-		List<String> studentsExcludedLogins = exclusionService.findStudentToExcludeLogins();
-		List<String> studentsConcernedLogins = new ArrayList<String>();
-		for (String login : studentsConcernedLoginsAgap){
-			if (!studentsExcludedLogins.contains(login)){
-				studentsConcernedLogins.add(login);
-			}
-		} 
-		return studentsConcernedLogins;
+		List<String> studentConcernedLogins = agapService.findStudentConcernedLogins();
+		studentConcernedLogins.removeAll(exclusionService.findStudentToExcludeLogins());
+		return studentConcernedLogins;
 	}
 
 	@Override
@@ -133,10 +128,11 @@ public class StudentServiceImpl implements StudentService {
 		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		List<SimpleStudentWithValidation> allSimpleStudents = new ArrayList<SimpleStudentWithValidation>();
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
+		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
 		for (String login : allLogins) {
 			if (!studentsToExcludeLogins.contains(login)) {
 				boolean isValidated = specialization instanceof JobSector ? validationService.isValidatedJs(login) : validationService.isValidatedIc(login);
-				allSimpleStudents.add(new SimpleStudentWithValidation(login, agapService.findNameFromLogin(login), isValidated));
+				allSimpleStudents.add(new SimpleStudentWithValidation(login, nameLoginMap.get(login), isValidated));
 			}
 		}
 		Collections.sort(allSimpleStudents);
@@ -158,9 +154,10 @@ public class StudentServiceImpl implements StudentService {
 		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		List<SimpleStudent> allSimpleStudents = new ArrayList<SimpleStudent>();
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
+		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
 		for (String login : allLogins) {
 			if (!studentsToExcludeLogins.contains(login)) {
-				allSimpleStudents.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
+				allSimpleStudents.add(new SimpleStudent(login, nameLoginMap.get(login)));
 			}
 		}
 		Collections.sort(allSimpleStudents);
@@ -236,6 +233,8 @@ public class StudentServiceImpl implements StudentService {
 		int nbreAll = 0;
 		int nbrePartial = 0;
 		int nbreNo = 0;
+		
+		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(logins);
 
 		for (String login : logins) {
 			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
@@ -247,7 +246,7 @@ public class StudentServiceImpl implements StudentService {
 			if ((filledDoc) && (filledChoices)) {
 				if (category.equals("all")) {
 					map = new HashMap<String, Object>();
-					map.put("name", agapService.findNameFromLogin(login));
+					map.put("name", nameLoginMap.get(login));
 					map.put("login", login);
 					results.add(map);
 				}
@@ -256,7 +255,7 @@ public class StudentServiceImpl implements StudentService {
 				if ((!filledDoc) && (!filledChoices)) {
 					if (category.equals("no")) {
 						map = new HashMap<String, Object>();
-						map.put("name", agapService.findNameFromLogin(login));
+						map.put("name", nameLoginMap.get(login));
 						map.put("login", login);
 						results.add(map);
 					}
@@ -264,7 +263,7 @@ public class StudentServiceImpl implements StudentService {
 				} else {
 					if (category.equals("partial")) {
 						map = new HashMap<String, Object>();
-						map.put("name", agapService.findNameFromLogin(login));
+						map.put("name", nameLoginMap.get(login));
 						map.put("login", login);
 						results.add(map);
 					}
@@ -316,9 +315,10 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<String> findStudentsToExcludeName() {
 		List<String> studentsLogin = exclusionService.findStudentToExcludeLogins();
+		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(studentsLogin);
 		List<String> studentsName = new ArrayList<String>();
 		for (String login : studentsLogin) {
-			studentsName.add(agapService.findNameFromLogin(login));
+			studentsName.add(nameLoginMap.get(login));
 		}
 		Collections.sort(studentsName);
 		return studentsName;
@@ -387,28 +387,30 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudent> findCurrentPromotionStudentsConcerned() {
-		List<String> logins = agapService.findCurrentPromotionStudentLogins();
-		List<SimpleStudent> currentPromotion = new ArrayList<SimpleStudent>();
-		for (String login : logins) {
-			if (!exclusionService.isExcluded(login)) {
-				currentPromotion.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
+		List<SimpleStudent> studentsAgap = agapService.findCurrentPromotionSimpleStudents();
+		List<SimpleStudent> students = new ArrayList<SimpleStudent>();
+		List<String> studentExcludedLogins = exclusionService.findStudentToExcludeLogins();
+		for (SimpleStudent student : studentsAgap) {
+			if (!studentExcludedLogins.contains(student.getLogin())) {
+				students.add(student);
 			}
 		}
-		Collections.sort(currentPromotion);
-		return currentPromotion;
+		Collections.sort(students);
+		return students;
 	}
 
 	@Override
 	public List<SimpleStudent> findCesureStudentsConcerned() {
-		List<String> logins = agapService.findCesureStudentLogins();
-		List<SimpleStudent> cesure = new ArrayList<SimpleStudent>();
-		for (String login : logins) {
-			if (!exclusionService.isExcluded(login)) {
-				cesure.add(new SimpleStudent(login, agapService.findNameFromLogin(login)));
+		List<SimpleStudent> studentsAgap = agapService.findCesureSimpleStudents();
+		List<SimpleStudent> students = new ArrayList<SimpleStudent>();
+		List<String> studentExcludedLogins = exclusionService.findStudentToExcludeLogins();
+		for (SimpleStudent student : studentsAgap) {
+			if (!studentExcludedLogins.contains(student.getLogin())) {
+				students.add(student);
 			}
 		}
-		Collections.sort(cesure);
-		return cesure;
+		Collections.sort(students);
+		return students;
 	}
 
 	@Override
@@ -418,11 +420,18 @@ public class StudentServiceImpl implements StudentService {
 		Map<String, List<String>> choicesResults = choiceService.findChoiceRepartitionKnowingOne(knownChoice, wantedChoice, abbreviationToLookFor,
 				isAnIc ? Specialization.IMPROVEMENT_COURSE : Specialization.JOB_SECTOR);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
+		
+		List<String> allLogins = new ArrayList<String>();
+		for (String abbreviation : choicesResults.keySet()) {
+			allLogins.addAll(choicesResults.get(abbreviation));
+		}
+		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
+		
 		for (String abbreviation : choicesResults.keySet()) {
 			List<String> logins = choicesResults.get(abbreviation);
 			List<String> names = new ArrayList<String>();
 			for (String login : logins) {
-				names.add(agapService.findNameFromLogin(login));
+				names.add(nameLoginMap.get(login));
 			}
 			Collections.sort(names);
 			String specializationName = isAnIc ? specializationService.findNameFromIcAbbreviation(abbreviation) : specializationService

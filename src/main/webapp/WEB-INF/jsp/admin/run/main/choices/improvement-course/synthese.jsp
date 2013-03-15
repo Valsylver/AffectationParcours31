@@ -90,11 +90,6 @@
 							<table class="table table-bordered table-striped">
 								<c:choose>
 									<c:when test="${running}">
-										<thead>
-											<tr>
-												<th>Nom</th>
-											</tr>
-										</thead>
 										<tbody>
 											<c:forEach var="student" items="${allStudents[status.index]}">
 												<tr>
@@ -104,11 +99,6 @@
 										</tbody>
 									</c:when>
 									<c:otherwise>
-										<thead>
-											<tr>
-												<th>Nom</th>
-											</tr>
-										</thead>
 										<tbody>
 											<c:forEach var="student" items="${allStudents[status.index]}">
 												<c:choose>

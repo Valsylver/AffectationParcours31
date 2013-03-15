@@ -117,6 +117,8 @@ public class AdminController {
 			model.addAttribute("studentsConcerned", studentService.findCurrentPromotionStudentsConcerned());
 			model.addAttribute("studentsToExclude", studentService.findAllStudentsToExclude());
 			model.addAttribute("studentsCesure", studentService.findCesureStudentsConcerned());
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
 			model.addAttribute("promo", Calendar.getInstance().get(Calendar.YEAR) + 1);
 			return "admin/common/exclude-students";
 		} else {
