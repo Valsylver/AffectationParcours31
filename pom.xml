@@ -39,7 +39,8 @@
 				</includes>
 			</testResource>
 		</testResources>
-
+		<!-- force le nom du .war -->
+		<finalName>affectation3A</finalName>
 	</build>
 
 	<properties>
