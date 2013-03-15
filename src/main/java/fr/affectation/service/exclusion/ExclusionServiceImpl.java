@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,12 +47,10 @@ public class ExclusionServiceImpl implements ExclusionService {
 	@Override
 	@Transactional(readOnly = true)
 	public boolean isExcluded(String login) {
-		String queryStudent = "from StudentToExclude where login=:login";
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery(queryStudent);
-		query.setString("login", login);
-		return query.list().size() != 0;
-
+		Criteria criteria = session.createCriteria(StudentToExclude.class);
+		criteria.add(Restrictions.eq("login", login));
+		return criteria.uniqueResult() != null;
 	}
 
 	@Override

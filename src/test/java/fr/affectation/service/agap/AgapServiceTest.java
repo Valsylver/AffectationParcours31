@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class AgapServiceTest {
 
 	@Inject
-	private AgapService agapService;
+	private AgapCacheService agapService;
 
 	@Test
 	public void checkStudentFalse() {

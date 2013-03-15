@@ -49,6 +49,8 @@
 	
 	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
 	
+	<bean class="fr.affectation.service.agap.AgapCacheServiceImpl" />
+	
 	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
 	
 	<bean class="fr.affectation.service.exclusion.ExclusionServiceImpl" />
@@ -63,7 +65,7 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.centrale-marseille.fr"/>
 		<property name="port" value="587"/>
-		<property name="username" value="vmarmousez"/>
+		<property name="username" value=""/>
 		<!-- Password has to be changed -->
 		<property name="password" value=""/>
 		<property name="javaMailProperties">

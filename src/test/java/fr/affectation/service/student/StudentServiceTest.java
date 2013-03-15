@@ -20,7 +20,7 @@ import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
-import fr.affectation.service.agap.AgapService;
+import fr.affectation.service.agap.AgapCacheService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.specialization.SpecializationService;
 import fr.affectation.service.validation.ValidationService;
@@ -42,7 +42,7 @@ public class StudentServiceTest {
 	private SpecializationService specializationService;
 	
 	@Inject
-	private AgapService agapService;
+	private AgapCacheService agapService;
 	
 	@Test
 	public void repartitionOtherTypeJs(){
