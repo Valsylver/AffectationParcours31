@@ -30,7 +30,7 @@ import fr.affectation.domain.student.SimpleStudentWithOrigin;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
-import fr.affectation.service.agap.AgapService;
+import fr.affectation.service.agap.AgapCacheService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
@@ -42,7 +42,7 @@ import fr.affectation.service.validation.ValidationService;
 public class StudentServiceImpl implements StudentService {
 
 	@Inject
-	private AgapService agapService;
+	private AgapCacheService agapService;
 
 	@Inject
 	private ValidationService validationService;
@@ -77,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
 			HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
 			HSSFSheet sheet = workBook.getSheetAt(0);
 			Iterator<HSSFRow> rows = sheet.rowIterator();
-			
+
 			List<String> excludableStudentLogins = agapService.findStudentConcernedLogins();
 
 			while (rows.hasNext()) {
@@ -103,8 +103,8 @@ public class StudentServiceImpl implements StudentService {
 		List<SimpleStudent> allStudents = agapService.findStudentsConcerned();
 		List<String> excludedStudents = exclusionService.findStudentToExcludeLogins();
 		List<SimpleStudent> allStudentsConcerned = new ArrayList<SimpleStudent>();
-		for (SimpleStudent student : allStudents){
-			if (!excludedStudents.contains(student.getLogin())){
+		for (SimpleStudent student : allStudents) {
+			if (!excludedStudents.contains(student.getLogin())) {
 				allStudentsConcerned.add(student);
 			}
 		}
@@ -120,7 +120,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public boolean isStudentConcerned(String login) {
-		return findAllStudentsConcernedLogin().contains(login);
+		return agapService.isStudent(login) && (!exclusionService.isExcluded(login));
 	}
 
 	@Override
@@ -233,7 +233,7 @@ public class StudentServiceImpl implements StudentService {
 		int nbreAll = 0;
 		int nbrePartial = 0;
 		int nbreNo = 0;
-		
+
 		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(logins);
 
 		for (String login : logins) {
@@ -420,13 +420,13 @@ public class StudentServiceImpl implements StudentService {
 		Map<String, List<String>> choicesResults = choiceService.findChoiceRepartitionKnowingOne(knownChoice, wantedChoice, abbreviationToLookFor,
 				isAnIc ? Specialization.IMPROVEMENT_COURSE : Specialization.JOB_SECTOR);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
-		
+
 		List<String> allLogins = new ArrayList<String>();
 		for (String abbreviation : choicesResults.keySet()) {
 			allLogins.addAll(choicesResults.get(abbreviation));
 		}
 		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
-		
+
 		for (String abbreviation : choicesResults.keySet()) {
 			List<String> logins = choicesResults.get(abbreviation);
 			List<String> names = new ArrayList<String>();
@@ -454,12 +454,18 @@ public class StudentServiceImpl implements StudentService {
 		Map<String, List<String>> inverseRepartition = findChoiceRepartitionForTheOtherType(specialization.getAbbreviation(), type);
 		List<SimpleSpecializationWithList> results = new ArrayList<SimpleSpecializationWithList>();
 		List<String> studentsConcernedLogins = findAllStudentsConcernedLogin();
+
+		List<String> allLogins = new ArrayList<String>();
+		for (String abbreviation : inverseRepartition.keySet()) {
+			allLogins.addAll(inverseRepartition.get(abbreviation));
+		}
+		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
 		for (String abbreviation : inverseRepartition.keySet()) {
 			List<String> logins = inverseRepartition.get(abbreviation);
 			List<String> names = new ArrayList<String>();
 			for (String login : logins) {
 				if (studentsConcernedLogins.contains(login)) {
-					names.add(agapService.findNameFromLogin(login));
+					names.add(nameLoginMap.get(login));
 				}
 			}
 			Collections.sort(names);

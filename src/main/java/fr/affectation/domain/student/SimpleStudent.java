@@ -1,10 +1,19 @@
 package fr.affectation.domain.student;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
+@Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public class SimpleStudent implements Comparable<SimpleStudent> {
 
+	@Id
 	private String login;
 
+	@Column
 	private String name;
 
 	public SimpleStudent(String login, String name) {

@@ -50,7 +50,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 	
-	
 
 	@Override
 	public void generatePieChartJs(String path) {
