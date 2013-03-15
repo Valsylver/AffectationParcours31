@@ -1,6 +1,7 @@
 package fr.affectation.service.agap;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.affectation.domain.student.Contentious;
 import fr.affectation.domain.student.SimpleStudent;
@@ -13,12 +14,12 @@ public interface AgapService {
 	public List<String> findStudentConcernedLogins();
 
 	public List<String> findCurrentPromotionStudentLogins();
-
+	
 	public List<String> findCesureStudentLogins();
 	
-	public List<String> findCesureStudentNames();
-
-	public boolean isAnExcludableStudent(String login);
+	public List<SimpleStudent> findCurrentPromotionSimpleStudents();
+	
+	public List<SimpleStudent> findCesureSimpleStudents();
 
 	public String findNameFromLogin(String login);
 
@@ -27,4 +28,6 @@ public interface AgapService {
 	public List<Float> findGpaMeans(String login);
 
 	public List<UeResult> findUeResults(String login);
+
+	public Map<String, String> findNamesForAListOfLogins(List<String> allLogins);
 }

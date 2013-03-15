@@ -21,14 +21,14 @@ public class AgapServiceTest {
 	@Test
 	public void checkStudentFalse() {
 		String fakeLogin = "thisLoginIsProbablyNotExisting";
-		Assert.assertFalse(agapService.isAnExcludableStudent(fakeLogin));
+		Assert.assertFalse(agapService.findStudentConcernedLogins().contains(fakeLogin));
 	}
 
 	@Test
 	public void checkStudentTrue() {
 		String existingLogin = findRandomExistingLoginFromCurrentPromotion();
 		if (!existingLogin.equals("")) {
-			Assert.assertTrue(agapService.isAnExcludableStudent(existingLogin));
+			Assert.assertTrue(agapService.findStudentConcernedLogins().contains(existingLogin));
 		}
 	}
 
