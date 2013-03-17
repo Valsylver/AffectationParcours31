@@ -12,10 +12,10 @@ function generatePieChart() {
 	
 	var dataV = [['Dossiers vides', noSubmission], ['Dossiers incomplets', partialSubmission], ['Dossiers complets', totalSubmission]];
 	
-//	Highcharts.setOptions({
-//		 colors: ['#3c96ae', '#717589', '#bc9a73']
-//		});
-//    
+	Highcharts.setOptions({
+		 colors: ['#aa4442', '#db843c', '#89a54d']
+		});
+    
     var chart;
     $(document).ready(function() {
     	chart = new Highcharts.Chart({
@@ -42,7 +42,7 @@ function generatePieChart() {
                         color: '#000000',
                         connectorColor: '#000000',
                         formatter: function() {
-                            return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage*100)/100 +' %';
+                            return '<b>'+ this.point.name +'</b>: '+ this.point.y;
                         }
                     }
                 }

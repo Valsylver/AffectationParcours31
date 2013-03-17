@@ -13,6 +13,8 @@ import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
 
 public interface StudentService {
+	
+	public void updateFromAgap();
 
 	public List<SimpleStudent> findCurrentPromotionStudentsConcerned();
 	
@@ -27,6 +29,8 @@ public interface StudentService {
 	public void populateValidation();
 
 	public List<SimpleStudent> findSimpleStudentsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
+	
+	public List<String> findLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
 
 	public List<SimpleStudentWithValidation> findSimpleStudentsWithValidationByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization);
 
@@ -38,9 +42,7 @@ public interface StudentService {
 
 	public List<List<SimpleStudentWithValidation>> findSimpleStudentsWithValidationForAllJsByOrder(int order);
 
-	public void updateValidationFromList(List<String> students, List<Boolean> validated_, int specializationType);
-
-	public List<Map<String, Object>> findStudentsForCategorySynthese(String category, String path);
+	public List<SimpleStudent> findStudentsForCategorySynthese(String category, String path);
 
 	public Map<String, Integer> findSizeOfCategories(String path);
 	

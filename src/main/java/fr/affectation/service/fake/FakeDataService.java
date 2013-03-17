@@ -45,26 +45,9 @@ public class FakeDataService {
 	private ExclusionService exclusionService;
 	
 	public void createFakeChoices(){
-		List<String> liste = new ArrayList<String>();
-		liste.add("AISE");
-		liste.add("M3S");
-		liste.add("FETES");
-		liste.add("GM");
-		liste.add("CMV");
-		liste.add("PM");
-		liste.add("MSA");
-		liste.add("OP");
-		liste.add("CSA");
-		liste.add("I2T");
-		liste.add("MAF");
-		liste.add("S2I");
+		List<String> liste = specializationService.findImprovementCourseAbbreviations();
 
-		List<String> liste2 = new ArrayList<String>();
-		liste2.add("R&D");
-		liste2.add("PRL");
-		liste2.add("MEE");
-		liste2.add("AC");
-		liste2.add("CBE");
+		List<String> liste2 = specializationService.findJobSectorAbbreviations();
 
 		int i = 0;
 		List<String> liste3 = new ArrayList<String>();
@@ -80,7 +63,7 @@ public class FakeDataService {
 				Choice choice = new ImprovementCourseChoice();
 				choice.setLogin(login);
 				for (int iterationPa = 1; iterationPa < 6; iterationPa++) {
-					i = (int) (Math.random() * (12 - iterationPa + 1));
+					i = (int) (Math.random() * (liste.size() - iterationPa + 1));
 					switch (iterationPa) {
 					case 1:
 						choice.setChoice1(liste3.get(i));
@@ -105,7 +88,7 @@ public class FakeDataService {
 				choice2.setLogin(login);
 				double f;
 				for (int iterationFm = 1; iterationFm < 6; iterationFm++) {
-					f = Math.random() * (5 - iterationFm + 1);
+					f = Math.random() * (liste2.size() - iterationFm + 1);
 					i = (int) (f);
 					switch (iterationFm) {
 					case 1:
@@ -171,50 +154,14 @@ public class FakeDataService {
 		superUserService.save("admin");
 	}
 	
-	public String getRandomUeCode() {
-		List<String> liste = new ArrayList<String>();
-		liste.add("ALG-1");
-		liste.add("DPP-1");
-		liste.add("ELE-1");
-		liste.add("INP-1");
-		liste.add("LCI-1");
-		liste.add("MAT-1");
-		liste.add("MGP-1");
-		liste.add("PHO-1");
-		liste.add("PHQ-1");
-		liste.add("SPM-1");
-		liste.add("DPP-2");
-		liste.add("EAO-2");
-		liste.add("ECO-2");
-		liste.add("LCI-2");
-		liste.add("MAT-2");
-		liste.add("MCO-2");
-		liste.add("MGP-2");
-		liste.add("PHS-2");
-		liste.add("PJT-2");
-		liste.add("RMS-2");
-		liste.add("STG-2");
-		liste.add("THS-2");
-		liste.add("ASL-3");
-		liste.add("DPP-3");
-		liste.add("LCI-3");
-		liste.add("MAT-3");
-		liste.add("MNG-3");
-		liste.add("PJT-3");
-		liste.add("STD-3");
-
-		int i = (int) (Math.random() * liste.size());
-		return liste.get(i);
-	}
-	
 	public void fakeValidation(){
-		for (String login :validationService.findStudentValidatedIcLogins()){
+		for (String login : validationService.findStudentValidatedIcLogins()){
 			int willSwitch = (int) (Math.random() * 10);
 			if (willSwitch>8){
 				validationService.updateIcValidation(login, false);
 			}
 		}
-		for (String login :validationService.findStudentValidatedJsLogins()){
+		for (String login : validationService.findStudentValidatedJsLogins()){
 			int willSwitch = (int) (Math.random() * 10);
 			if (willSwitch>8){
 				validationService.updateJsValidation(login, false);

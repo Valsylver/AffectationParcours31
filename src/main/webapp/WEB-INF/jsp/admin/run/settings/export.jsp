@@ -22,6 +22,7 @@
 			<div class="span2">
 				<ul class="nav nav-list">
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
 					<li class="active"><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>

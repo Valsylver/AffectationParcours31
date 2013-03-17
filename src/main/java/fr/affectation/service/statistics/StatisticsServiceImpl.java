@@ -73,7 +73,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		List<JobSector> allJs = specializationService.findJobSectors();
 		Map<String, Integer> jsStats = new HashMap<String, Integer>();
 		for (JobSector jobSector : allJs){
-			jsStats.put(jobSector.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(choice, jobSector).size());
+			jsStats.put(jobSector.getAbbreviation(), studentService.findLoginsByOrderChoiceAndSpecialization(choice, jobSector).size());
 		}
 		return jsStats;
 	}
@@ -82,7 +82,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		List<ImprovementCourse> allIc = specializationService.findImprovementCourses();
 		Map<String, Integer> icStats = new HashMap<String, Integer>();
 		for (ImprovementCourse improvementCourse : allIc){
-			icStats.put(improvementCourse.getAbbreviation(), studentService.findSimpleStudentsByOrderChoiceAndSpecialization(choice, improvementCourse).size());
+			icStats.put(improvementCourse.getAbbreviation(), studentService.findLoginsByOrderChoiceAndSpecialization(choice, improvementCourse).size());
 		}
 		return icStats;
 	}
@@ -92,9 +92,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 	public List<SimpleSpecializationWithNumber> findSimpleIcStats(int choice) {
 		Map<String, Integer> icMap = findIcStats(choice);
 		List<SimpleSpecializationWithNumber> specializations = new ArrayList<SimpleSpecializationWithNumber>();
+		int total = 0;
 		for (String abbreviation : icMap.keySet()){
-			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, specializationService.findNameFromIcAbbreviation(abbreviation), icMap.get(abbreviation));
+			int numberOfStudents = icMap.get(abbreviation);
+			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, specializationService.findNameFromIcAbbreviation(abbreviation), numberOfStudents);
 			specializations.add(specialization);
+			total += numberOfStudents;
+		}
+		int diff = studentService.findAllStudentsConcernedLogin().size() - total;
+		if (diff != 0){
+			specializations.add(new SimpleSpecializationWithNumber(" Pas de choix", " Pas de choix", diff));
 		}
 		Collections.sort(specializations); 
 		return specializations;
@@ -106,9 +113,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 	public List<SimpleSpecializationWithNumber> findSimpleJsStats(int choice) {
 		Map<String, Integer> jsMap = findJsStats(choice);
 		List<SimpleSpecializationWithNumber> specializations = new ArrayList<SimpleSpecializationWithNumber>();
+		int total = 0;
 		for (String abbreviation : jsMap.keySet()){
-			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, specializationService.findNameFromJsAbbreviation(abbreviation), jsMap.get(abbreviation));
+			int numberOfStudents = jsMap.get(abbreviation);
+			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, specializationService.findNameFromJsAbbreviation(abbreviation), numberOfStudents);
 			specializations.add(specialization);
+			total += numberOfStudents;
+		}
+		int diff = studentService.findAllStudentsConcernedLogin().size() - total;
+		if (diff != 0){
+			specializations.add(new SimpleSpecializationWithNumber(" Pas de choix", " Pas de choix", diff));
 		}
 		Collections.sort(specializations); 
 		return specializations;

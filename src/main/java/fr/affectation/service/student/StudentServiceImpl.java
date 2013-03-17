@@ -31,7 +31,9 @@ import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.service.agap.AgapCacheService;
+import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
+import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.mail.MailService;
@@ -42,7 +44,10 @@ import fr.affectation.service.validation.ValidationService;
 public class StudentServiceImpl implements StudentService {
 
 	@Inject
-	private AgapCacheService agapService;
+	private AgapCacheService agapCacheService;
+	
+	@Inject
+	private AgapService agapService;
 
 	@Inject
 	private ValidationService validationService;
@@ -58,6 +63,9 @@ public class StudentServiceImpl implements StudentService {
 
 	@Inject
 	private MailService mailService;
+	
+	@Inject
+	private ConfigurationService configurationService;
 
 	@Inject
 	private ExclusionService exclusionService;
@@ -78,7 +86,7 @@ public class StudentServiceImpl implements StudentService {
 			HSSFSheet sheet = workBook.getSheetAt(0);
 			Iterator<HSSFRow> rows = sheet.rowIterator();
 
-			List<String> excludableStudentLogins = agapService.findStudentConcernedLogins();
+			List<String> excludableStudentLogins = agapCacheService.findStudentConcernedLogins();
 
 			while (rows.hasNext()) {
 				HSSFRow row = rows.next();
@@ -100,7 +108,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudent> findAllStudentsConcerned() {
-		List<SimpleStudent> allStudents = agapService.findStudentsConcerned();
+		List<SimpleStudent> allStudents = agapCacheService.findStudentsConcerned();
 		List<String> excludedStudents = exclusionService.findStudentToExcludeLogins();
 		List<SimpleStudent> allStudentsConcerned = new ArrayList<SimpleStudent>();
 		for (SimpleStudent student : allStudents) {
@@ -113,14 +121,14 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<String> findAllStudentsConcernedLogin() {
-		List<String> studentConcernedLogins = agapService.findStudentConcernedLogins();
+		List<String> studentConcernedLogins = agapCacheService.findStudentConcernedLogins();
 		studentConcernedLogins.removeAll(exclusionService.findStudentToExcludeLogins());
 		return studentConcernedLogins;
 	}
 
 	@Override
 	public boolean isStudentConcerned(String login) {
-		return agapService.isStudent(login) && (!exclusionService.isExcluded(login));
+		return agapCacheService.isStudent(login) && (!exclusionService.isExcluded(login));
 	}
 
 	@Override
@@ -128,7 +136,7 @@ public class StudentServiceImpl implements StudentService {
 		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		List<SimpleStudentWithValidation> allSimpleStudents = new ArrayList<SimpleStudentWithValidation>();
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
-		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
+		Map<String, String> nameLoginMap = agapCacheService.findNamesForAListOfLogins(allLogins);
 		for (String login : allLogins) {
 			if (!studentsToExcludeLogins.contains(login)) {
 				boolean isValidated = specialization instanceof JobSector ? validationService.isValidatedJs(login) : validationService.isValidatedIc(login);
@@ -154,7 +162,7 @@ public class StudentServiceImpl implements StudentService {
 		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		List<SimpleStudent> allSimpleStudents = new ArrayList<SimpleStudent>();
 		List<String> studentsToExcludeLogins = exclusionService.findStudentToExcludeLogins();
-		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
+		Map<String, String> nameLoginMap = agapCacheService.findNamesForAListOfLogins(allLogins);
 		for (String login : allLogins) {
 			if (!studentsToExcludeLogins.contains(login)) {
 				allSimpleStudents.add(new SimpleStudent(login, nameLoginMap.get(login)));
@@ -162,6 +170,13 @@ public class StudentServiceImpl implements StudentService {
 		}
 		Collections.sort(allSimpleStudents);
 		return allSimpleStudents;
+	}
+	
+	@Override
+	public List<String> findLoginsByOrderChoiceAndSpecialization(int orderChoice, Specialization specialization) {
+		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
+		Collections.sort(allLogins);
+		return allLogins;
 	}
 
 	@Override
@@ -197,81 +212,49 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void populateValidation() {
 		validationService.removeAll();
-		for (String login : findAllStudentsConcernedLogin()) {
+		for (String login : agapCacheService.findStudentConcernedLogins()) {
 			validationService.save(login, true, true);
 		}
 	}
 
 	@Override
-	public void updateValidationFromList(List<String> students, List<Boolean> validated_, int specializationType) {
-		for (int i = 0; i < students.size(); i++) {
-			String login = students.get(i);
-			Boolean validated;
-			if (i < validated_.size()) {
-				validated = validated_.get(i);
-			} else {
-				validated = null;
-			}
-			if (validated == null) {
-				validated = false;
-			}
-			if (specializationType == Specialization.JOB_SECTOR) {
-				validationService.updateJsValidation(login, validated);
-			} else {
-				validationService.updateIcValidation(login, validated);
-			}
-		}
-	}
-
-	@Override
-	public List<Map<String, Object>> findStudentsForCategorySynthese(String category, String path) {
-		List<String> logins = findAllStudentsConcernedLogin();
-		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map;
+	public List<SimpleStudent> findStudentsForCategorySynthese(String category, String path) {
+		List<SimpleStudent> students = findAllStudentsConcerned();
+		List<SimpleStudent> results = new ArrayList<SimpleStudent>();
 		boolean filledDoc = false;
 		boolean filledChoices = false;
 		int nbreAll = 0;
 		int nbrePartial = 0;
 		int nbreNo = 0;
 
-		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(logins);
-
-		for (String login : logins) {
-			filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
-					&& documentService.hasFilledResume(path, login);
-			List<Integer> l1 = choiceService.findElementNotFilledImprovementCourse(login);
-			List<Integer> l2 = choiceService.findElementNotFilledJobSector(login);
-			filledChoices = (l1.size() == 0) && (l2.size() == 0);
-
-			if ((filledDoc) && (filledChoices)) {
-				if (category.equals("all")) {
-					map = new HashMap<String, Object>();
-					map.put("name", nameLoginMap.get(login));
-					map.put("login", login);
-					results.add(map);
-				}
-				nbreAll += 1;
-			} else {
-				if ((!filledDoc) && (!filledChoices)) {
-					if (category.equals("no")) {
-						map = new HashMap<String, Object>();
-						map.put("name", nameLoginMap.get(login));
-						map.put("login", login);
-						results.add(map);
+		for (SimpleStudent student : students) {
+			String login = student.getLogin();
+				filledDoc = documentService.hasFilledLetterIc(path, login) && documentService.hasFilledLetterJs(path, login)
+						&& documentService.hasFilledResume(path, login);
+				List<Integer> l1 = choiceService.findElementNotFilledImprovementCourse(login);
+				List<Integer> l2 = choiceService.findElementNotFilledJobSector(login);
+				filledChoices = (l1.size() == 0) && (l2.size() == 0);
+	
+				if ((filledDoc) && (filledChoices)) {
+					if (category.equals("all")) {
+						results.add(student);
 					}
-					nbreNo += 1;
+					nbreAll += 1;
 				} else {
-					if (category.equals("partial")) {
-						map = new HashMap<String, Object>();
-						map.put("name", nameLoginMap.get(login));
-						map.put("login", login);
-						results.add(map);
+					if ((!filledDoc) && (!filledChoices)) {
+						if (category.equals("no")) {
+							results.add(student);
+						}
+						nbreNo += 1;
+					} else {
+						if (category.equals("partial")) {
+							results.add(student);
+						}
+						nbrePartial += 1;
 					}
-					nbrePartial += 1;
 				}
-			}
-
 		}
+		Collections.sort(results);
 
 		sizeOfCategories = new HashMap<String, Integer>();
 		sizeOfCategories.put("total", nbreAll);
@@ -315,7 +298,7 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<String> findStudentsToExcludeName() {
 		List<String> studentsLogin = exclusionService.findStudentToExcludeLogins();
-		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(studentsLogin);
+		Map<String, String> nameLoginMap = agapCacheService.findNamesForAListOfLogins(studentsLogin);
 		List<String> studentsName = new ArrayList<String>();
 		for (String login : studentsLogin) {
 			studentsName.add(nameLoginMap.get(login));
@@ -329,15 +312,17 @@ public class StudentServiceImpl implements StudentService {
 		if (isStudentConcerned(login)) {
 			Student student = new Student();
 			student.setLogin(login);
-			student.setName(agapService.findNameFromLogin(login));
-			student.setContentious(agapService.findContentious(login));
-			student.setGpaMeans(agapService.findGpaMeans(login));
-			student.setResults(agapService.findUeResults(login));
+			student.setName(agapCacheService.findNameFromLogin(login));
+			student.setContentious(agapCacheService.findContentious(login));
+			student.setGpaMeans(agapCacheService.findGpaMeans(login));
+			student.setResults(agapCacheService.findUeResults(login));
 			student.setHasFilledResume(documentService.hasFilledResume(path, login));
 			student.setHasFilledLetterIc(documentService.hasFilledLetterIc(path, login));
 			student.setHasFilledLetterJs(documentService.hasFilledLetterJs(path, login));
-			student.setIcChoices(choiceService.findIcChoicesByLogin(login) == null ? new ImprovementCourseChoice() : choiceService.findIcChoicesByLogin(login));
-			student.setJsChoices(choiceService.findJsChoicesByLogin(login) == null ? new JobSectorChoice() : choiceService.findJsChoicesByLogin(login));
+			ImprovementCourseChoice icc = choiceService.findIcChoicesByLogin(login);
+			JobSectorChoice jsc = choiceService.findJsChoicesByLogin(login);
+			student.setIcChoices(icc == null ? new ImprovementCourseChoice() : icc);
+			student.setJsChoices(jsc == null ? new JobSectorChoice() : jsc);
 			return student;
 		} else {
 			return null;
@@ -348,14 +333,16 @@ public class StudentServiceImpl implements StudentService {
 	public List<SimpleStudent> findAllStudentsToExclude() {
 		List<SimpleStudent> studentsToExclude = new ArrayList<SimpleStudent>();
 		List<String> studentsLogin = exclusionService.findStudentToExcludeLogins();
+		List<String> currentPromotion = agapCacheService.findCurrentPromotionStudentLogins();
+		Map<String, String> nameForLogin = agapCacheService.findNamesForAListOfLogins(studentsLogin);
 		for (String login : studentsLogin) {
 			String origin;
-			if (agapService.findCurrentPromotionStudentLogins().contains(login)) {
+			if (currentPromotion.contains(login)) {
 				origin = "promo";
 			} else {
 				origin = "cesure";
 			}
-			SimpleStudent student = new SimpleStudentWithOrigin(login, agapService.findNameFromLogin(login), origin);
+			SimpleStudent student = new SimpleStudentWithOrigin(login, nameForLogin.get(login), origin);
 			studentsToExclude.add(student);
 		}
 		Collections.sort(studentsToExclude);
@@ -371,13 +358,13 @@ public class StudentServiceImpl implements StudentService {
 	public void sendSimpleMail(SimpleMail mail, String path) {
 		List<String> addressees = new ArrayList<String>();
 		if (mail.getAddressee().charAt(0) == 'E') {
-			List<Map<String, Object>> partialMap = findStudentsForCategorySynthese("partial", path);
-			List<Map<String, Object>> noMap = findStudentsForCategorySynthese("no", path);
-			for (Map<String, Object> map : partialMap) {
-				addressees.add((String) map.get("login"));
+			List<SimpleStudent> partial = findStudentsForCategorySynthese("partial", path);
+			List<SimpleStudent> no = findStudentsForCategorySynthese("no", path);
+			for (SimpleStudent student : partial) {
+				addressees.add(student.getLogin());
 			}
-			for (Map<String, Object> map : noMap) {
-				addressees.add((String) map.get("login"));
+			for (SimpleStudent student : no) {
+				addressees.add(student.getLogin());
 			}
 		} else {
 			addressees = findAllStudentsConcernedLogin();
@@ -387,7 +374,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudent> findCurrentPromotionStudentsConcerned() {
-		List<SimpleStudent> studentsAgap = agapService.findCurrentPromotionSimpleStudents();
+		List<SimpleStudent> studentsAgap = agapCacheService.findCurrentPromotionSimpleStudents();
 		List<SimpleStudent> students = new ArrayList<SimpleStudent>();
 		List<String> studentExcludedLogins = exclusionService.findStudentToExcludeLogins();
 		for (SimpleStudent student : studentsAgap) {
@@ -401,7 +388,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<SimpleStudent> findCesureStudentsConcerned() {
-		List<SimpleStudent> studentsAgap = agapService.findCesureSimpleStudents();
+		List<SimpleStudent> studentsAgap = agapCacheService.findCesureSimpleStudents();
 		List<SimpleStudent> students = new ArrayList<SimpleStudent>();
 		List<String> studentExcludedLogins = exclusionService.findStudentToExcludeLogins();
 		for (SimpleStudent student : studentsAgap) {
@@ -425,7 +412,7 @@ public class StudentServiceImpl implements StudentService {
 		for (String abbreviation : choicesResults.keySet()) {
 			allLogins.addAll(choicesResults.get(abbreviation));
 		}
-		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
+		Map<String, String> nameLoginMap = agapCacheService.findNamesForAListOfLogins(allLogins);
 
 		for (String abbreviation : choicesResults.keySet()) {
 			List<String> logins = choicesResults.get(abbreviation);
@@ -459,7 +446,7 @@ public class StudentServiceImpl implements StudentService {
 		for (String abbreviation : inverseRepartition.keySet()) {
 			allLogins.addAll(inverseRepartition.get(abbreviation));
 		}
-		Map<String, String> nameLoginMap = agapService.findNamesForAListOfLogins(allLogins);
+		Map<String, String> nameLoginMap = agapCacheService.findNamesForAListOfLogins(allLogins);
 		for (String abbreviation : inverseRepartition.keySet()) {
 			List<String> logins = inverseRepartition.get(abbreviation);
 			List<String> names = new ArrayList<String>();
@@ -499,5 +486,25 @@ public class StudentServiceImpl implements StudentService {
 		specs.add(jsc.getChoice4() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice4()) : null);
 		specs.add(jsc.getChoice5() != null ? specializationService.getJobSectorByAbbreviation(jsc.getChoice5()) : null);
 		return specs;
+	}
+
+	@Override
+	public void updateFromAgap() {
+		agapService.updateFromTheRealAgap();
+		if (configurationService.isRunning() && !configurationService.isSubmissionAvailable()){
+			List<String> studentsInValidationProcessLogin = validationService.findAllStudentsInValidationProcessLogin();
+			for (String login : agapCacheService.findStudentConcernedLogins()){
+				if (!studentsInValidationProcessLogin.contains(login)){
+					validationService.save(login, true, true);
+				}
+			}
+		}
+		List<String> studentsConcernedLogin = findAllStudentsConcernedLogin();
+		List<String> excludedStudentsLogin = exclusionService.findStudentToExcludeLogins();
+		for (String login : excludedStudentsLogin){
+			if (!studentsConcernedLogin.contains(login)){
+				exclusionService.remove(login);
+			}
+		}
 	}
 }

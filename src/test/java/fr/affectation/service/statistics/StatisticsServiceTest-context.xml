@@ -51,6 +51,8 @@
 	
 	<bean class="fr.affectation.service.agap.AgapCacheServiceImpl" />
 	
+	<bean class="fr.affectation.service.configuration.ConfigurationServiceImpl" />
+	
 	<bean class="fr.affectation.service.specialization.SpecializationServiceImpl" />
 	
 	<bean class="fr.affectation.service.exclusion.ExclusionServiceImpl" />
