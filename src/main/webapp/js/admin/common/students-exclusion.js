@@ -97,27 +97,27 @@ function removePromoStudent(id) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
 	}
 	
-	remove(login);
+	remove(login, fullName);
 };
 
-function remove(login){
+function remove(login, fullName){
 	var path = document.getElementById("path").innerHTML;
 	$.ajax({
 		url: path + "/admin/common/exclude-student",
 		data: "login="+login,
 		success: function(){
-			$('#info').html("L'élève dont le login est <b>" + login + "</b> est désormais <b>exclu</b> du processus.");
+			$('#info').html("<b>" + fullName + "</b> est désormais <b>exclu(e)</b> du processus.");
 		}
 	});
 }
 
-function add(login){
+function add(login, fullName){
 	var path = document.getElementById("path").innerHTML;
 	$.ajax({
 		url: path + "/admin/common/add-student",
 		data: "login="+login,
 		success: function(){
-			$('#info').html("L'élève dont le login est <b>" + login + "</b> n'est désormais <b>plus exclu</b> du processus.");
+			$('#info').html("<b>" + fullName + "</b> n'est désormais <b>plus exclu(e)</b> du processus.");
 		}
 	});
 }
@@ -221,7 +221,7 @@ function removeCesureStudent(id) {
 		liExclusionElements[childIndex].id = "exclusion" + childIndex;
 	}
 	
-	remove(login);
+	remove(login, fullName);
 };
 
 function compareNames(fullName1, fullName2) {
@@ -336,7 +336,7 @@ function addPromoStudent(id) {
 		liPromoElements[childIndex].id = "promo" + childIndex;
 	}
 	
-	add(login);
+	add(login, fullName);
 };
 
 function addCesureStudent(id) {
@@ -437,5 +437,5 @@ function addCesureStudent(id) {
 		licesureElements[childIndex].id = "cesure" + childIndex;
 	}
 	
-	add(login);
+	add(login, fullName);
 };

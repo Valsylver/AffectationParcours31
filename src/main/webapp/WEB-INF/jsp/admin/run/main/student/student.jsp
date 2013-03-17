@@ -9,11 +9,73 @@
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
 <link href="${pageContext.request.contextPath}/css/student-admin-page.css" rel="stylesheet">
+<script>
+function inverseValidationIc(){
+	query("ic");
+	}
+function inverseValidationJs(){
+	query("js");
+	}
+function query(type){
+	var login = document.getElementById("login").innerHTML;
+	var path = document.getElementById("path").innerHTML;
+	if (type == "ic"){
+		var isValidated = document.getElementById("isValidatedIc").innerHTML;		
+	}
+	else{
+		var isValidated = document.getElementById("isValidatedJs").innerHTML;
+	}
+	$.ajax({
+		type: "POST",
+		url: path + "/admin/run/main/student/inverse-validation",
+		data: "type="+type+"&login="+login+"&currentValidation="+isValidated, 
+		success: function(){
+			var name = document.getElementById("name").innerHTML;
+			var message;
+			var button;
+			if (type == "ic"){
+				button = document.getElementById("buttonIc");
+				if (isValidated == "true"){
+					message = " est désormais <b>refusé</b> pour son premier choix de parcours d'approfondissement."
+					button.className = "btn btn-success";	
+					button.innerHTML = "<i class='icon-white icon-ok'></i> Accepter";
+					document.getElementById("isValidatedIc").innerHTML = "false";
+				}
+				else{
+					message = " est désormais <b>accepté</b> pour son premier choix de parcours d'approfondissement."
+					button.className = "btn btn-danger";	
+					button.innerHTML = "<i class='icon-white icon-remove'></i> Refuser";
+					document.getElementById("isValidatedIc").innerHTML = "true";
+				}
+			}
+			if (type == "js"){
+				button = document.getElementById("buttonJs");
+				if (isValidated == "true"){
+					message = " est désormais <b>refusé</b> pour son premier choix de filière métier."
+					button.className = "btn btn-success";	
+					button.innerHTML = "<i class='icon-white icon-ok'></i> Accepter";
+					document.getElementById("isValidatedJs").innerHTML = "false";
+				}
+				else{
+					message = " est désormais <b>accepté</b> pour son premier choix de filière métier."
+					button.className = "btn btn-danger";	
+					button.innerHTML = "<i class='icon-white icon-remove'></i> Refuser";
+					document.getElementById("isValidatedJs").innerHTML = "true";
+				}
+			}
+			$('#infoValidation').html("<div class='alert alert-info'> L'élève <b>" + name + "</b>" + message + "</div>");
+		}
+	});
+}
+</script>
 </head>
 <body>
 	<div class="container">
 		<tags:headerAdmin run="<%=true%>" />
+		<div id="path" style="display:none">${pageContext.request.contextPath}</div>
 
 		<div class="row">
 			<div class="span2">
@@ -68,49 +130,84 @@
 				</ul>
 			</div>
 
-			<div class="span7">
+			<div class="span8">
 				<c:choose>
 					<c:when test="${student != null}">
+						<div id="login" style="display:none">${student.login}</div>
+						<div id="name" style="display:none">${student.name}</div>
 						<h3>
 							<legend>${student.name} <a href="${pageContext.request.contextPath}/admin/run/main/student/edit-student-form/${login}" class="btn btn-primary btn-small pull-right"><i class="icon-white icon-pencil"></i></a></legend>
 						</h3>
+						<c:if test="${not empty change }">
+							<div class="alert alert-success">${change}</div>
+						</c:if>
 						<h4>Voeux</h4>
 						<table class="table table-bordered table-striped table-condensed">
 							<thead>
 								<tr>
 									<th></th>
-									<th>Parcours</th>
-									<th>Filières</th>
+									<th><center>Parcours</center></th>
+									<th><center>Filières</center></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td><b>Choix 1</b>
-									<td>${student.icChoices.choice1}</td>
-									<td>${student.jsChoices.choice1}</td>
+									<td><center>${student.icChoices.choice1}</center></td>
+									<td><center>${student.jsChoices.choice1}</center></td>
 								</tr>
 								<tr>
 									<td><b>Choix 2</b>
-									<td>${student.icChoices.choice2}</td>
-									<td>${student.jsChoices.choice2}</td>
+									<td><center>${student.icChoices.choice2}</center></td>
+									<td><center>${student.jsChoices.choice2}</center></td>
 								</tr>
 								<tr>
 									<td><b>Choix 3</b>
-									<td>${student.icChoices.choice3}</td>
-									<td>${student.jsChoices.choice3}</td>
+									<td><center>${student.icChoices.choice3}</center></td>
+									<td><center>${student.jsChoices.choice3}</center></td>
 								</tr>
 								<tr>
 									<td><b>Choix 4</b>
-									<td>${student.icChoices.choice4}</td>
-									<td>${student.jsChoices.choice4}</td>
+									<td><center>${student.icChoices.choice4}</center></td>
+									<td><center>${student.jsChoices.choice4}</center></td>
 								</tr>
 								<tr>
 									<td><b>Choix 5</b>
-									<td>${student.icChoices.choice5}</td>
-									<td>${student.jsChoices.choice5}</td>
+									<td><center>${student.icChoices.choice5}</center></td>
+									<td><center>${student.jsChoices.choice5}</center></td>
 								</tr>
 							</tbody>
 						</table>
+						
+						<c:if test="${validationAvailable}">
+							<h4>Validation</h4>
+							<div style="display:none">
+								<div id="isValidatedIc">${isValidatedIc}</div>
+								<div id="isValidatedJs">${isValidatedJs}</div>
+							</div>
+							<div id="infoValidation"></div>
+							<c:choose>
+								<c:when test="${isValidatedIc}">
+									Cet élève est actullement accepté dans son premier choix de parcours d'approfondissement. 
+									<a id="buttonIc" onclick="inverseValidationIc()" class="btn btn-danger"><i class="icon-white icon-remove"></i> Refuser</a>
+								</c:when>
+								<c:otherwise>
+									Cet élève est actullement refusé dans son premier choix de parcours d'approfondissement. 
+									<a id="buttonIc" onclick="inverseValidationIc()" class="btn btn-success"><i class="icon-white icon-ok"></i> Accepter</a>
+								</c:otherwise>
+							</c:choose>
+							<br />
+							<c:choose>
+								<c:when test="${isValidatedJs}">
+									Cet élève est actullement accepté dans son premier choix de filière métier. 
+									<a id="buttonJs" onclick="inverseValidationJs()" class="btn btn-danger"><i class="icon-white icon-remove"></i> Refuser</a>
+								</c:when>
+								<c:otherwise>
+									Cet élève est actullement refusé dans son premier choix de filière métier. 
+									<a id="buttonJs" onclick="inverseValidationJs()" class="btn btn-success"><i class="icon-white icon-ok"></i> Accepter</a>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
 
 						<h4>Documents</h4>
 						<c:choose>
@@ -118,7 +215,7 @@
 								<a href="${pageContext.request.contextPath}/files/cv_${student.login}">CV</a>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a pas encore déposé son CV.
+Cet élève n'a pas déposé son CV.
 </c:otherwise>
 						</c:choose>
 						<br />
@@ -128,7 +225,7 @@ Cet élève n'a pas encore déposé son CV.
 								<a href="${pageContext.request.contextPath}/files/lettre_parcours_${student.login}">Lettre parcours</a>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
+Cet élève n'a pas déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
 </c:otherwise>
 						</c:choose>
 						<br />
@@ -138,7 +235,7 @@ Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de pa
 								<a href="${pageContext.request.contextPath}/files/lettre_filiere_${student.login}">Lettre filière</a>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.
+Cet élève n'a pas déposé sa lettre de motivation pour son choix de filière métier.
 </c:otherwise>
 						</c:choose>
 						<br />
@@ -235,7 +332,7 @@ Cet élève n'a aucun contentieux.
 				<br /> <br />
 			</div>
 
-			<div class="span3">
+			<div class="span2">
 				<tags:rightColumnAdmin />
 			</div>
 		</div>

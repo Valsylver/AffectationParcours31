@@ -45,6 +45,13 @@ Des fichiers d'export (pdf, xls, zip, img) sont stockés temporairement dans le 
 <br />
 
 ================================
+L'application utilise des données issues d'agap. Les noms et logins des élèves sont recopiés dans une autre base de données, du fait du coût de la connexion
+et des requetes agap. Cette base de donnée est mise à jour à partir d'agap à intervalle de temps fixe (24h).
+L'horaire de mise à jour d'agap est configurée dans le fichier src\main\webapp\WEB-INF\affectation-servlet.xml. Voir quartz cronTrigger pour l'expression
+donnant cet horaire.
+<br />
+
+================================
 L'application se déploie sur /affectation-3A (configuré dans le pom.xml). Si ce chemin est modifié, il est nécessaire de modifier : 
 * la valeur du champ path dans le fichier src\main\webapp\WEB-INF\affectation-servlet.xml
 * remplacer /affectation-3A par le vrai chemin dans src\main\webapp\css\select3.css

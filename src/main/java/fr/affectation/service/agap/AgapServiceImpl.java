@@ -48,45 +48,32 @@ public class AgapServiceImpl implements AgapService {
 	@Override
 	@Transactional
 	public void updateFromTheRealAgap() {
-		Calendar start = Calendar.getInstance();
 		Session session = sessionFactory.getCurrentSession();
-		System.out.println("[Update agp] Start the update of students from agap");
-		System.out.println("[Update agp] Start deletion");
 		session.createQuery("delete from SimpleStudentAgap").executeUpdate();
-		System.out.println("[Update agp] End deletion");
 		
-		System.out.println("[Update agp] Start finding and saving current promotion students");
 		String requeteEleves = "SELECT nom, uid FROM \"720_choix3A_eleves\" WHERE nom IN "
 				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("cycle", getCurrentCycle());
 		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
-		int number = 0;
 		for (Map<String, Object> map : studentMap) {
 			String login = (String) map.get("uid");
 			String name = (String) map.get("nom");
 			session.save(new SimpleStudentAgap(login, name, SimpleStudentAgap.CURRENT_PROMOTION));
-			number += 1;
 		}
-		System.out.println("[Update agp] End finding and saving current promotion students, " + number + " have been saved" );
-		
-		System.out.println("[Update agp] Start finding and saving cesure students");
+
 		requeteEleves = "SELECT nom, uid FROM \"720_choix3A_eleves\" WHERE nom IN (SELECT nom FROM \"720_choix3A_cesure\" WHERE nom IN "
 				+ "(SELECT nom FROM \"720_choix3A_gpa\" WHERE cycle=:cycle AND sem='SEM-7'))";
 		namedParameter = new HashMap<String, String>();
 		namedParameter.put("cycle", getLastCycle());
 		studentMap = namedParameterjdbcTemplate.queryForList(requeteEleves, namedParameter);
-		number = 0;
 		for (Map<String, Object> map : studentMap) {
 			String login = (String) map.get("uid");
 			String name = (String) map.get("nom");
 			session.save(new SimpleStudentAgap(login, name, SimpleStudentAgap.CESURE));
-			number += 1;
 		}
-		Calendar end = Calendar.getInstance();
-		System.out.println("[Update agp] End finding and saving cesure students, " + number + " have been saved" );		
-		System.out.println("[Update agp] End of the update of students from agap in " + Math.abs(end.getTimeInMillis() - start.getTimeInMillis()) + " milliseconds");
-	}
+		
+}
 	
 	@Override
 	public List<Contentious> findContentious(String login) {

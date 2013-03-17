@@ -124,7 +124,7 @@
 								Aucun elève n'a choisi cette filière métier en
 								<c:choose>
 									<c:when test="${order == 1}">
-										1er choix
+										1er choix.
 									</c:when>
 									<c:otherwise>
 										${order}ème choix.

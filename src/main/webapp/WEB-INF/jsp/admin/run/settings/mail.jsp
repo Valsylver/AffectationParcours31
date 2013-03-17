@@ -22,6 +22,7 @@
 			<div class="span2">
 				<ul class="nav nav-list">
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
+					<li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
 					<c:choose>
@@ -44,7 +45,6 @@
 				<form:form action="${pageContext.request.contextPath}/admin/run/settings/process-mail-edition" method="post" commandName="mail" class="well form-horizontal span6">
 					<c:if test='${not empty flashMessage }'>
 						<div class="alert alert-success">
-							<h4>Sauvegarde</h4>
 							${flashMessage}
 						</div>
 					</c:if>

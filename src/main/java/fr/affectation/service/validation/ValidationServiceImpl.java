@@ -114,4 +114,14 @@ public class ValidationServiceImpl implements ValidationService {
 		query.executeUpdate();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<String> findAllStudentsInValidationProcessLogin() {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(StudentValidation.class);
+		criteria.setProjection(Property.forName("login"));
+		return criteria.list();
+	}
+
 }

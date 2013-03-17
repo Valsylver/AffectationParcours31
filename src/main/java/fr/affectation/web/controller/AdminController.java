@@ -38,6 +38,7 @@ import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
+import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.superuser.Admin;
 import fr.affectation.domain.util.Mail;
 import fr.affectation.domain.util.SimpleMail;
@@ -108,6 +109,23 @@ public class AdminController {
 	public @ResponseBody
 	void addByLogin(@RequestParam String login) {
 		exclusionService.remove(login);
+	}
+	
+	@RequestMapping(value = "/common/update-agap", method = RequestMethod.GET)
+	public @ResponseBody
+	void updateAgap() {
+		studentService.updateFromAgap();
+	}
+	
+	@RequestMapping(value = "/run/main/student/inverse-validation", method = RequestMethod.POST)
+	public @ResponseBody
+	void inverseValidation(@RequestParam("type") String type, @RequestParam("login") String login, @RequestParam("currentValidation") String currentValidation) {
+		if (type.equals("ic")){			
+			validationService.updateIcValidation(login, !currentValidation.equals("true"));
+		}
+		else if (type.equals("js")){
+			validationService.updateJsValidation(login, !currentValidation.equals("true"));
+		}
 	}
 
 	@RequestMapping("/config/exclude")
@@ -251,13 +269,17 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/common/process-edition/ic", method = RequestMethod.POST)
-	public String saveImprovementCourse(@ModelAttribute("specialization") @Valid ImprovementCourse specialization, BindingResult result, Model model) {
+	public String saveImprovementCourse(@ModelAttribute("specialization") @Valid ImprovementCourse specialization, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
 			return "admin/common/edit-specialization";
 		}
 		specializationService.save(specialization);
-		return configurationService.isRunning() ? "redirect:/admin/run/settings/specializations" : "redirect:/admin/";
+		boolean run = configurationService.isRunning();
+		if (!run) {
+			redirectAttributes.addFlashAttribute("successIc", "Le parcours d'approfondissement <b>" + specialization.getName() + "</b> a bien été modifié ou crée.");
+		}
+		return run ? "redirect:/admin/run/settings/specializations" : "redirect:/admin/config";
 	}
 
 	@RequestMapping("/common/edit/js/{abbreviation}")
@@ -269,13 +291,17 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/common/process-edition/js", method = RequestMethod.POST)
-	public String saveJobSector(@ModelAttribute("specialization") @Valid JobSector specialization, BindingResult result, Model model) {
+	public String saveJobSector(@ModelAttribute("specialization") @Valid JobSector specialization, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("state", configurationService.isRunning() ? "run" : "config");
 			return "admin/common/edit-specialization";
 		}
 		specializationService.save(specialization);
-		return configurationService.isRunning() ? "redirect:/admin/run/settings/specializations" : "redirect:/admin/";
+		boolean run = configurationService.isRunning();
+		if (!run) {
+			redirectAttributes.addFlashAttribute("successJs", "La filière métier <b>" + specialization.getName() + "</b> a bien été modifié ou crée.");
+		}
+		return run ? "redirect:/admin/run/settings/specializations" : "redirect:/admin/config";
 	}
 
 	@RequestMapping(value = "/config/new/job-sector", method = RequestMethod.GET)
@@ -303,20 +329,30 @@ public class AdminController {
 	}
 
 	@RequestMapping("/config/delete/job-sector/{abbreviation}")
-	public String deleteJobSector(@PathVariable String abbreviation) {
+	public String deleteJobSector(@PathVariable String abbreviation, RedirectAttributes redirectAttributes) {
 		if (!configurationService.isRunning()) {
-			specializationService.delete(specializationService.getJobSectorByAbbreviation(abbreviation));
-			return "redirect:/admin/";
+			Specialization specialization = specializationService.getJobSectorByAbbreviation(abbreviation);
+			specializationService.delete(specialization);
+			boolean run = configurationService.isRunning();
+			if (!run) {
+				redirectAttributes.addFlashAttribute("successJs", "La filière métier <b>" + specialization.getName() + "</b> a bien été supprimée.");
+			}
+			return "redirect:/admin/config";
 		} else {
 			return "redirect:/admin";
 		}
 	}
 
 	@RequestMapping("/config/delete/improvement-course/{abbreviation}")
-	public String deleteImprovementCourse(@PathVariable String abbreviation) {
+	public String deleteImprovementCourse(@PathVariable String abbreviation, RedirectAttributes redirectAttributes) {
 		if (!configurationService.isRunning()) {
-			specializationService.delete(specializationService.getImprovementCourseByAbbreviation(abbreviation));
-			return "redirect:/admin/";
+			Specialization specialization = specializationService.getImprovementCourseByAbbreviation(abbreviation);
+			specializationService.delete(specialization);
+			boolean run = configurationService.isRunning();
+			if (!run) {
+				redirectAttributes.addFlashAttribute("successIc", "Le parcours d'approfondissement <b/>" + specialization.getName() + "</b> a bien été supprimé.");
+			}
+			return "redirect:/admin/config";
 		} else {
 			return "redirect:/admin";
 		}
@@ -328,6 +364,12 @@ public class AdminController {
 			model.addAttribute("student", studentService.retrieveStudentByLogin(login, request.getSession().getServletContext().getRealPath("/")));
 			model.addAttribute("allIc", specializationService.findImprovementCourses());
 			model.addAttribute("allJs", specializationService.findJobSectors());
+			boolean validationAvailable = !configurationService.isSubmissionAvailable();
+			model.addAttribute("validationAvailable", validationAvailable);
+			if (validationAvailable){
+				model.addAttribute("isValidatedIc", validationService.isValidatedIc(login) ? "true" : "false");
+				model.addAttribute("isValidatedJs", validationService.isValidatedJs(login) ? "true" : "false");
+			}
 			return "admin/run/main/student/student";
 		} else {
 			return "redirect:/admin";
@@ -451,9 +493,7 @@ public class AdminController {
 				return "redirect:/admin/run/main/edit-student-form/" + login;
 			}
 
-			model.addAttribute("hasFilledLetterIc", documentService.hasFilledLetterIc(path, login));
-			model.addAttribute("hasFilledLetterJs", documentService.hasFilledLetterJs(path, login));
-			model.addAttribute("hasFilledResume", documentService.hasFilledResume(path, login));
+			redirectAttributes.addFlashAttribute("change", "Les changements ont bien été sauvegardés.");
 
 			return "redirect:/admin/run/main/student/" + login;
 		} else {
@@ -486,6 +526,17 @@ public class AdminController {
 			model.addAttribute("currentAdmins", adminService.findAdminLogins());
 			model.addAttribute("newAdmin", new Admin());
 			return "admin/run/settings/admins";
+		} else {
+			return "redirect:/admin";
+		}
+	}
+	
+	@RequestMapping("/run/settings/agap")
+	public String updateAgap(Model model) {
+		if (configurationService.isRunning()) {
+			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
+			return "admin/run/settings/agap";
 		} else {
 			return "redirect:/admin";
 		}
@@ -985,7 +1036,7 @@ public class AdminController {
 	public String detailsForForms(HttpServletRequest request, @PathVariable String category, Model model) {
 		if (configurationService.isRunning()) {
 			String path = request.getSession().getServletContext().getRealPath("/");
-			List<Map<String, Object>> results = studentService.findStudentsForCategorySynthese(category, path);
+			List<SimpleStudent> results = studentService.findStudentsForCategorySynthese(category, path);
 			Map<String, Integer> numbersForCategories = studentService.getSizeOfCategories(path);
 			model.addAttribute("nbreAll", numbersForCategories.get("total"));
 			model.addAttribute("nbrePartial", numbersForCategories.get("partial"));
@@ -1013,6 +1064,7 @@ public class AdminController {
 			configurationService.setFirstMailActivated(false);
 			configurationService.setSecondMailActivated(false);
 		}
+		studentService.updateFromAgap();
 		configurationService.initializeFromDataBase();
 	}
 	

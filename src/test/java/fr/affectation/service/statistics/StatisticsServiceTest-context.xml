@@ -43,6 +43,8 @@
 	
 	<bean class="fr.affectation.service.validation.ValidationServiceImpl" />
 	
+	<bean class="fr.affectation.service.configuration.ConfigurationServiceImpl" />
+	
 	<bean class="fr.affectation.service.choice.ChoiceServiceImpl" />
 	
 	<bean class="fr.affectation.service.documents.DocumentServiceImpl" />

@@ -6,21 +6,20 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="simpleTrigger" />
+				<ref bean="cronTrigger" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="updateAgap" />
-		<property name="startDelay" value="0" />
-		<property name="repeatInterval" value="600000" />
+		<property name="cronExpression" value="0 30 18 * * ?" />
 	</bean>
 
 	<bean id="updateAgap"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="agapServiceImpl" />
-		<property name="targetMethod" value="updateFromTheRealAgap" />
+		<property name="targetObject" ref="studentServiceImpl" />
+		<property name="targetMethod" value="updateFromAgap" />
 		<property name="concurrent" value="false" />
 	</bean>
 

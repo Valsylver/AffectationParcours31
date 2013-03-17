@@ -38,6 +38,14 @@
 			<hr />
 
 			<div class="row">
+				<div class="span12">
+				<c:if test="${not empty successIc}">
+						<div class="alert alert-info">${successIc}</div>
+					</c:if>
+				<c:if test="${not empty successJs}">
+						<div class="alert alert-info">${successJs}</div>
+					</c:if>
+				</div>
 				<div class="span4">
 					<h2>
 						Parcours <a href="${pageContext.request.contextPath}/admin/config/new/improvement-course" class="btn btn-info"><i class="icon-white icon-plus"></i></a>

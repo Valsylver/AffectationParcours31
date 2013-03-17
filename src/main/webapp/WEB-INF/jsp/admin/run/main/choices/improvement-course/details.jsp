@@ -128,7 +128,7 @@
 							Aucun elève n'a pour l'instant choisi ce parcours d'approfondissement en
 							<c:choose>
 								<c:when test="${order == 1}">
-									1er choix
+									1er choix.
 								</c:when>
 								<c:otherwise>
 									${order}ème choix.

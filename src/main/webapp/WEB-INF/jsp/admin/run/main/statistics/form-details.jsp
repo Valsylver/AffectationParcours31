@@ -104,7 +104,7 @@
 				</c:if>
 
 				<c:forEach var="student" items="${results}">
-					<a href="${pageContext.request.contextPath}/admin/run/main/student/${student['login']}">${student['name']}</a>
+					<a href="${pageContext.request.contextPath}/admin/run/main/student/${student.login}">${student.name}</a>
 					<br />
 				</c:forEach>
 

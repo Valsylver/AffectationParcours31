@@ -12,7 +12,26 @@
 <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
-<script src="${pageContext.request.contextPath}/js/responsible/validation.js" type="text/javascript"></script>
+<script>
+function inverseValidation(id){
+	var loginName = id.split(";;;");
+	var login = loginName[0];
+	var name = loginName[1];
+	var path = document.getElementById("path").innerHTML;
+	$.ajax({
+		url: path + "/responsable/inverse-validation",
+		data: "login="+login,
+		success: function(validated){
+			if (validated == "true"){
+				$('#info').html("<b>" + name + "</b> est désormais <b>accepté(e).</b>");				
+			}
+			else{
+				$('#info').html("<b>" + name + "</b> n'est désormais <b>plus accepté(e).</b>");
+			}
+		}
+	});
+}
+</script>
 </head>
 <body>
 	<div class="container">
@@ -62,10 +81,10 @@
 										<td><a href="${pageContext.request.contextPath}/responsable/student/${student.login}">${student.name}</a></td>
 										<c:choose>
 											<c:when test="${student.validated}">
-												<td><input id ="${student.login}" type="checkbox" checked="checked" onchange="inverseValidation(this.id)"></td>
+												<td><input id ="${student.login};;;${student.name}" type="checkbox" checked="checked" onchange="inverseValidation(this.id)"></td>
 											</c:when>
 											<c:otherwise>
-												<td><input id ="${student.login}" type="checkbox" onchange="inverseValidation(this.id)"></td>
+												<td><input id ="${student.login};;;${student.name}" type="checkbox" onchange="inverseValidation(this.id)"></td>
 											</c:otherwise>
 										</c:choose>
 									</tr>

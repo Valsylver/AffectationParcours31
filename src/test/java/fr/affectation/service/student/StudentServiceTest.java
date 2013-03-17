@@ -1,6 +1,5 @@
 package fr.affectation.service.student;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -78,42 +77,6 @@ public class StudentServiceTest {
 		Assert.assertTrue(otherTypeRepartition.containsKey("IC1"));
 		Assert.assertTrue(otherTypeRepartition.get("IC1").size() == 1);
 		Assert.assertTrue(otherTypeRepartition.get("IC1").contains("login"));
-	}
-	
-	@Test
-	public void validateStudentFromListIc(){
-		List<String> logins = Arrays.asList("login1", "login2", "login3");
-		for (String login : logins){
-			validationService.save(login, true, true);
-		}
-		List<Boolean> validation = Arrays.asList(false, true, false);
-		studentService.updateValidationFromList(logins, validation, Specialization.IMPROVEMENT_COURSE);
-		Assert.assertFalse(validationService.isValidatedIc("login1"));
-		Assert.assertTrue(validationService.isValidatedIc("login2"));
-		Assert.assertFalse(validationService.isValidatedIc("login3"));
-	}
-	
-	@Test
-	public void validateStudentFromListJs(){
-		List<String> logins = Arrays.asList("login1", "login2", "login3");
-		for (String login : logins){
-			validationService.save(login, true, true);
-		}
-		List<Boolean> validation = Arrays.asList(false, true, false);
-		studentService.updateValidationFromList(logins, validation, Specialization.JOB_SECTOR);
-		Assert.assertFalse(validationService.isValidatedJs("login1"));
-		Assert.assertTrue(validationService.isValidatedJs("login2"));
-		Assert.assertFalse(validationService.isValidatedJs("login3"));
-	}
-	
-	@Test
-	public void validateStudentFromListDistinctionSpec(){
-		List<String> logins = Arrays.asList("login");
-		validationService.save("login", true, true);
-		List<Boolean> validation = Arrays.asList(false);
-		studentService.updateValidationFromList(logins, validation, Specialization.IMPROVEMENT_COURSE);
-		Assert.assertFalse(validationService.isValidatedIc("login"));
-		Assert.assertTrue(validationService.isValidatedJs("login"));
 	}
 	
 	@Test

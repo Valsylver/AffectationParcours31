@@ -18,6 +18,8 @@ public interface ValidationService {
 	
 	public void remove(String login);
 	
+	public List<String> findAllStudentsInValidationProcessLogin();
+	
 	public List<String> findStudentValidatedIcLogins();
 	
 	public List<String> findStudentValidatedJsLogins();
