@@ -36,36 +36,47 @@ function query(type){
 			var name = document.getElementById("name").innerHTML;
 			var message;
 			var button;
+			var textNew;
+			var typeReal;
 			if (type == "ic"){
 				button = document.getElementById("buttonIc");
+				var text = "textIc";
+				typeReal = "parcours d'approfondissement";
 				if (isValidated == "true"){
-					message = " est désormais <b>refusé</b> pour son premier choix de parcours d'approfondissement."
+					message = " est désormais <b>refusé</b> pour son premier choix de parcours d'approfondissement.";
 					button.className = "btn btn-success";	
 					button.innerHTML = "<i class='icon-white icon-ok'></i> Accepter";
 					document.getElementById("isValidatedIc").innerHTML = "false";
+					textNew = "refusé";
 				}
 				else{
-					message = " est désormais <b>accepté</b> pour son premier choix de parcours d'approfondissement."
+					message = " est désormais <b>accepté</b> pour son premier choix de parcours d'approfondissement.";
 					button.className = "btn btn-danger";	
 					button.innerHTML = "<i class='icon-white icon-remove'></i> Refuser";
 					document.getElementById("isValidatedIc").innerHTML = "true";
+					textNew = "accepté";
 				}
 			}
 			if (type == "js"){
 				button = document.getElementById("buttonJs");
+				var text = "textJs";
+				typeReal = "filière métier";
 				if (isValidated == "true"){
-					message = " est désormais <b>refusé</b> pour son premier choix de filière métier."
+					message = " est désormais <b>refusé</b> pour son premier choix de filière métier.";
 					button.className = "btn btn-success";	
 					button.innerHTML = "<i class='icon-white icon-ok'></i> Accepter";
 					document.getElementById("isValidatedJs").innerHTML = "false";
+					textNew = "refusé";
 				}
 				else{
-					message = " est désormais <b>accepté</b> pour son premier choix de filière métier."
+					message = " est désormais <b>accepté</b> pour son premier choix de filière métier.";
 					button.className = "btn btn-danger";	
 					button.innerHTML = "<i class='icon-white icon-remove'></i> Refuser";
 					document.getElementById("isValidatedJs").innerHTML = "true";
+					textNew = "accepté";
 				}
 			}
+			document.getElementById(text).innerHTML = "Cet élève est actuellement " + textNew + " pour son premier choix de " + typeReal + ".";
 			$('#infoValidation').html("<div class='alert alert-info'> L'élève <b>" + name + "</b>" + message + "</div>");
 		}
 	});
@@ -188,22 +199,22 @@ function query(type){
 							<div id="infoValidation"></div>
 							<c:choose>
 								<c:when test="${isValidatedIc}">
-									Cet élève est actullement accepté dans son premier choix de parcours d'approfondissement. 
+									<div id="textIc" style="display:inline;">Cet élève est actullement accepté dans son premier choix de parcours d'approfondissement.</div>
 									<a id="buttonIc" onclick="inverseValidationIc()" class="btn btn-danger"><i class="icon-white icon-remove"></i> Refuser</a>
 								</c:when>
 								<c:otherwise>
-									Cet élève est actullement refusé dans son premier choix de parcours d'approfondissement. 
+									<div id="textIc" style="display:inline;">Cet élève est actullement refusé dans son premier choix de parcours d'approfondissement.</div> 
 									<a id="buttonIc" onclick="inverseValidationIc()" class="btn btn-success"><i class="icon-white icon-ok"></i> Accepter</a>
 								</c:otherwise>
 							</c:choose>
 							<br />
 							<c:choose>
 								<c:when test="${isValidatedJs}">
-									Cet élève est actullement accepté dans son premier choix de filière métier. 
+									<div id="textJs" style="display:inline;">Cet élève est actullement accepté dans son premier choix de filière métier.</div> 
 									<a id="buttonJs" onclick="inverseValidationJs()" class="btn btn-danger"><i class="icon-white icon-remove"></i> Refuser</a>
 								</c:when>
 								<c:otherwise>
-									Cet élève est actullement refusé dans son premier choix de filière métier. 
+									<div id="textJs" style="display:inline;">Cet élève est actullement refusé dans son premier choix de filière métier.</div> 
 									<a id="buttonJs" onclick="inverseValidationJs()" class="btn btn-success"><i class="icon-white icon-ok"></i> Accepter</a>
 								</c:otherwise>
 							</c:choose>
