@@ -111,11 +111,11 @@ public class AdminController {
 		exclusionService.remove(login);
 	}
 	
-	@RequestMapping(value = "/common/update-agap", method = RequestMethod.GET)
-	public @ResponseBody
-	void updateAgap() {
-		studentService.updateFromAgap();
-	}
+//	@RequestMapping(value = "/common/update-agap", method = RequestMethod.GET)
+//	public @ResponseBody
+//	void updateAgap() {
+//		studentService.updateFromAgap();
+//	}
 	
 	@RequestMapping(value = "/run/main/student/inverse-validation", method = RequestMethod.POST)
 	public @ResponseBody
@@ -1064,7 +1064,7 @@ public class AdminController {
 			configurationService.setFirstMailActivated(false);
 			configurationService.setSecondMailActivated(false);
 		}
-		studentService.updateFromAgap();
+		//studentService.updateFromAgap();
 		configurationService.initializeFromDataBase();
 	}
 	

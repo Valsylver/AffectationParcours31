@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.affectation.domain.student.Contentious;
@@ -21,7 +20,7 @@ import fr.affectation.domain.student.SimpleStudentAgap;
 import fr.affectation.domain.student.UeResult;
 
 @SuppressWarnings("unchecked")
-@Service
+//@Service
 public class AgapCacheServiceImpl implements AgapCacheService {
 
 	@Inject
