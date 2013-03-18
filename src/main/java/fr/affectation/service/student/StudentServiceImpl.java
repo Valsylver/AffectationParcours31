@@ -31,7 +31,6 @@ import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.service.agap.AgapCacheService;
-import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.documents.DocumentService;
@@ -46,8 +45,8 @@ public class StudentServiceImpl implements StudentService {
 	@Inject
 	private AgapCacheService agapCacheService;
 	
-	@Inject
-	private AgapService agapService;
+//	@Inject
+//	private AgapService agapService;
 
 	@Inject
 	private ValidationService validationService;
@@ -488,23 +487,23 @@ public class StudentServiceImpl implements StudentService {
 		return specs;
 	}
 
-	@Override
-	public void updateFromAgap() {
-		agapService.updateFromTheRealAgap();
-		if (configurationService.isRunning() && !configurationService.isSubmissionAvailable()){
-			List<String> studentsInValidationProcessLogin = validationService.findAllStudentsInValidationProcessLogin();
-			for (String login : agapCacheService.findStudentConcernedLogins()){
-				if (!studentsInValidationProcessLogin.contains(login)){
-					validationService.save(login, true, true);
-				}
-			}
-		}
-		List<String> studentsConcernedLogin = findAllStudentsConcernedLogin();
-		List<String> excludedStudentsLogin = exclusionService.findStudentToExcludeLogins();
-		for (String login : excludedStudentsLogin){
-			if (!studentsConcernedLogin.contains(login)){
-				exclusionService.remove(login);
-			}
-		}
-	}
+//	@Override
+//	public void updateFromAgap() {
+//		agapService.updateFromTheRealAgap();
+//		if (configurationService.isRunning() && !configurationService.isSubmissionAvailable()){
+//			List<String> studentsInValidationProcessLogin = validationService.findAllStudentsInValidationProcessLogin();
+//			for (String login : agapCacheService.findStudentConcernedLogins()){
+//				if (!studentsInValidationProcessLogin.contains(login)){
+//					validationService.save(login, true, true);
+//				}
+//			}
+//		}
+//		List<String> studentsConcernedLogin = findAllStudentsConcernedLogin();
+//		List<String> excludedStudentsLogin = exclusionService.findStudentToExcludeLogins();
+//		for (String login : excludedStudentsLogin){
+//			if (!studentsConcernedLogin.contains(login)){
+//				exclusionService.remove(login);
+//			}
+//		}
+//	}
 }

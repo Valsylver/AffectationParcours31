@@ -47,9 +47,7 @@
 	
 	<bean class="fr.affectation.service.documents.DocumentServiceImpl" />
 	
-	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
-	
-	<bean class="fr.affectation.service.agap.AgapCacheServiceImpl" />
+	<bean class="fr.affectation.service.agap.NewAgapServiceImpl" />
 	
 	<bean class="fr.affectation.service.configuration.ConfigurationServiceImpl" />
 	

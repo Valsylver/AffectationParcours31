@@ -13,7 +13,6 @@ import fr.affectation.domain.choice.JobSectorChoice;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.service.admin.AdminService;
-import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.specialization.SpecializationService;
@@ -26,8 +25,8 @@ public class FakeDataService {
 	@Inject
 	private ChoiceService choiceService;
 	
-	@Inject
-	private AgapService agapService;
+//	@Inject
+//	private AgapService agapService;
 	
 	@Inject
 	private AdminService superUserService;

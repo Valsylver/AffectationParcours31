@@ -12,14 +12,13 @@ import javax.inject.Inject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.affectation.domain.student.Contentious;
 import fr.affectation.domain.student.SimpleStudentAgap;
 import fr.affectation.domain.student.UeResult;
 
-@Service(value="agapServiceImpl")
+//@Service(value="agapServiceImpl")
 public class AgapServiceImpl implements AgapService {
 
 	@Inject
@@ -174,4 +173,5 @@ public class AgapServiceImpl implements AgapService {
 		}
 		return results;
 	}
+
 }

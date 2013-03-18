@@ -4,13 +4,16 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!--  
 		<property name="triggers">
 			<list>
 				<ref bean="cronTrigger" />
 			</list>
 		</property>
+		-->
 	</bean>
 
+	<!--  
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="updateAgap" />
 		<property name="cronExpression" value="0 30 18 * * ?" />
@@ -22,5 +25,6 @@
 		<property name="targetMethod" value="updateFromAgap" />
 		<property name="concurrent" value="false" />
 	</bean>
+	-->
 
 </beans>

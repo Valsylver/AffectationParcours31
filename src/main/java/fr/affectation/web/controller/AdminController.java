@@ -115,11 +115,11 @@ public class AdminController {
 		exclusionService.remove(login);
 	}
 	
-	@RequestMapping(value = "/common/update-agap", method = RequestMethod.GET)
-	public @ResponseBody
-	void updateAgap() {
-		studentService.updateFromAgap();
-	}
+//	@RequestMapping(value = "/common/update-agap", method = RequestMethod.GET)
+//	public @ResponseBody
+//	void updateAgap() {
+//		studentService.updateFromAgap();
+//	}
 	
 	@RequestMapping(value = "/run/main/student/inverse-validation", method = RequestMethod.POST)
 	public @ResponseBody
@@ -535,16 +535,16 @@ public class AdminController {
 		}
 	}
 	
-	@RequestMapping("/run/settings/agap")
-	public String updateAgap(Model model) {
-		if (configurationService.isRunning()) {
-			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
-			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
-			return "admin/run/settings/agap";
-		} else {
-			return "redirect:/admin";
-		}
-	}
+//	@RequestMapping("/run/settings/agap")
+//	public String updateAgap(Model model) {
+//		if (configurationService.isRunning()) {
+//			model.addAttribute("mail1Activated", configurationService.isFirstMailActivated());
+//			model.addAttribute("mail2Activated", configurationService.isSecondMailActivated());
+//			return "admin/run/settings/agap";
+//		} else {
+//			return "redirect:/admin";
+//		}
+//	}
 
 	@RequestMapping("/run/settings/admins/delete/{login}")
 	public String deleteAdmins(Model model, @PathVariable String login, RedirectAttributes redirectAttributes) {
@@ -1064,7 +1064,7 @@ public class AdminController {
 		adminService.save("admin");
 		adminService.save("jmrossi");
 		adminService.save("vmarmousez");
-		studentService.updateFromAgap();
+		//studentService.updateFromAgap();
 		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		mailService.save(first);

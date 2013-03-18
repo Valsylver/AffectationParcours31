@@ -14,7 +14,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/admin/common/students-exclusion.js" type="text/javascript"></script>
 <script>
-	function updateAgap(){
+	/* function updateAgap(){
 	$('#infoAgap').html("<div class='alert alert-block'>Traitement en cours ...</div>");
 	document.getElementById("button").className += " disabled";
 	var path = document.getElementById("path").innerHTML;
@@ -25,7 +25,7 @@ $.ajax({
 			document.getElementById("button").className = "btn btn-primary";
 		}
 	});
-	}
+	} */
 </script>
 </head>
 <body>
@@ -38,7 +38,7 @@ $.ajax({
 				<c:if test="${run}">
 					<ul class="nav nav-list">
 						<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
-						<li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li>
+						<!-- <li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li> -->
 						<li class="active"><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></li></a>
@@ -51,6 +51,7 @@ $.ajax({
 			</div>
 
 			<div class="span10">
+				<!-- 
 				<c:if test="${not run}">
 					<div id="infoAgap"></div>
 					<div class="alert alert-info">
@@ -61,6 +62,7 @@ $.ajax({
 					<br />
 					<br />
 				</c:if>
+				 -->
 				<div id="info" class="alert alert-info">Cliquez sur les icônes pour exclure/ne plus exclure les élèves.</div>
 				<div class="row">
 					<div class="span3">

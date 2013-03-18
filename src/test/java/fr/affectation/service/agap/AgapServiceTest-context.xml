@@ -20,9 +20,7 @@
 	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<bean class="fr.affectation.service.agap.AgapServiceImpl" />
-	
-	<bean class="fr.affectation.service.agap.AgapCacheServiceImpl" />
+	<bean class="fr.affectation.service.agap.NewAgapServiceImpl" />
 	
 	<bean id="dataSourceAgap" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">

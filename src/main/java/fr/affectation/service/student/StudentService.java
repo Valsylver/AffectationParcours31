@@ -14,7 +14,7 @@ import fr.affectation.domain.util.SimpleMail;
 
 public interface StudentService {
 	
-	public void updateFromAgap();
+	//public void updateFromAgap();
 
 	public List<SimpleStudent> findCurrentPromotionStudentsConcerned();
 	
