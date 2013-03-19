@@ -45,13 +45,6 @@ Des fichiers d'export (pdf, xls, zip, img) sont stockés temporairement dans le 
 <br />
 
 ================================
-L'application utilise des données issues d'agap. Les noms et logins des élèves sont recopiés dans une autre base de données, du fait du coût de la connexion
-et des requetes agap. Cette base de donnée est mise à jour à partir d'agap à intervalle de temps fixe (24h).
-L'horaire de mise à jour d'agap est configurée dans le fichier src/main/webapp/WEB-INF/affectation-servlet.xml. Voir quartz cronTrigger pour l'expression
-donnant cet horaire.
-<br />
-
-================================
 Config CAS:
  * commenter/décommenter src/main/webapp/WEB-INF/spring-security.xml 
  * dans le meme fichier, definir la bonne URL du service (serviceProperties)
