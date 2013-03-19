@@ -13,8 +13,8 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/run/main/statistics/form/pie-chart.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-latest.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="${pageContext.request.contextPath}/js/highcharts/highcharts.js"></script>
+<script src="${pageContext.request.contextPath}/js/highcharts/exporting.js"></script>
 </head>
 <body>
 	<div class="container">

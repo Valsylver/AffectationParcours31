@@ -223,7 +223,7 @@ function query(type){
 						<h4>Documents</h4>
 						<c:choose>
 							<c:when test="${student.hasFilledResume}">
-								<a href="${pageContext.request.contextPath}/files/cv_${student.login}">CV</a>
+								<a href="${pageContext.request.contextPath}/files/cv_${student.login}.pdf">CV</a>
 							</c:when>
 							<c:otherwise>
 Cet élève n'a pas déposé son CV.
@@ -233,7 +233,7 @@ Cet élève n'a pas déposé son CV.
 
 						<c:choose>
 							<c:when test="${student.hasFilledLetterIc}">
-								<a href="${pageContext.request.contextPath}/files/lettre_parcours_${student.login}">Lettre parcours</a>
+								<a href="${pageContext.request.contextPath}/files/lettre_parcours_${student.login}.pdf">Lettre parcours</a>
 							</c:when>
 							<c:otherwise>
 Cet élève n'a pas déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
@@ -243,7 +243,7 @@ Cet élève n'a pas déposé sa lettre de motivation pour son choix de parcours 
 
 						<c:choose>
 							<c:when test="${student.hasFilledLetterJs}">
-								<a href="${pageContext.request.contextPath}/files/lettre_filiere_${student.login}">Lettre filière</a>
+								<a href="${pageContext.request.contextPath}/files/lettre_filiere_${student.login}.pdf">Lettre filière</a>
 							</c:when>
 							<c:otherwise>
 Cet élève n'a pas déposé sa lettre de motivation pour son choix de filière métier.
