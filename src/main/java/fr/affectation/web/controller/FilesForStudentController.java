@@ -27,6 +27,7 @@ public class FilesForStudentController {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
 		}
@@ -42,6 +43,7 @@ public class FilesForStudentController {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
 		}
@@ -57,6 +59,7 @@ public class FilesForStudentController {
 			InputStream is = new FileInputStream(realPath);
 			IOUtils.copy(is, response.getOutputStream());
 			response.flushBuffer();
+			is.close();
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
 		}

@@ -210,14 +210,14 @@
 							<c:when test="${!hasFilledResume}">
 								<input id="resume" name="resume" type="file" style="display: none">
 								<div class="input-append">
-									<input id="resumeInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=resume]').click();">Parcourir...</a>
+									<input id="resumeInput" onclick="$('input[id=resume]').click();" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=resume]').click();">Parcourir...</a>
 								</div>
 								<br />
 							</c:when>
 							<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-								<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/cv.pdf"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+								<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/cv"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
 								<a class="btn btn-danger" onclick="removeResume()"><i class="icon-white icon-remove"></i> Supprimer</a>
 								<input id="resume" name="resume" type="file" style="display: none">
 								<br />
@@ -235,14 +235,14 @@
 							<c:when test="${!hasFilledLetterIc}">
 								<input id="letterIc" name="letterIc" type="file" style="display: none">
 								<div class="input-append">
-									<input id="letterIcInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterIc]').click();">Parcourir...</a>
+									<input id="letterIcInput" onclick="$('input[id=letterIc]').click();" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterIc]').click();">Parcourir...</a>
 								</div>
 								<br />
 							</c:when>
 							<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-								<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-parcours.pdf"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+								<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-parcours"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
 								<a class="btn btn-danger" onclick="removeLetterIc()"><i class="icon-white icon-remove"></i> Supprimer</a>
 								<input id="letterIc" name="letterIc" type="file" style="display: none">
 								<br />
@@ -260,14 +260,14 @@
 							<c:when test="${!hasFilledLetterJs}">
 								<input id="letterJs" name="letterJs" type="file" style="display: none">
 								<div class="input-append">
-									<input id="letterJsInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterJs]').click();">Parcourir...</a>
+									<input id="letterJsInput" onclick="$('input[id=letterJs]').click();" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterJs]').click();">Parcourir...</a>
 								</div>
 								<br />
 							</c:when>
 							<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-								<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-filiere.pdf"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+								<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-filiere"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
 								<a class="btn btn-danger" onclick="removeLetterJs()"><i class="icon-white icon-remove"></i> Supprimer</a>
 								<input id="letterJs" name="letterJs" type="file" style="display: none">
 								<br />
