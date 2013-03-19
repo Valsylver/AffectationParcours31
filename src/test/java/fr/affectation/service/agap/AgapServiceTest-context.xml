@@ -22,14 +22,6 @@
 	
 	<bean class="fr.affectation.service.agap.NewAgapServiceImpl" />
 	
-	<bean id="dataSourceAgap" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/affectation" />
-		<property name="username" value="root" />
-		<property name="password" value="route" />
-	</bean>
-	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />

@@ -52,6 +52,13 @@ donnant cet horaire.
 <br />
 
 ================================
+Config CAS:
+ * commenter/décommenter src/main/webapp/WEB-INF/spring-security.xml 
+ * dans le meme fichier, definir la bonne URL du service (serviceProperties)
+ * commenter src/main/java/fr/affectation/web/controller/IndexController.java
+ * l'URL de logout (cas/logout) est definie dans src/main/java/fr/affectation/web/logging/CustomLogoutSuccessHandler.java
+
+================================
 L'application se déploie sur /affectation-3A (configuré dans le pom.xml). Si ce chemin est modifié, il est nécessaire de modifier : 
 * la valeur du champ path dans le fichier src/main/webapp/WEB-INF/affectation-servlet.xml
 * remplacer /affectation-3A par le vrai chemin dans src/main/webapp/css/select3.css
