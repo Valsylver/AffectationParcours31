@@ -28,7 +28,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<SimpleStudent> findStudentsConcerned() {
-		System.out.println("findStudentsConcerned");
 		String requeteEleves = "SELECT nom, uid FROM 720_choix3A_eleves WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -52,7 +51,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<String> findStudentConcernedLogins() {
-		System.out.println("findStudentsLogins");
 		String requeteEleves = "SELECT uid FROM 720_choix3A_eleves WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -76,7 +74,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<String> findCurrentPromotionStudentLogins() {
-		System.out.println("findCurrentPromotionStudentLogins");
 		String requeteEleves = "SELECT uid FROM 720_choix3A_eleves WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -91,7 +88,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<String> findCesureStudentLogins() {
-		System.out.println("findCesureStudentLogins");
 		String requeteEleves = "SELECT uid FROM 720_choix3A_eleves WHERE nom IN (SELECT nom FROM 720_choix3A_cesure WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7'))";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -107,7 +103,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<SimpleStudent> findCurrentPromotionSimpleStudents() {
-		System.out.println("findCurrentPromotionSimpleStudents");
 		String requeteEleves = "SELECT uid, nom FROM 720_choix3A_eleves WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -122,7 +117,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<SimpleStudent> findCesureSimpleStudents() {
-		System.out.println("findCesureSimpleStudents");
 		String requeteEleves = "SELECT uid, nom FROM 720_choix3A_eleves WHERE nom IN (SELECT nom FROM 720_choix3A_cesure WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7'))";
 		Map<String, String> namedParameter = new HashMap<String, String>();
@@ -138,7 +132,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public String findNameFromLogin(String login) {
-		System.out.println("findNameFromLogin");
 		String query = "SELECT nom FROM 720_choix3A_eleves WHERE uid=:uid";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("uid", login);
@@ -148,7 +141,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<Contentious> findContentious(String login) {
-		System.out.println("findContentious");
 		String queryContentious = "SELECT * FROM 720_choix3A_contentieux WHERE nom IN (SELECT nom FROM 720_choix3A_eleves WHERE uid=:login)";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
@@ -166,7 +158,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<Float> findGpaMeans(String login) {
-		System.out.println("findGpaMeans");
 		String requeteEleves = "SELECT * FROM 720_choix3A_gpa WHERE nom IN (SELECT nom FROM 720_choix3A_eleves WHERE uid=:login) and sem IN ('SEM-5', 'SEM-6', 'SEM-7')";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
@@ -210,7 +201,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public List<UeResult> findUeResults(String login) {
-		System.out.println("findUeResults");
 		String queryGradeGpa = "SELECT * FROM 720_choix3A_notes_details WHERE nom IN (SELECT nom FROM 720_choix3A_eleves WHERE uid=:login)";
 		Map<String, String> namedParameter = new HashMap<String, String>();
 		namedParameter.put("login", login);
@@ -234,7 +224,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public Map<String, String> findNamesForAListOfLogins(List<String> allLogins) {
-		System.out.println("findNamesForAListOfLogins");
 		Map<String, String> results = new HashMap<String, String>();
 		if (allLogins.size() > 0){
 			String query = "SELECT nom, uid FROM 720_choix3A_eleves WHERE uid IN (";
@@ -257,7 +246,6 @@ public class NewAgapServiceImpl implements AgapCacheService {
 
 	@Override
 	public boolean isStudent(String login) {
-		System.out.println("isStudent");
 		String query = "SELECT count(*) FROM 720_choix3A_eleves WHERE nom IN "
 				+ "(SELECT nom FROM 720_choix3A_gpa WHERE cycle=:cycle AND sem='SEM-7') AND entree_fil NOT IN ('Etranger', 'Crédits', 'DD', 'Erasmus hors CEE') AND uid=:uid";
 		Map<String, String> namedParameter = new HashMap<String, String>();

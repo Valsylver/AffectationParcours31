@@ -494,7 +494,7 @@ public class AdminController {
 			}
 
 			if (!filesOk) {
-				return "redirect:/admin/run/main/edit-student-form/" + login;
+				return "redirect:/admin/run/main/student/edit-student-form/" + login;
 			}
 
 			redirectAttributes.addFlashAttribute("change", "Les changements ont bien été sauvegardés.");
