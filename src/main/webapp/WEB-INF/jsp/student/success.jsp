@@ -88,13 +88,13 @@
 						<h4>Récapitulatif de vos documents</h4>
 						<br />
 						<c:if test="${hasFilledResume}">
-							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/cv"><i class="icon-white icon-download-alt"></i> CV</a>
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/cv.pdf"><i class="icon-white icon-download-alt"></i> CV</a>
 						</c:if>
 						<c:if test="${hasFilledLetterIc}">
-							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-parcours"><i class="icon-white icon-download-alt"></i> Lettre parcours</a>
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-parcours.pdf"><i class="icon-white icon-download-alt"></i> Lettre parcours</a>
 						</c:if>
 						<c:if test="${hasFilledLetterJs}">
-							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-filiere"><i class="icon-white icon-download-alt"></i> Lettre filière</a>
+							<a class="btn btn-primary" href="${pageContext.request.contextPath}/filestudent/lettre-filiere.pdf"><i class="icon-white icon-download-alt"></i> Lettre filière</a>
 						</c:if>
 					</div>
 				</c:if>
