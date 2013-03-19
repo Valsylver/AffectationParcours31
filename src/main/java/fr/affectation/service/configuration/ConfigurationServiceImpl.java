@@ -382,7 +382,6 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	@Override
 	public void sendFirstEmail(){
-		System.out.println("firstEmail");
 		if (firstMailActivated){			
 			studentService.sendSimpleMail(mailService.getFirstMail().toSimpleMail(), path);
 		}
@@ -390,7 +389,6 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	@Override
 	public void sendSecondEmail(){
-		System.out.println("secondEmail");
 		if (secondMailActivated){			
 			studentService.sendSimpleMail(mailService.getSecondMail().toSimpleMail(), path);
 		}
@@ -398,14 +396,12 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	@Override
 	public void endSubmission(){
-		System.out.println("endSubmission");
 		submissionAvailable = false;
 		validating = true;
 	}
 	
 	@Override
 	public void endValidation(){
-		System.out.println("endValidation");
 		validating = false;
 	}
 	

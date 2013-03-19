@@ -16,10 +16,13 @@ $(document).ready(function() {
 
 function removeResume() {
 	removeDocument("resume");
+	var onclick = 'onclick="$(' + "'input[id=resume]').click();";
 	var ihtml = '<input id="resume" name="resume" type="file" style="display: none">';
 	ihtml += '<div class="input-append">';
-	ihtml += '<input id="resumeInput" type="text" style="min-width: 300px"><a class="btn" onclick="$(';
-	ihtml += "'input[id=resume]').click();";
+	ihtml += '<input id="resumeInput" ';
+	ihtml += onclick + '"';
+	ihtml += ' type="text" style="min-width: 300px"><a class="btn" ';
+	ihtml += onclick;
 	ihtml += '">';
 	ihtml += "Parcourir...</a></div><br />";
 	document.getElementById('divResume').innerHTML = ihtml;
@@ -30,10 +33,13 @@ function removeResume() {
 
 function removeLetterIc() {
 	removeDocument("letterIc");
+	var onclick = 'onclick="$(' + "'input[id=letterIc]').click();";
 	var ihtml = '<input id="letterIc" name="letterIc" type="file" style="display: none">';
 	ihtml += '<div class="input-append">';
-	ihtml += '<input id="letterIcInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$(';
-	ihtml += "'input[id=letterIc]').click();";
+	ihtml += '<input id="letterIcInput" ';
+	ihtml += onclick + '"';
+	ihtml += ' type="text" style="min-width: 300px"> <a class="btn" ';
+	ihtml += onclick;
 	ihtml += '">';
 	ihtml += "Parcourir...</a></div><br />";
 	document.getElementById('divLetterIc').innerHTML = ihtml;
@@ -44,10 +50,13 @@ function removeLetterIc() {
 
 function removeLetterJs() {
 	removeDocument("letterJs");
+	var onclick = 'onclick="$(' + "'input[id=letterJs]').click();";
 	var ihtml = '<input id="letterJs" name="letterJs" type="file" style="display: none">';
 	ihtml += '<div class="input-append">';
-	ihtml += '<input id="letterJsInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$(';
-	ihtml += "'input[id=letterJs]').click();";
+	ihtml += '<input id="letterJsInput" ';
+	ihtml += onclick + '"';
+	ihtml += ' type="text" style="min-width: 300px"> <a class="btn" ';
+	ihtml += onclick;
 	ihtml += '">';
 	ihtml += "Parcourir...</a></div><br />";
 	document.getElementById('divLetterJs').innerHTML = ihtml;

@@ -211,7 +211,7 @@
 							<c:when test="${!hasFilledResume}">
 								<input id="resume" name="resume" type="file" style="display: none">
 								<div class="input-append">
-									<input id="resumeInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=resume]').click();">Parcourir...</a>
+									<input id="resumeInput" onclick="$('input[id=resume]').click();" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=resume]').click();">Parcourir...</a>
 								</div>
 								<br />
 							</c:when>
@@ -236,7 +236,7 @@
 							<c:when test="${!hasFilledLetterIc}">
 								<input id="letterIc" name="letterIc" type="file" style="display: none">
 								<div class="input-append">
-									<input id="letterIcInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterIc]').click();">Parcourir...</a>
+									<input id="letterIcInput" onclick="$('input[id=letterIc]').click();" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterIc]').click();">Parcourir...</a>
 								</div>
 								<br />
 							</c:when>
@@ -261,7 +261,7 @@
 							<c:when test="${!hasFilledLetterJs}">
 								<input id="letterJs" name="letterJs" type="file" style="display: none">
 								<div class="input-append">
-									<input id="letterJsInput" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterJs]').click();">Parcourir...</a>
+									<input id="letterJsInput" onclick="$('input[id=letterJs]').click();" type="text" style="min-width: 300px"> <a class="btn" onclick="$('input[id=letterJs]').click();">Parcourir...</a>
 								</div>
 								<br />
 							</c:when>
