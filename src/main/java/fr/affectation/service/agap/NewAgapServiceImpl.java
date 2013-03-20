@@ -207,16 +207,18 @@ public class NewAgapServiceImpl implements AgapCacheService {
 		List<Map<String, Object>> resultsMap = namedParameterjdbcTemplate.queryForList(queryGradeGpa, namedParameter);
 		List<UeResult> results = new ArrayList<UeResult>();
 		for (Map<String, Object> map : resultsMap) {
-			Integer creditsEcts = ((BigDecimal) map.get("credits_ects")).toBigInteger().intValue();
-			if ((creditsEcts != null) && (creditsEcts != 0)) {
-				UeResult result = new UeResult();
-				result.setCode((String) map.get("code_ue"));
-				result.setGpa(Float.valueOf((String) map.get("grade_gpa")));
-				result.setSession((Integer) map.get("session"));
-				result.setSemester((String) map.get("sem"));
-				result.setEcts((String) map.get("grade_ects"));
-				result.setCycle((String) map.get("cycle"));
-				results.add(result);
+			if ((map.get("credits_ects") != null)) {
+				Integer creditsEcts = ((BigDecimal) map.get("credits_ects")).toBigInteger().intValue();
+				if (creditsEcts > 0){
+					UeResult result = new UeResult();
+					result.setCode((String) map.get("code_ue"));
+					result.setGpa(Float.valueOf((String) map.get("grade_gpa")));
+					result.setSession((Integer) map.get("session"));
+					result.setSemester((String) map.get("sem"));
+					result.setEcts((String) map.get("grade_ects"));
+					result.setCycle((String) map.get("cycle"));
+					results.add(result);
+				}
 			}
 		}
 		return results;
@@ -234,6 +236,7 @@ public class NewAgapServiceImpl implements AgapCacheService {
 				if (!(index == size-1)){
 					query += ", ";
 				}
+				index += 1;
 			}
 			query += ")";
 			List<Map<String, Object>> studentMap = jdbcTemplate.queryForList(query);
