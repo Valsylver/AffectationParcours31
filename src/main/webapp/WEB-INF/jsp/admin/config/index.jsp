@@ -51,13 +51,15 @@
 						Parcours <a href="${pageContext.request.contextPath}/admin/config/new/improvement-course" class="btn btn-info"><i class="icon-white icon-plus"></i></a>
 					</h2>
 					<br />
-
-					<c:forEach var="pa" items="${paAvailable}">
-${pa.stringForForm}
-<br />
-						<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
-						<br />
-						<br />
+					<c:forEach var="superPa" items="${paAvailable}">
+						<h4>${superPa[0].superIc}</h4>
+						<c:forEach var="pa" items="${superPa}">
+							${pa.stringForForm}
+							<br />
+							<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+							<br />
+							<br />
+						</c:forEach>
 					</c:forEach>
 				</div>
 				<div class="span4">

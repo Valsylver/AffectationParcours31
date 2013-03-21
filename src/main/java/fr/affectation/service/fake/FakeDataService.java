@@ -1,6 +1,7 @@
 package fr.affectation.service.fake;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -138,6 +139,11 @@ public class FakeDataService {
 		improvementCourse.setAbbreviation(abbreviation);
 		improvementCourse.setName(name);
 		improvementCourse.setResponsibleLogin("respo_" + abbreviation);
+		List<String> liste = Arrays.asList("OMIS", "OMAS", "OMOS", "OMUS");
+		double f = Math.random() * (liste.size());
+		int i = (int) (f);
+		String value = liste.get(i);
+		improvementCourse.setSuperIc(value);
 		specializationService.save(improvementCourse);
 	}
 

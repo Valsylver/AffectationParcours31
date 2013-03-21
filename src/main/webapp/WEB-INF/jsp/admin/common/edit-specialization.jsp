@@ -43,6 +43,16 @@
 					</label>
 					<form:input id="name" path="name" class="span5" />
 					
+					<c:if test="${specialization.type == specialization.IMPROVEMENT_COURSE}">
+						<label for="superIc">
+							Macro parcours
+							<form:errors path="superIc" >
+								<br /> <font color="red">La macro abréviation ne peut pas être vide.</font>
+							</form:errors>
+							<form:input id="superIc" path="superIc" class="span5" />
+						</label>
+					</c:if>
+					
 					<label for="abbreviation">
 					Abréviation
 					<form:errors path="abbreviation" >

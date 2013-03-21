@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Specialization implements Comparable<Specialization>{
+public abstract class Specialization{
 	
 	public static final int IMPROVEMENT_COURSE = 1;
 	
@@ -17,14 +17,14 @@ public abstract class Specialization implements Comparable<Specialization>{
 	
 	@Id
 	@Size(min=1, max=20)
-	private String abbreviation;
+	protected String abbreviation;
 	
 	@Column
-	private String responsibleLogin;
+	protected String responsibleLogin;
 	
 	@Column
 	@Size(min=1)
-	private String name;
+	protected String name;
 
 	public String getAbbreviation() {
 		return abbreviation;
@@ -59,23 +59,26 @@ public abstract class Specialization implements Comparable<Specialization>{
 	}
 	
 	public int getIMPROVEMENT_COURSE(){
-		return JOB_SECTOR;
+		return IMPROVEMENT_COURSE;
 	}
 	
-	@Override
-	public int compareTo(Specialization specialization) {
-		if ((name != null) && (specialization.getName() != null)){
-			return this.name.compareTo(specialization.getName());
-		}
-		else{
-			if ((abbreviation != null) && (specialization.getAbbreviation() != null)){
-				return this.abbreviation.compareTo(specialization.getAbbreviation());
-			}
-			else{
-				return 0;
-			}
-		}
-	}
+//	@Override
+//	public int compareTo(Specialization specialization) {
+//		if (specialization instanceof ImprovementCourse){
+//			
+//		}
+//		if ((name != null) && (specialization.getName() != null)){
+//			return this.name.compareTo(specialization.getName());
+//		}
+//		else{
+//			if ((abbreviation != null) && (specialization.getAbbreviation() != null)){
+//				return this.abbreviation.compareTo(specialization.getAbbreviation());
+//			}
+//			else{
+//				return 0;
+//			}
+//		}
+//	}
 
 	public static int getImprovementCourse() {
 		return IMPROVEMENT_COURSE;

@@ -32,8 +32,12 @@
 							<label path="<%=strChPa%>"><%=strAttrPa%></label>
 							<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
 								<option>------------------------- Pas de choix -------------------------</option>
-								<c:forEach var="pa" items="${paAvailable}">
-									<option>${pa.stringForForm}</option>
+								<c:forEach var="superPa" items="${paAvailable}">
+									<optgroup label="${superPa[0].superIc}">
+										<c:forEach var="pa" items="${superPa}">
+											<option>${pa.stringForForm}</option>
+										</c:forEach>
+									</optgroup>
 								</c:forEach>
 							</form:select>
 							<br />
@@ -77,8 +81,12 @@
 									<label path="<%=strChPa%>"><%=strAttrPa%></label>
 									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
 										<option>------------------------- Pas de choix -------------------------</option>
-										<c:forEach var="pa" items="${paAvailable}">
-											<option>${pa.stringForForm}</option>
+										<c:forEach var="superPa" items="${paAvailable}">
+											<optgroup label="${superPa[0].superIc}">
+												<c:forEach var="pa" items="${superPa}">
+													<option>${pa.stringForForm}</option>
+												</c:forEach>
+											</optgroup>
 										</c:forEach>
 									</form:select>
 									<br />
@@ -88,15 +96,19 @@
 									<label path="<%=strChPa%>"><%=strAttrPa%></label>
 									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
 										<option>------------------------- Pas de choix -------------------------</option>
-										<c:forEach var="pa" items="${paAvailable}">
-											<c:choose>
-												<c:when test="${pa.abbreviation == abb}">
-													<option selected>${pa.stringForForm}</option>
-												</c:when>
-												<c:otherwise>
-													<option>${pa.stringForForm}</option>
-												</c:otherwise>
-											</c:choose>
+										<c:forEach var="superPa" items="${paAvailable}">
+											<optgroup label="${superPa[0].superIc}">
+												<c:forEach var="pa" items="${superPa}">
+													<c:choose>
+														<c:when test="${pa.abbreviation == abb}">
+															<option selected>${pa.stringForForm}</option>
+														</c:when>
+														<c:otherwise>
+															<option>${pa.stringForForm}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</optgroup>
 										</c:forEach>
 									</form:select>
 									<br />
@@ -288,6 +300,7 @@
 			</div>
 
 			<div class="span2">
+				<div id="hihihi"></div>
 			</div>
 		</div>
 	</div>
@@ -295,7 +308,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/select2.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/js/admin/run/main/student/dynamic_select.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/admin/run/main/student/dynamic_select2.js" type="text/javascript"></script>
 
 </body>
 </html>

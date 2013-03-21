@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,7 @@ import fr.affectation.domain.choice.Choice;
 import fr.affectation.domain.choice.FullChoice;
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
+import fr.affectation.domain.specialization.ComparatorListIc;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.Specialization;
@@ -187,7 +190,7 @@ public class AdminController {
 	public String configurationIndex(Model model) {
 		if (!configurationService.isRunning()) {
 			model.addAttribute("when", new When());
-			model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+			model.addAttribute("paAvailable", findIcAvailableAsListWithSuperIc());
 			model.addAttribute("fmAvailable", specializationService.findJobSectors());
 			Date date = new Date();
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -196,6 +199,24 @@ public class AdminController {
 		} else {
 			return "redirect:/admin/run/settings/admins";
 		}
+	}
+	
+	public List<List<ImprovementCourse>> findIcAvailableAsListWithSuperIc(){
+		List<ImprovementCourse> paAvailable = specializationService.findImprovementCourses();
+		Map<String, List<ImprovementCourse>> paAvailableMap = new HashMap<String, List<ImprovementCourse>>();
+		for (ImprovementCourse ic : paAvailable){
+			String superIc = ic.getSuperIc();
+			if (!paAvailableMap.containsKey(superIc)){
+				paAvailableMap.put(superIc, new ArrayList<ImprovementCourse>());
+			}
+			paAvailableMap.get(superIc).add(ic);
+		}
+		List<List<ImprovementCourse>> paAvailableList = new ArrayList<List<ImprovementCourse>>();
+		for (String key : paAvailableMap.keySet()){
+			paAvailableList.add(paAvailableMap.get(key));
+		}
+		Collections.sort(paAvailableList, new ComparatorListIc());
+		return paAvailableList;
 	}
 
 	@RequestMapping(value = "/config/process-config-saving", method = RequestMethod.POST)
@@ -392,7 +413,7 @@ public class AdminController {
 			model.addAttribute("choiceIc", choiceIc);
 			model.addAttribute("choiceJs", choiceJs);
 			model.addAttribute("fullChoice", new FullChoice());
-			model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+			model.addAttribute("paAvailable", findIcAvailableAsListWithSuperIc());
 			model.addAttribute("fmAvailable", specializationService.findJobSectors());
 			model.addAttribute("login", login);
 			return "admin/run/main/student/edit-form";
@@ -1064,7 +1085,6 @@ public class AdminController {
 		adminService.save("admin");
 		adminService.save("jmrossi");
 		adminService.save("vmarmousez");
-		//studentService.updateFromAgap();
 		Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
 		mailService.save(first);
