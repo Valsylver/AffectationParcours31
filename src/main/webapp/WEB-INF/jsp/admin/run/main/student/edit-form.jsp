@@ -30,10 +30,14 @@
 												String strIdPa = "selectPa" + i;
 							%>
 							<label path="<%=strChPa%>"><%=strAttrPa%></label>
-							<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-								<option>------------------------- Pas de choix -------------------------</option>
-								<c:forEach var="pa" items="${paAvailable}">
-									<option>${pa.stringForForm}</option>
+							<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:550px">
+								<option>------------------------------------- Pas de choix -------------------------------------</option>
+								<c:forEach var="superPa" items="${paAvailable}">
+									<optgroup label="${superPa[0].superIc}">
+										<c:forEach var="pa" items="${superPa}">
+											<option>${pa.stringForForm}</option>
+										</c:forEach>
+									</optgroup>
 								</c:forEach>
 							</form:select>
 							<br />
@@ -75,10 +79,14 @@
 							<c:choose>
 								<c:when test="${abb == null}">
 									<label path="<%=strChPa%>"><%=strAttrPa%></label>
-									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-										<option>------------------------- Pas de choix -------------------------</option>
-										<c:forEach var="pa" items="${paAvailable}">
-											<option>${pa.stringForForm}</option>
+									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:550px">
+										<option>------------------------------------- Pas de choix -------------------------------------</option>
+										<c:forEach var="superPa" items="${paAvailable}">
+											<optgroup label="${superPa[0].superIc}">
+												<c:forEach var="pa" items="${superPa}">
+													<option>${pa.stringForForm}</option>
+												</c:forEach>
+											</optgroup>
 										</c:forEach>
 									</form:select>
 									<br />
@@ -86,17 +94,21 @@
 								</c:when>
 								<c:otherwise>
 									<label path="<%=strChPa%>"><%=strAttrPa%></label>
-									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-										<option>------------------------- Pas de choix -------------------------</option>
-										<c:forEach var="pa" items="${paAvailable}">
-											<c:choose>
-												<c:when test="${pa.abbreviation == abb}">
-													<option selected>${pa.stringForForm}</option>
-												</c:when>
-												<c:otherwise>
-													<option>${pa.stringForForm}</option>
-												</c:otherwise>
-											</c:choose>
+									<form:select id="<%=strIdPa%>" path="<%=strChPa%>" onchange="updatePaSelect(this.value, this.id);" class="combobox" style="min-width:550px">
+										<option>------------------------------------- Pas de choix -------------------------------------</option>
+										<c:forEach var="superPa" items="${paAvailable}">
+											<optgroup label="${superPa[0].superIc}">
+												<c:forEach var="pa" items="${superPa}">
+													<c:choose>
+														<c:when test="${pa.abbreviation == abb}">
+															<option selected>${pa.stringForForm}</option>
+														</c:when>
+														<c:otherwise>
+															<option>${pa.stringForForm}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</optgroup>
 										</c:forEach>
 									</form:select>
 									<br />
@@ -122,8 +134,8 @@
 												String strIdFm = "selectFm" + i;
 							%>
 							<label path="<%=strChFm%>"><%=strAttrFm%></label>
-							<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-								<option>------------------------- Pas de choix -------------------------</option>
+							<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:550px">
+								<option>------------------------------------- Pas de choix -------------------------------------</option>
 								<c:forEach var="fm" items="${fmAvailable}">
 									<option>${fm.stringForForm}</option>
 								</c:forEach>
@@ -162,8 +174,8 @@
 							<c:choose>
 								<c:when test="${abb == null}">
 									<label path="<%=strChFm%>"><%=strAttrFm%></label>
-									<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-										<option>------------------------- Pas de choix -------------------------</option>
+									<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:550px">
+										<option>------------------------------------- Pas de choix -------------------------------------</option>
 										<c:forEach var="fm" items="${fmAvailable}">
 											<option>${fm.stringForForm}</option>
 										</c:forEach>
@@ -173,8 +185,8 @@
 								</c:when>
 								<c:otherwise>
 									<label path="<%=strChFm%>"><%=strAttrFm%></label>
-									<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:450px">
-										<option>------------------------- Pas de choix -------------------------</option>
+									<form:select id="<%=strIdFm%>" path="<%=strChFm%>" onchange="updateFmSelect(this.value, this.id);" class="combobox" style="min-width:550px">
+										<option>------------------------------------- Pas de choix -------------------------------------</option>
 										<c:forEach var="fm" items="${fmAvailable}">
 											<c:choose>
 												<c:when test="${fm.abbreviation == abb}">
@@ -288,6 +300,7 @@
 			</div>
 
 			<div class="span2">
+				<div id="hihihi"></div>
 			</div>
 		</div>
 	</div>
@@ -295,7 +308,8 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/select2.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/js/admin/run/main/student/dynamic_select.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/common/dynamic_select.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/admin/run/main/student/document.js" type="text/javascript"></script>
 
 </body>
 </html>

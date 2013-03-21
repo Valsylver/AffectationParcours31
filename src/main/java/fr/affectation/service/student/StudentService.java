@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.SimpleSpecializationWithList;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
@@ -13,8 +14,6 @@ import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
 
 public interface StudentService {
-	
-	//public void updateFromAgap();
 
 	public List<SimpleStudent> findCurrentPromotionStudentsConcerned();
 	
@@ -67,5 +66,7 @@ public interface StudentService {
 	public List<Specialization> findIcChoicesFullSpecByLogin(String login);
 
 	public List<Specialization> findJsChoicesFullSpecByLogin(String login);
+
+	public List<List<ImprovementCourse>> findIcAvailableAsListWithSuperIc();
 
 }
