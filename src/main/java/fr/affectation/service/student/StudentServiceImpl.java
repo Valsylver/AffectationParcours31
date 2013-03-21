@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.affectation.domain.choice.ImprovementCourseChoice;
 import fr.affectation.domain.choice.JobSectorChoice;
+import fr.affectation.domain.specialization.ComparatorListIc;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.SimpleSpecializationWithList;
@@ -44,9 +45,6 @@ public class StudentServiceImpl implements StudentService {
 
 	@Inject
 	private AgapCacheService agapCacheService;
-	
-//	@Inject
-//	private AgapService agapService;
 
 	@Inject
 	private ValidationService validationService;
@@ -487,23 +485,22 @@ public class StudentServiceImpl implements StudentService {
 		return specs;
 	}
 
-//	@Override
-//	public void updateFromAgap() {
-//		agapService.updateFromTheRealAgap();
-//		if (configurationService.isRunning() && !configurationService.isSubmissionAvailable()){
-//			List<String> studentsInValidationProcessLogin = validationService.findAllStudentsInValidationProcessLogin();
-//			for (String login : agapCacheService.findStudentConcernedLogins()){
-//				if (!studentsInValidationProcessLogin.contains(login)){
-//					validationService.save(login, true, true);
-//				}
-//			}
-//		}
-//		List<String> studentsConcernedLogin = findAllStudentsConcernedLogin();
-//		List<String> excludedStudentsLogin = exclusionService.findStudentToExcludeLogins();
-//		for (String login : excludedStudentsLogin){
-//			if (!studentsConcernedLogin.contains(login)){
-//				exclusionService.remove(login);
-//			}
-//		}
-//	}
+	@Override
+	public List<List<ImprovementCourse>> findIcAvailableAsListWithSuperIc(){
+		List<ImprovementCourse> paAvailable = specializationService.findImprovementCourses();
+		Map<String, List<ImprovementCourse>> paAvailableMap = new HashMap<String, List<ImprovementCourse>>();
+		for (ImprovementCourse ic : paAvailable){
+			String superIc = ic.getSuperIc();
+			if (!paAvailableMap.containsKey(superIc)){
+				paAvailableMap.put(superIc, new ArrayList<ImprovementCourse>());
+			}
+			paAvailableMap.get(superIc).add(ic);
+		}
+		List<List<ImprovementCourse>> paAvailableList = new ArrayList<List<ImprovementCourse>>();
+		for (String key : paAvailableMap.keySet()){
+			paAvailableList.add(paAvailableMap.get(key));
+		}
+		Collections.sort(paAvailableList, new ComparatorListIc());
+		return paAvailableList;
+	}
 }

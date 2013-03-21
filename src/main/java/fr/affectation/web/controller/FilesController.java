@@ -687,8 +687,7 @@ public class FilesController {
 			response.flushBuffer();				
 			
 			File file = new File(realPath + "temp/full-results.zip");
-			
-			System.out.println("success file deletion ? " + file.delete());
+			file.delete();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

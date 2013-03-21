@@ -33,7 +33,7 @@ import fr.affectation.service.student.StudentService;
 @RequestMapping("/student")
 public class StudentController {
 
-	public static final String noSelectionMessage = "------------------------- Pas de choix -------------------------";
+	public static final String noSelectionMessage = "------------------------------------- Pas de choix -------------------------------------";
 
 	@Inject
 	private ChoiceService choiceService;
@@ -238,7 +238,7 @@ public class StudentController {
 			model.addAttribute("choiceIc", choiceIc);
 			model.addAttribute("choiceJs", choiceJs);
 			model.addAttribute("fullChoice", new FullChoice());
-			model.addAttribute("paAvailable", specializationService.findImprovementCourses());
+			model.addAttribute("paAvailable", studentService.findIcAvailableAsListWithSuperIc());
 			model.addAttribute("fmAvailable", specializationService.findJobSectors());
 			return "student/form";
 		} else {

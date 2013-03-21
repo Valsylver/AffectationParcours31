@@ -55,7 +55,7 @@
 
 </beans:beans>
 -->
-
+ 
 <beans:beans xmlns="http://www.springframework.org/schema/security"
                   xmlns:beans="http://www.springframework.org/schema/beans"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -65,6 +65,7 @@ http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <http>
+     	<intercept-url pattern="/" access="ROLE_ELEVE, ROLE_RESPONSABLE, ROLE_ADMIN" />
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/student/**" access="ROLE_ELEVE" />
         <intercept-url pattern="/files/admin/**" access="ROLE_ADMIN" />
