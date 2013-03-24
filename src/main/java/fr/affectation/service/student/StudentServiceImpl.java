@@ -309,6 +309,7 @@ public class StudentServiceImpl implements StudentService {
 		if (isStudentConcerned(login)) {
 			Student student = new Student();
 			student.setLogin(login);
+			student.setOrigin(agapCacheService.findOriginFromLogin(login));
 			student.setName(agapCacheService.findNameFromLogin(login));
 			student.setContentious(agapCacheService.findContentious(login));
 			student.setGpaMeans(agapCacheService.findGpaMeans(login));

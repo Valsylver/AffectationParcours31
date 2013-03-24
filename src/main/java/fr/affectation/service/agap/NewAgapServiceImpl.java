@@ -3,6 +3,7 @@ package fr.affectation.service.agap;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,6 +220,7 @@ public class NewAgapServiceImpl implements AgapCacheService {
 				results.add(result);
 			}
 		}
+		Collections.sort(results);
 		return results;
 	}
 
@@ -279,6 +281,15 @@ public class NewAgapServiceImpl implements AgapCacheService {
 		int yearBeforeLastYear = lastYear - 1;
 		String cycle = "" + yearBeforeLastYear + '-' + lastYear;
 		return cycle;
+	}
+
+	@Override
+	public String findOriginFromLogin(String login) {
+		String query = "SELECT entree_fil FROM 720_choix3A_eleves WHERE uid=:uid";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("uid", login);
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(query, namedParameter);
+		return studentMap.size() == 1 ? (String) studentMap.get(0).get("entree_fil") : "";
 	}
 
 }

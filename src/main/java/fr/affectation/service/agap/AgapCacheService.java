@@ -23,6 +23,8 @@ public interface AgapCacheService{
 
 	public String findNameFromLogin(String login);
 
+	public String findOriginFromLogin(String login);
+
 	public List<Contentious> findContentious(String login);
 
 	public List<Float> findGpaMeans(String login);

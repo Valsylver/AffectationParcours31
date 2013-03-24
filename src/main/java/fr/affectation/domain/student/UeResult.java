@@ -1,6 +1,6 @@
 package fr.affectation.domain.student;
 
-public class UeResult {
+public class UeResult implements Comparable<UeResult>{
 	
 	private String cycle;
 
@@ -60,6 +60,37 @@ public class UeResult {
 
 	public void setCycle(String cycle) {
 		this.cycle = cycle;
+	}
+
+	@Override
+	public int compareTo(UeResult other) {
+		String cycle = getCycle();
+		String otherCycle = other.getCycle();
+		if ((otherCycle != null) && (cycle != null)){
+			int cycleEquals = cycle.compareTo(otherCycle);
+			if (cycleEquals != 0){
+				return cycleEquals;
+			}
+			else{
+				String semester = getSemester();
+				String otherSemester = other.getSemester();
+				if ((semester != null) && (otherSemester != null)){
+					int semesterEquals = semester.compareTo(otherSemester);
+					if (semesterEquals != 0){
+						return semesterEquals;
+					}
+					else{
+						String code = getCode();
+						String otherCode = other.getCode();
+						int codeEquals = code.compareTo(otherCode);
+						if (codeEquals != 0){
+							return codeEquals;
+						}
+					}
+				}
+			}
+		}
+		return 0;
 	}
 
 }

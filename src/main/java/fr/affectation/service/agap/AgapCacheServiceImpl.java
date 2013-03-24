@@ -136,4 +136,10 @@ public class AgapCacheServiceImpl implements AgapCacheService {
 		return session.get(SimpleStudentAgap.class, login) != null;
 	}
 
+	@Override
+	public String findOriginFromLogin(String login) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
