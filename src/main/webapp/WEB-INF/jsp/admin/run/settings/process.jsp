@@ -85,8 +85,7 @@
 										<span class="add-on">dd/MM/yyyy HH:mm</span>
 									</div>
 									<br />
-									<label for="endSubmission">Envoi du premier mail de
-										rappel <form:errors path="endSubmission">
+									<label for="endSubmission">Fin des soumissions <form:errors path="endSubmission">
 											<div class="alert alert-error">La date n'a pas le bon format.</div>
 										</form:errors>
 									</label>

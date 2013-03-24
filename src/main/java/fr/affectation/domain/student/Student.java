@@ -11,6 +11,8 @@ public class Student {
 	
 	private String login;
 	
+	private String origin;
+
 	private boolean hasFilledResume;
 	
 	private boolean hasFilledLetterIc;
@@ -105,6 +107,14 @@ public class Student {
 
 	public void setGpaMeans(List<Float> gpaMeans) {
 		this.gpaMeans = gpaMeans;
+	}
+	
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
 
 }

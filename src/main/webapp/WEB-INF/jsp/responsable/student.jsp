@@ -46,6 +46,7 @@
 						<h3>
 							<legend>${student.name}</legend>
 						</h3>
+						<h4>Filière d'origine : ${student.origin}</h4>
 						<h4>Voeux</h4>
 						<table class="table table-bordered table-striped table-condensed">
 							<thead>
@@ -90,7 +91,7 @@
 								<a href="${pageContext.request.contextPath}/files/cv_${student.login}.pdf">CV</a>
 							</c:when>
 							<c:otherwise>
-							Cet élève n'a pas encore déposé son CV.
+							Cet(te) élève n'a pas encore déposé son CV.
 						</c:otherwise>
 						</c:choose>
 						<br />
@@ -100,7 +101,7 @@
 								<a href="${pageContext.request.contextPath}/files/lettre_parcours_${student.login}.pdf">Lettre parcours</a>
 							</c:when>
 							<c:otherwise>
-							Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
+							Cet(te) élève n'a pas encore déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
 						</c:otherwise>
 						</c:choose>
 						<br />
@@ -110,7 +111,7 @@
 								<a href="${pageContext.request.contextPath}/files/lettre_filiere_${student.login}.pdf">Lettre filière</a>
 							</c:when>
 							<c:otherwise>
-							Cet élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.
+							Cet(te) élève n'a pas encore déposé sa lettre de motivation pour son choix de filière métier.
 						</c:otherwise>
 						</c:choose>
 						<br />
@@ -141,7 +142,7 @@
 								</table>
 							</c:when>
 							<c:otherwise>
-							Cet élève n'a aucun contentieux.
+							Cet(te) élève n'a aucun contentieux.
 						</c:otherwise>
 						</c:choose>
 						<div class="marge">

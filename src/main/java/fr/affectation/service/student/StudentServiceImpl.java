@@ -31,7 +31,7 @@ import fr.affectation.domain.student.SimpleStudentWithOrigin;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
-import fr.affectation.service.agap.AgapCacheService;
+import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.documents.DocumentService;
@@ -44,7 +44,7 @@ import fr.affectation.service.validation.ValidationService;
 public class StudentServiceImpl implements StudentService {
 
 	@Inject
-	private AgapCacheService agapCacheService;
+	private AgapService agapCacheService;
 
 	@Inject
 	private ValidationService validationService;
@@ -309,6 +309,7 @@ public class StudentServiceImpl implements StudentService {
 		if (isStudentConcerned(login)) {
 			Student student = new Student();
 			student.setLogin(login);
+			student.setOrigin(agapCacheService.findOriginFromLogin(login));
 			student.setName(agapCacheService.findNameFromLogin(login));
 			student.setContentious(agapCacheService.findContentious(login));
 			student.setGpaMeans(agapCacheService.findGpaMeans(login));

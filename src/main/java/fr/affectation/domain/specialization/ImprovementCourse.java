@@ -31,23 +31,27 @@ public class ImprovementCourse extends Specialization implements Comparable<Impr
 	
 	@Override
 	public int compareTo(ImprovementCourse improvementCourse) {
-		int compareIc = superIc.compareTo(improvementCourse.getSuperIc());
-		if (compareIc != 0){
-			if ((name != null) && (improvementCourse.getName() != null)){
-				return this.name.compareTo(improvementCourse.getName());
-			}
-			else{
-				if ((abbreviation != null) && (improvementCourse.getAbbreviation() != null)){
-					return this.abbreviation.compareTo(improvementCourse.getAbbreviation());
+		String otherSuperIc = improvementCourse.getSuperIc();
+		if ((otherSuperIc != null) && (superIc != null)){
+			int compareIc = superIc.compareTo(improvementCourse.getSuperIc());
+			if (compareIc != 0){
+				if ((name != null) && (improvementCourse.getName() != null)){
+					return this.name.compareTo(improvementCourse.getName());
 				}
 				else{
-					return 0;
+					if ((abbreviation != null) && (improvementCourse.getAbbreviation() != null)){
+						return this.abbreviation.compareTo(improvementCourse.getAbbreviation());
+					}
+					else{
+						return 0;
+					}
 				}
 			}
+			else{
+				return compareIc;
+			}
 		}
-		else{
-			return compareIc;
-		}
+		return 0;
 	}
 
 }

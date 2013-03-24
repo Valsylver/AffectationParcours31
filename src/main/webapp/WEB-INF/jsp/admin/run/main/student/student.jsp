@@ -76,7 +76,7 @@ function query(type){
 					textNew = "accepté";
 				}
 			}
-			document.getElementById(text).innerHTML = "Cet élève est actuellement " + textNew + " pour son premier choix de " + typeReal + ".";
+			document.getElementById(text).innerHTML = "Cet(te) élève est actuellement " + textNew + " pour son premier choix de " + typeReal + ".";
 			$('#infoValidation').html("<div class='alert alert-info'> L'élève <b>" + name + "</b>" + message + "</div>");
 		}
 	});
@@ -152,6 +152,7 @@ function query(type){
 						<c:if test="${not empty change }">
 							<div class="alert alert-success">${change}</div>
 						</c:if>
+						<h4>Filière d'origine : ${student.origin}</h4>
 						<h4>Voeux</h4>
 						<table class="table table-bordered table-striped table-condensed">
 							<thead>
@@ -199,22 +200,22 @@ function query(type){
 							<div id="infoValidation"></div>
 							<c:choose>
 								<c:when test="${isValidatedIc}">
-									<div id="textIc" style="display:inline;">Cet élève est actullement accepté dans son premier choix de parcours d'approfondissement.</div>
+									<div id="textIc" style="display:inline;">Cet(te) élève est actullement accepté dans son premier choix de parcours d'approfondissement.</div>
 									<a id="buttonIc" onclick="inverseValidationIc()" class="btn btn-danger"><i class="icon-white icon-remove"></i> Refuser</a>
 								</c:when>
 								<c:otherwise>
-									<div id="textIc" style="display:inline;">Cet élève est actullement refusé dans son premier choix de parcours d'approfondissement.</div> 
+									<div id="textIc" style="display:inline;">Cet(te) élève est actullement refusé dans son premier choix de parcours d'approfondissement.</div> 
 									<a id="buttonIc" onclick="inverseValidationIc()" class="btn btn-success"><i class="icon-white icon-ok"></i> Accepter</a>
 								</c:otherwise>
 							</c:choose>
 							<br />
 							<c:choose>
 								<c:when test="${isValidatedJs}">
-									<div id="textJs" style="display:inline;">Cet élève est actullement accepté dans son premier choix de filière métier.</div> 
+									<div id="textJs" style="display:inline;">Cet(te) élève est actullement accepté dans son premier choix de filière métier.</div> 
 									<a id="buttonJs" onclick="inverseValidationJs()" class="btn btn-danger"><i class="icon-white icon-remove"></i> Refuser</a>
 								</c:when>
 								<c:otherwise>
-									<div id="textJs" style="display:inline;">Cet élève est actullement refusé dans son premier choix de filière métier.</div> 
+									<div id="textJs" style="display:inline;">Cet(te) élève est actullement refusé dans son premier choix de filière métier.</div> 
 									<a id="buttonJs" onclick="inverseValidationJs()" class="btn btn-success"><i class="icon-white icon-ok"></i> Accepter</a>
 								</c:otherwise>
 							</c:choose>
@@ -226,7 +227,7 @@ function query(type){
 								<a href="${pageContext.request.contextPath}/files/cv_${student.login}.pdf">CV</a>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a pas déposé son CV.
+Cet(te) élève n'a pas déposé son CV.
 </c:otherwise>
 						</c:choose>
 						<br />
@@ -236,7 +237,7 @@ Cet élève n'a pas déposé son CV.
 								<a href="${pageContext.request.contextPath}/files/lettre_parcours_${student.login}.pdf">Lettre parcours</a>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a pas déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
+Cet(te) élève n'a pas déposé sa lettre de motivation pour son choix de parcours d'approfondissement.
 </c:otherwise>
 						</c:choose>
 						<br />
@@ -246,7 +247,7 @@ Cet élève n'a pas déposé sa lettre de motivation pour son choix de parcours 
 								<a href="${pageContext.request.contextPath}/files/lettre_filiere_${student.login}.pdf">Lettre filière</a>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a pas déposé sa lettre de motivation pour son choix de filière métier.
+Cet(te) élève n'a pas déposé sa lettre de motivation pour son choix de filière métier.
 </c:otherwise>
 						</c:choose>
 						<br />
@@ -277,7 +278,7 @@ Cet élève n'a pas déposé sa lettre de motivation pour son choix de filière 
 								</table>
 							</c:when>
 							<c:otherwise>
-Cet élève n'a aucun contentieux.
+Cet(te) élève n'a aucun contentieux.
 </c:otherwise>
 						</c:choose>
 						<div class="marge">

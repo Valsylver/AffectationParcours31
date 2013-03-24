@@ -18,7 +18,7 @@ import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.UeResult;
 
 @Service
-public class NewAgapServiceImpl implements AgapCacheService {
+public class NewAgapServiceImpl implements AgapService {
 	
 	@Inject
 	private NamedParameterJdbcTemplate namedParameterjdbcTemplate;
@@ -265,6 +265,15 @@ public class NewAgapServiceImpl implements AgapCacheService {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public String findOriginFromLogin(String login) {
+		String query = "SELECT entree_fil FROM \"z720_choix3A_eleves\" WHERE uid=:uid";
+		Map<String, String> namedParameter = new HashMap<String, String>();
+		namedParameter.put("uid", login);
+		List<Map<String, Object>> studentMap = namedParameterjdbcTemplate.queryForList(query, namedParameter);
+		return studentMap.size() == 1 ? (String) studentMap.get(0).get("entree_fil") : "";
 	}
 	
 	public String getCurrentCycle() {
