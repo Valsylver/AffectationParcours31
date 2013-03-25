@@ -64,28 +64,20 @@ public class UeResult implements Comparable<UeResult>{
 
 	@Override
 	public int compareTo(UeResult other) {
-		String cycle = getCycle();
-		String otherCycle = other.getCycle();
-		if ((otherCycle != null) && (cycle != null)){
-			int cycleEquals = cycle.compareTo(otherCycle);
-			if (cycleEquals != 0){
-				return cycleEquals;
-			}
-			else{
-				String semester = getSemester();
-				String otherSemester = other.getSemester();
-				if ((semester != null) && (otherSemester != null)){
-					int semesterEquals = semester.compareTo(otherSemester);
-					if (semesterEquals != 0){
-						return semesterEquals;
-					}
-					else{
-						String code = getCode();
-						String otherCode = other.getCode();
-						int codeEquals = code.compareTo(otherCode);
-						if (codeEquals != 0){
-							return codeEquals;
-						}
+		String semester = getSemester();
+		String otherSemester = other.getSemester();
+		if ((semester != null) && (otherSemester != null)) {
+			int semesterEquals = otherSemester.compareTo(semester);
+			if (semesterEquals != 0) {
+				return semesterEquals;
+			} 
+			else {
+				String code = getCode();
+				String otherCode = other.getCode();
+				if ((code != null) && (otherCode != null)){
+					int codeEquals = code.compareTo(otherCode);
+					if (codeEquals != 0) {
+						return codeEquals;
 					}
 				}
 			}

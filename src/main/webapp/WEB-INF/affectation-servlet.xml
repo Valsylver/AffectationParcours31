@@ -31,13 +31,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<context:component-scan base-package="fr.affectation.web, fr.affectation.service" />
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/affectation2" />
-		<property name="username" value="root" />
-		<property name="password" value="route" />
-	</bean>
-
 	<import resource="agap.xml" />
 
 	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
@@ -48,19 +41,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
       <constructor-arg ref="dataSourceAgap" />
    </bean>
 
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="hibernateProperties">
-			<bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"> 
-				<property name="properties">
-					<props>
-						<prop key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop>
-						<prop key="hibernate.hbm2ddl.auto">update</prop>
-						<prop key="hibernate.c3p0.timeout">300</prop>
-					</props>
-				</property>
-			</bean>
-		</property>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
 		<property name="packagesToScan"
 			value="fr.affectation.domain.specialization, fr.affectation.domain.superuser, fr.affectation.domain.choice, fr.affectation.domain.student, fr.affectation.domain.util, fr.affectation.domain.configuration" />
 	</bean>
