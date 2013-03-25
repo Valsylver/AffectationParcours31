@@ -154,6 +154,7 @@ public class NewAgapServiceImpl implements AgapService {
 			contentious.setUeCode((String) map.get("code_ue"));
 			allContentious.add(contentious);
 		}
+		Collections.sort(allContentious);
 		return allContentious;
 	}
 
