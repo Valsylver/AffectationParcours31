@@ -16,7 +16,7 @@ public abstract class Specialization{
 	public static final int JOB_SECTOR = 2;
 	
 	@Id
-	@Size(min=1, max=20)
+	@Size(min=1)
 	protected String abbreviation;
 	
 	@Column

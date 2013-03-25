@@ -10,8 +10,6 @@
 	Marseille</title>
 <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
 
 </head>
 <body>
@@ -22,7 +20,6 @@
 			<div class="span2">
 				<ul class="nav nav-list">
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
-					<!-- <li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li> -->
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></a></li>
@@ -36,18 +33,18 @@
 
 			<div class="span5">
 				<h2>Parcours</h2>
-				<c:forEach var="pa" items="${paAvailable}" varStatus="status">
-					<c:choose>
-					<c:when test="${status.index != 0}">
-						<br />
-					</c:when>
-					</c:choose>
-					${pa.stringForForm}
-					<br />
-					<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}"
-						class="btn btn-primary btn-small pull-right">Modfier</a>
-					<br />
-				</c:forEach>
+					<c:forEach var="superPa" items="${paAvailable}" varStatus="status">
+						<c:if test="${status.index != 0}">
+							<br />
+						</c:if>
+						<h4>${superPa[0].superIc}</h4>
+						<c:forEach var="pa" items="${superPa}">
+							${pa.stringForForm}
+							<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+							<br />
+							<br />
+						</c:forEach>
+					</c:forEach>
 			
 			</div>
 	

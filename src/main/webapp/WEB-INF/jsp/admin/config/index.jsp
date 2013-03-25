@@ -26,7 +26,7 @@
 <body>
 	<div class="container">
 		<tags:headerAdmin run="<%=false%>" />
-
+		<div id="path" style="display:none">${pageContext.request.contextPath}</div>
 
 		<form:form action="${pageContext.request.contextPath}/admin/config/process-config-saving" method="POST" commandName="when">
 			<center>
@@ -40,7 +40,7 @@
 			<div class="row">
 				<div class="span12">
 				<c:if test="${not empty successIc}">
-						<div class="alert alert-info">${successIc}</div>
+						<div id="infoMessage" class="alert alert-info">${successIc}</div>
 					</c:if>
 				<c:if test="${not empty successJs}">
 						<div class="alert alert-info">${successJs}</div>
@@ -56,7 +56,10 @@
 						<c:forEach var="pa" items="${superPa}">
 							${pa.stringForForm}
 							<br />
-							<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+							<div class="btn-group pull-right">
+								<a href="${pageContext.request.contextPath}/admin/common/edit/ic/${pa.abbreviation}" class="btn btn-primary btn-small">Modfier</a>
+								<a href="${pageContext.request.contextPath}/admin/config/delete/improvement-course/${pa.abbreviation}" class="btn btn-danger btn-small">Supprimer</a>
+							</div>
 							<br />
 							<br />
 						</c:forEach>
@@ -69,9 +72,12 @@
 					<br />
 
 					<c:forEach var="fm" items="${fmAvailable}">
-${fm.stringForForm}
-<br />
-						<a href="${pageContext.request.contextPath}/admin/common/edit/js/${fm.abbreviation}" class="btn btn-primary btn-small pull-right">Modfier</a>
+						${fm.stringForForm}
+						<br />				
+						<div class="btn-group pull-right">
+							<a href="${pageContext.request.contextPath}/admin/common/edit/js/${fm.abbreviation}" class="btn btn-primary btn-small">Modfier</a>
+							<a href="${pageContext.request.contextPath}/admin/config/delete/job-sector/${fm.abbreviation}" class="btn btn-danger btn-small">Supprimer</a>
+						</div>
 						<br />
 						<br />
 					</c:forEach>

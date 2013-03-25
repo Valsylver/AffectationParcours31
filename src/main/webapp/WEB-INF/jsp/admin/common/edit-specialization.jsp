@@ -43,10 +43,20 @@
 					</label>
 					<form:input id="name" path="name" class="span5" />
 					
+					<c:if test="${specialization.type == specialization.IMPROVEMENT_COURSE}">
+						<label for="superIc">
+							Macro parcours
+							<form:errors path="superIc" >
+								<br /> <font color="red">La macro abréviation ne peut pas être vide.</font>
+							</form:errors>
+							<form:input id="superIc" path="superIc" class="span5" />
+						</label>
+					</c:if>
+					
 					<label for="abbreviation">
 					Abréviation
 					<form:errors path="abbreviation" >
-						<br /> <font color="red">L'abréviation ne doit pas dépasser 20 caractères, ni être vide.</font>
+						<br /> <font color="red">L'abréviation ne peut pas être vide.</font>
 					</form:errors>
 					</label>
 					
@@ -91,9 +101,5 @@
 			</div>
 		</div>
 	</div>
-	
-	<script type="text/javascript" src="/${pageContext.request.contextPath}/js/jquery/jquery-latest.js"></script> 
-	<script type="text/javascript" src="/${pageContext.request.contextPath}/js/jquery/jquery.tablesorter.min.js"></script> 
-	<script src="/${pageContext.request.contextPath}/js/select2.min.js" type="text/javascript"></script>
 </body>
 </html>
