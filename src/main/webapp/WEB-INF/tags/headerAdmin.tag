@@ -12,8 +12,7 @@
 						<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administration</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath}/admin/config/exclude">Elèves (liste)</a></li>
-						<li><a href="${pageContext.request.contextPath}/admin/config/exclude-from-file">Elèves (fichier xls)</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/config/exclude">Elèves</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><a href="${pageContext.request.contextPath}/logout">Deconnexion</a></li>

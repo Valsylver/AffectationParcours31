@@ -6,7 +6,7 @@
 <html>
 <head>
 <title>Affectation parcours/filières 3ème année Centrale Marseille</title>
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/select3.css" rel="stylesheet">
 </head>
 <body>
@@ -300,16 +300,13 @@
 			</div>
 
 			<div class="span2">
-				<div id="hihihi"></div>
 			</div>
 		</div>
 	</div>
-
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/js/select2.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/js/common/dynamic_select.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/js/admin/run/main/student/document.js" type="text/javascript"></script>
-
 </body>
+<script src="${pageContext.request.contextPath}/js/jquery-final/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-typeahead.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/select2.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/common/dynamic_select.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/admin/run/main/student/document.js" type="text/javascript"></script>
 </html>

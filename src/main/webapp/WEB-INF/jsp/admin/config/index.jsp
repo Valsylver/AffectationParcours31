@@ -8,8 +8,8 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
 
 <link href="${pageContext.request.contextPath}/css/dot-luv/jquery-ui-1.9.2.custom.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/date-time-picker/jquery-ui-timepicker-addon.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 		$("#datepicker").datepicker();
 	});
 </script>
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery-final/jquery-1.8.3.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/date-time-picker/jquery-ui-timepicker-addon.js"></script>
 </head>
@@ -125,10 +125,7 @@
 			</div>
 		</form:form>
 	</div>
-
 </body>
-<script src="js/jquery-1.8.3.js"></script>
-<script src="js/jquery-ui-1.9.2.custom.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$('#firstEmail, #secondEmail, #endSubmission, #endValidation')

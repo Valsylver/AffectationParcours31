@@ -7,9 +7,8 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/student-admin-page.css" rel="stylesheet">
 </head>
 <body>

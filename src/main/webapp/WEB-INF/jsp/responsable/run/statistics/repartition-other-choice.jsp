@@ -8,15 +8,12 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/responsible/repartition-other-choice.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-latest.js"></script>
-<script src="${pageContext.request.contextPath}/js/highcharts/highcharts.js"></script>
-<script src="${pageContext.request.contextPath}/js/highcharts/exporting.js"></script>
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery-final/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/highcharts/highcharts.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/highcharts/exporting.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/responsible/repartition-other-choice.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container">

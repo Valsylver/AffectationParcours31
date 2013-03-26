@@ -9,8 +9,7 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -20,7 +19,6 @@
 			<div class="span2">
 				<ul class="nav nav-list">
 					<li class="active"><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
-					<!-- <li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li> -->
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></a></li>
@@ -39,7 +37,7 @@
 					<div class="alert alert-error">${errorMessage}</div>
 				</c:if>
 				<c:if test='${not empty successMessage}'>
-					<div class="alert alert-success">${successMessage}</div>
+					<div class="alert alert-info">${successMessage}</div>
 				</c:if>
 				<h4>Login des administrateurs actuels</h4>
 				<c:forEach var="admin" items="${currentAdmins}">
@@ -61,7 +59,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
-<script src="${pageContext.request.contextPath}/js/students-exclusion.js" type="text/javascript"></script>
 </html>

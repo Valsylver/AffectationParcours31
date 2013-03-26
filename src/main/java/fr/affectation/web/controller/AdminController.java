@@ -549,7 +549,7 @@ public class AdminController {
 						"Impossible de supprimer cet administrateur. Il doit toujours rester au moins un administrateur.");
 			} else {
 				adminService.delete(login);
-				redirectAttributes.addFlashAttribute("successMessage", "L'administrateur dont le login était " + login + " a bien été supprimé.");
+				redirectAttributes.addFlashAttribute("successMessage", "L'administrateur dont le login était <b>" + login + "</b> a bien été <b>supprimé</b>.");
 			}
 			return "redirect:/admin/run/settings/admins";
 		} else {
@@ -565,7 +565,7 @@ public class AdminController {
 			} else {
 				adminService.save(admin.getLogin());
 				redirectAttributes
-						.addFlashAttribute("successMessage", "Un nouvel administrateur dont le login est " + admin.getLogin() + " a bien été ajouté.");
+						.addFlashAttribute("successMessage", "Un nouvel administrateur dont le login est <b>" + admin.getLogin() + "</b> a bien été <b>ajouté</b>.");
 			}
 			return "redirect:/admin/run/settings/admins";
 		} else {

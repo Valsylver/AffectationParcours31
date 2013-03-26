@@ -7,11 +7,10 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/student-admin-page.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery-final/jquery-1.8.3.min.js" type="text/javascript"></script>
 <script>
 function inverseValidationIc(){
 	query("ic");
@@ -150,7 +149,7 @@ function query(type){
 							<legend>${student.name} <a href="${pageContext.request.contextPath}/admin/run/main/student/edit-student-form/${login}" class="btn btn-primary btn-small pull-right"><i class="icon-white icon-pencil"></i></a></legend>
 						</h3>
 						<c:if test="${not empty change }">
-							<div class="alert alert-success">${change}</div>
+							<div class="alert alert-info">${change}</div>
 						</c:if>
 						<h4>Filière d'origine : ${student.origin}</h4>
 						<h4>Voeux</h4>

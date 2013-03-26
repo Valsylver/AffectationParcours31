@@ -7,23 +7,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Affectation parcours/filière 3ème année Centrale
-	Marseille</title>
+<title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/dot-luv/jquery-ui-1.9.2.custom.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/date-time-picker/jquery-ui-timepicker-addon.css"
-	rel="stylesheet">
-<script>
-	$(function() {
-		$.datepicker.setDefaults($.extend($.datepicker.regional["fr"]));
-		$("#datepicker").datepicker();
-	});
-</script>
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/date-time-picker/jquery-ui-timepicker-addon.js"></script>
-
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -33,7 +19,6 @@
 			<div class="span2">
 				<ul class="nav nav-list">
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/admins">Administrateurs</a></li>
-					<!-- <li><a href="${pageContext.request.contextPath}/admin/run/settings/agap">Agap</a></li> -->
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/students">Elèves</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/export">Export</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/run/settings/mail1">Mail 1 <c:choose><c:when test="${mail1Activated}">[actif]</c:when><c:otherwise>[non actif]</c:otherwise></c:choose></a></li>
@@ -242,38 +227,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
-<script type="text/javascript">
-	$(function() {
-		$('#firstEmail, #secondEmail, #endSubmission, #endValidation')
-				.datetimepicker(
-						{
-							timeFormat : 'HH:mm',
-							closeText : 'Fermer',
-							prevText : 'Précédent',
-							nextText : 'Suivant',
-							currentText : 'Aujourd\'hui',
-							monthNames : [ 'Janvier', 'Février', 'Mars',
-									'Avril', 'Mai', 'Juin', 'Juillet', 'Août',
-									'Septembre', 'Octobre', 'Novembre',
-									'Décembre' ],
-							monthNamesShort : [ 'Janv.', 'Févr.', 'Mars',
-									'Avril', 'Mai', 'Juin', 'Juil.', 'Août',
-									'Sept.', 'Oct.', 'Nov.', 'Déc.' ],
-							dayNames : [ 'Dimanche', 'Lundi', 'Mardi',
-									'Mercredi', 'Jeudi', 'Vendredi', 'Samedi' ],
-							dayNamesShort : [ 'Dim.', 'Lun.', 'Mar.', 'Mer.',
-									'Jeu.', 'Ven.', 'Sam.' ],
-							dayNamesMin : [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
-							weekHeader : 'Sem.',
-							dateFormat : 'dd/mm/yy',
-							firstDay : 1,
-							isRTL : false,
-							showMonthAfterYear : false,
-							yearSuffix : '',
-							minDate : new Date(),
-						});
-	});
-</script>
 </html>

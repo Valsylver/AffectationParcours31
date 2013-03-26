@@ -9,8 +9,7 @@
 <title>Affectation parcours/filière 3ème année Centrale
 	Marseille</title>
 <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
@@ -65,6 +64,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

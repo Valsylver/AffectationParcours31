@@ -9,9 +9,8 @@
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
 <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery-final/jquery-1.8.3.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/js/admin/common/students-exclusion.js" type="text/javascript"></script>
 </head>
 <body>
@@ -77,6 +76,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

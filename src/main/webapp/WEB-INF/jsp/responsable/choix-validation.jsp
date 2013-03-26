@@ -8,10 +8,9 @@
 <html>
 <head>
 <title>Affectation parcours/filière 3ème année Centrale Marseille</title>
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery-final/jquery-1.8.3.min.js"></script>
 <script>
 function inverseValidation(id){
 	var loginName = id.split(";;;");
