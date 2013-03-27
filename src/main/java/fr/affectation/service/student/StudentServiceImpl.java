@@ -33,7 +33,6 @@ import fr.affectation.domain.student.Student;
 import fr.affectation.domain.util.SimpleMail;
 import fr.affectation.service.agap.AgapService;
 import fr.affectation.service.choice.ChoiceService;
-import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.mail.MailService;
@@ -60,9 +59,6 @@ public class StudentServiceImpl implements StudentService {
 
 	@Inject
 	private MailService mailService;
-	
-	@Inject
-	private ConfigurationService configurationService;
 
 	@Inject
 	private ExclusionService exclusionService;
@@ -499,6 +495,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 		List<List<ImprovementCourse>> paAvailableList = new ArrayList<List<ImprovementCourse>>();
 		for (String key : paAvailableMap.keySet()){
+			Collections.sort(paAvailableMap.get(key));
 			paAvailableList.add(paAvailableMap.get(key));
 		}
 		Collections.sort(paAvailableList, new ComparatorListIc());
