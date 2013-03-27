@@ -19,19 +19,19 @@
 					Votre soumission a bien été prise en compte.
 				</div>
 				<c:if test="${fn:length(notFilledIcNumber) > 0}">
-					<div class="alert alert-block">
+					<div class="alert alert-error">
 						<h4>Parcours d'approfondissement</h4>
 						${notFilledIc}
 					</div>
 				</c:if>
 				<c:if test="${fn:length(notFilledJsNumber) > 0}">
-					<div class="alert alert-block">
+					<div class="alert alert-error">
 						<h4>Filières métier</h4>
 						${notFilledJs}
 					</div>
 				</c:if>
 				<c:if test="${(!hasFilledLetterIc) || ((!hasFilledLetterJs) || (!hasFilledResume))}">
-					<div class="alert alert-block">
+					<div class="alert alert-error">
 						<h4>Documents</h4>
 						<c:if test="${!hasFilledResume}">
 		            			Vous n'avez pas déposé votre CV. 

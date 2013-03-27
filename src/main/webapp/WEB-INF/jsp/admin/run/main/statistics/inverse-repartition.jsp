@@ -17,7 +17,6 @@
 <body>
 	<div class="container">
 		<tags:headerAdmin run="<%=true%>" />
-
 		<div class="row">
 			<div class="span2">
 				<ul class="nav nav-list">

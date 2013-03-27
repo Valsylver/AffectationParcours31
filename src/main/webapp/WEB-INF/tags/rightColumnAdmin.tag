@@ -5,9 +5,3 @@
 	<li><a href="${pageContext.request.contextPath}/files/admin/documents-eleves-filieres.zip">Filières</a></li>
 	<li><a href="${pageContext.request.contextPath}/files/admin/documents-eleves-cv.zip">CV</a></li>
 </ul>
-
-<!--  
-<a href="/admin/fake">Fake results</a>
-<br />
-<a href="/admin/fake2">Fake validation</a>
--->

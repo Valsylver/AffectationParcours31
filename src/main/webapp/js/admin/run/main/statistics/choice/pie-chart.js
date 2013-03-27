@@ -40,7 +40,7 @@ function generatePieChart(type) {
 	}
 	
 	Highcharts.setOptions({
-		 colors: ['#4571a7', '#aa4543', '#89a54d',  '#717589', '#3c96ae', '#bc9a73', '#92a8cd', '#c4847a', '#b5ca92', '#5b2c12', '#80699b', '#db843c', '#a47d7b', '#cccccc']
+		 colors: ['#4571a7', '#aa4543', '#89a54d',  '#717589', '#3c96ae', '#bc9a73', '#92a8cd', '#c4847a', '#b5ca92', '#5b2c12', '#80699b', '#db843c', '#a47d7b', '#cccccc', '#004812', '#161616']
 		});
 
     chart = new Highcharts.Chart({

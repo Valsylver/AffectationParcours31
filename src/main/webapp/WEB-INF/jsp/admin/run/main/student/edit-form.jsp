@@ -230,7 +230,7 @@
 							<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-								<a class="btn btn-primary" href="${pageContext.request.contextPath}/files/cv_${login}"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+								<a class="btn btn-primary" href="${pageContext.request.contextPath}/files/cv_${login}.pdf"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
 								<a class="btn btn-danger" onclick="removeResume()"><i class="icon-white icon-remove"></i> Supprimer</a>
 								<input id="resume" name="resume" type="file" style="display: none">
 								<br />
@@ -255,7 +255,7 @@
 							<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-								<a class="btn btn-primary" href="${pageContext.request.contextPath}/files/lettre_parcours_${login}"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+								<a class="btn btn-primary" href="${pageContext.request.contextPath}/files/lettre_parcours_${login}.pdf"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
 								<a class="btn btn-danger" onclick="removeLetterIc()"><i class="icon-white icon-remove"></i> Supprimer</a>
 								<input id="letterIc" name="letterIc" type="file" style="display: none">
 								<br />
@@ -280,7 +280,7 @@
 							<c:otherwise>
 							Vous avez déjà déposé ce document. Vous aurez la possibilité d'en ajouter un nouveau si vous le supprimez. 
 							<br />
-								<a class="btn btn-primary" href="${pageContext.request.contextPath}/files/lettre_filiere_${login}"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
+								<a class="btn btn-primary" href="${pageContext.request.contextPath}/files/lettre_filiere_${login}.pdf"><i class="icon-white icon-download-alt"></i> Voir le fichier</a>
 								<a class="btn btn-danger" onclick="removeLetterJs()"><i class="icon-white icon-remove"></i> Supprimer</a>
 								<input id="letterJs" name="letterJs" type="file" style="display: none">
 								<br />

@@ -42,14 +42,14 @@ function query(type){
 				var text = "textIc";
 				typeReal = "parcours d'approfondissement";
 				if (isValidated == "true"){
-					message = " est désormais <b>refusé</b> pour son premier choix de parcours d'approfondissement.";
+					message = " est désormais <b>refusé(e)</b> pour son premier choix de parcours d'approfondissement.";
 					button.className = "btn btn-success";	
 					button.innerHTML = "<i class='icon-white icon-ok'></i> Accepter";
 					document.getElementById("isValidatedIc").innerHTML = "false";
 					textNew = "refusé";
 				}
 				else{
-					message = " est désormais <b>accepté</b> pour son premier choix de parcours d'approfondissement.";
+					message = " est désormais <b>accepté(e)</b> pour son premier choix de parcours d'approfondissement.";
 					button.className = "btn btn-danger";	
 					button.innerHTML = "<i class='icon-white icon-remove'></i> Refuser";
 					document.getElementById("isValidatedIc").innerHTML = "true";
@@ -61,14 +61,14 @@ function query(type){
 				var text = "textJs";
 				typeReal = "filière métier";
 				if (isValidated == "true"){
-					message = " est désormais <b>refusé</b> pour son premier choix de filière métier.";
+					message = " est désormais <b>refusé(e)</b> pour son premier choix de filière métier.";
 					button.className = "btn btn-success";	
 					button.innerHTML = "<i class='icon-white icon-ok'></i> Accepter";
 					document.getElementById("isValidatedJs").innerHTML = "false";
 					textNew = "refusé";
 				}
 				else{
-					message = " est désormais <b>accepté</b> pour son premier choix de filière métier.";
+					message = " est désormais <b>accepté(e)</b> pour son premier choix de filière métier.";
 					button.className = "btn btn-danger";	
 					button.innerHTML = "<i class='icon-white icon-remove'></i> Refuser";
 					document.getElementById("isValidatedJs").innerHTML = "true";
@@ -76,7 +76,7 @@ function query(type){
 				}
 			}
 			document.getElementById(text).innerHTML = "Cet(te) élève est actuellement " + textNew + " pour son premier choix de " + typeReal + ".";
-			$('#infoValidation').html("<div class='alert alert-info'> L'élève <b>" + name + "</b>" + message + "</div>");
+			$('#infoValidation').html("<div class='alert alert-info'><b>" + name + "</b>" + message + "</div>");
 		}
 	});
 }
@@ -146,7 +146,7 @@ function query(type){
 						<div id="login" style="display:none">${student.login}</div>
 						<div id="name" style="display:none">${student.name}</div>
 						<h3>
-							<legend>${student.name} <a href="${pageContext.request.contextPath}/admin/run/main/student/edit-student-form/${login}" class="btn btn-primary btn-small pull-right"><i class="icon-white icon-pencil"></i></a></legend>
+							${student.name} <a href="${pageContext.request.contextPath}/admin/run/main/student/edit-student-form/${login}" class="btn btn-primary btn-small pull-right"><i class="icon-white icon-pencil"></i></a>
 						</h3>
 						<c:if test="${not empty change }">
 							<div class="alert alert-info">${change}</div>
@@ -254,7 +254,7 @@ Cet(te) élève n'a pas déposé sa lettre de motivation pour son choix de fili�
 
 						<h4>Résultats</h4>
 						<div class="marge">
-							<h5>Contentieux</h5>
+							<h5 class="muted">Contentieux</h5>
 						</div>
 						<c:choose>
 							<c:when test="${fn:length(student.contentious) > 0 }">
@@ -281,7 +281,7 @@ Cet(te) élève n'a aucun contentieux.
 </c:otherwise>
 						</c:choose>
 						<div class="marge">
-							<h5>Moyennes GPA</h5>
+							<h5 class="muted">Moyennes GPA</h5>
 						</div>
 						<table class="table-bordered table-striped table-condensed">
 							<thead>
@@ -307,7 +307,7 @@ Cet(te) élève n'a aucun contentieux.
 						</table>
 						<br />
 						<div class="marge">
-							<h5>Résultats par UE</h5>
+							<h5 class="muted">Résultats par UE</h5>
 						</div>
 						<table class="table-bordered table-striped table-condensed">
 							<thead>

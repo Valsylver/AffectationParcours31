@@ -11,7 +11,7 @@ function generatePieChart() {
 	var render;
 	var title = 'Choix de ';
 	var type = document.getElementById('type').value;
-	if (type == 'JobSector'){
+	if (type == '2'){
 		title += "parcours";
 	}
 	else{

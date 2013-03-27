@@ -72,7 +72,7 @@ function inverseValidation(id){
 			<div class="span7">
 				<c:choose>
 					<c:when test="${fn:length(allStudents) > 0}">
-						<div id="info" class="alert alert-info">Cochez/décochez pour accepter/refuser les élèves. Par défault, ils sont tous acceptés.</div>
+						<div id="info" class="alert alert-info">Cochez/décochez pour accepter/refuser les élèves. Par défaut, ils sont tous acceptés.</div>
 						<table id="student" class="table table-bordered table-striped">
 							<tbody>
 								<c:forEach var="student" items="${allStudents}" varStatus="status">

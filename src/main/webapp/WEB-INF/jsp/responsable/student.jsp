@@ -43,7 +43,7 @@
 				<c:choose>
 					<c:when test="${student != null}">
 						<h3>
-							<legend>${student.name}</legend>
+							${student.name}
 						</h3>
 						<h4>Filière d'origine : ${student.origin}</h4>
 						<h4>Voeux</h4>
@@ -118,7 +118,7 @@
 
 						<h4>Résultats</h4>
 						<div class="marge">
-							<h5>Contentieux</h5>
+							<h5 class="muted">Contentieux</h5>
 						</div>
 						<c:choose>
 							<c:when test="${fn:length(student.contentious) > 0 }">
@@ -145,7 +145,7 @@
 						</c:otherwise>
 						</c:choose>
 						<div class="marge">
-							<h5>Moyennes GPA</h5>
+							<h5 class="muted">Moyennes GPA</h5>
 						</div>
 						<table class="table-bordered table-striped table-condensed">
 							<thead>
@@ -171,7 +171,7 @@
 						</table>
 						<br />
 						<div class="marge">
-							<h5>Résultats par UE</h5>
+							<h5 class="muted">Résultats par UE</h5>
 						</div>
 						<table class="table-bordered table-striped table-condensed">
 							<thead>

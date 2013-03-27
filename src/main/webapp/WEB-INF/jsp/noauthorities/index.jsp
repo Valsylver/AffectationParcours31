@@ -11,7 +11,7 @@
 		<div class="row">
 			<br />
 			<br />
-			<div class="alert alert-block">Vous n'êtes pas concerné par le
+			<div class="alert alert-info">Vous n'êtes pas concerné par le
 				processus d'affectation en cours.</div>
 			<a href="${pageContext.request.contextPath}/logout" class="btn btn-danger"><i class="icon-white icon-off"></i> Deconnexion</a>
 		</div>

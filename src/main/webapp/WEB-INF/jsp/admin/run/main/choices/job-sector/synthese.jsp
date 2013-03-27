@@ -78,7 +78,6 @@
 						</c:choose>
 					</c:forEach>
 				</ul>
-				<hr>
 
 				<c:forEach var="specialization" items="${allJs}" varStatus="status">
 					<span class="lead"> <a href="${pageContext.request.contextPath}/admin/common/edit/js/${specialization.abbreviation}"> ${specialization.name} (${specialization.abbreviation}) </a>
