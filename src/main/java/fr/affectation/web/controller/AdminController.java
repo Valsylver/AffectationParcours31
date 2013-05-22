@@ -1057,6 +1057,7 @@ public class AdminController {
 			mailService.save(second);
 			configurationService.setFirstMailActivated(false);
 			configurationService.setSecondMailActivated(false);
+			configurationService.setAlreadyBeenLaunched();
 		}
 		configurationService.initializeFromDataBase();
 	}
