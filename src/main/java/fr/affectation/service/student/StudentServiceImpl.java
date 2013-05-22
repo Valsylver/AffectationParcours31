@@ -25,6 +25,7 @@ import fr.affectation.domain.specialization.ComparatorListIc;
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.JobSector;
 import fr.affectation.domain.specialization.SimpleSpecializationWithList;
+import fr.affectation.domain.specialization.SimpleSpecializationWithNumber;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithOrigin;
@@ -170,6 +171,52 @@ public class StudentServiceImpl implements StudentService {
 		List<String> allLogins = choiceService.findLoginsByOrderChoiceAndSpecialization(orderChoice, specialization);
 		Collections.sort(allLogins);
 		return allLogins;
+	}
+	
+	@Override
+	public List<SimpleSpecializationWithNumber> findSimpleIcStats(int choice) {
+		List<String> excludedLogins = exclusionService.findStudentToExcludeLogins();
+ 		List<ImprovementCourse> allIc = specializationService.findImprovementCourses();
+		List<SimpleSpecializationWithNumber> specializations = new ArrayList<SimpleSpecializationWithNumber>();
+		int total = 0;
+		for (ImprovementCourse improvementCourse : allIc){
+			List<String> logins = findLoginsByOrderChoiceAndSpecialization(choice, improvementCourse);
+			logins.removeAll(excludedLogins);
+			int numberOfStudents = logins.size();
+			total += numberOfStudents;
+			String abbreviation = improvementCourse.getAbbreviation();
+			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, improvementCourse.getName(), numberOfStudents);
+			specializations.add(specialization);
+		}
+		int diff = findAllStudentsConcernedLogin().size() - total;
+		if (diff != 0){
+			specializations.add(new SimpleSpecializationWithNumber(" Pas de choix", " Pas de choix", diff));
+		}
+		Collections.sort(specializations); 
+		return specializations;
+	}
+	
+	@Override
+	public List<SimpleSpecializationWithNumber> findSimpleJsStats(int choice) {
+		List<String> excludedLogins = exclusionService.findStudentToExcludeLogins();
+ 		List<JobSector> allJs = specializationService.findJobSectors();
+		List<SimpleSpecializationWithNumber> specializations = new ArrayList<SimpleSpecializationWithNumber>();
+		int total = 0;
+		for (JobSector jobSector : allJs){
+			List<String> logins = findLoginsByOrderChoiceAndSpecialization(choice, jobSector);
+			logins.removeAll(excludedLogins);
+			int numberOfStudents = logins.size();
+			total += numberOfStudents;
+			String abbreviation = jobSector.getAbbreviation();
+			SimpleSpecializationWithNumber specialization = new SimpleSpecializationWithNumber(abbreviation, jobSector.getName(), numberOfStudents);
+			specializations.add(specialization);
+		}
+		int diff = findAllStudentsConcernedLogin().size() - total;
+		if (diff != 0){
+			specializations.add(new SimpleSpecializationWithNumber(" Pas de choix", " Pas de choix", diff));
+		}
+		Collections.sort(specializations); 
+		return specializations;
 	}
 
 	@Override

@@ -381,11 +381,11 @@ public class FilesController {
 			}
 		}
 
-		List<SimpleSpecializationWithNumber> ic1 = statisticsService.findSimpleIcStats(1);
-		List<SimpleSpecializationWithNumber> ic2 = statisticsService.findSimpleIcStats(2);
-		List<SimpleSpecializationWithNumber> ic3 = statisticsService.findSimpleIcStats(3);
-		List<SimpleSpecializationWithNumber> ic4 = statisticsService.findSimpleIcStats(4);
-		List<SimpleSpecializationWithNumber> ic5 = statisticsService.findSimpleIcStats(5);
+		List<SimpleSpecializationWithNumber> ic1 = studentService.findSimpleIcStats(1);
+		List<SimpleSpecializationWithNumber> ic2 = studentService.findSimpleIcStats(2);
+		List<SimpleSpecializationWithNumber> ic3 = studentService.findSimpleIcStats(3);
+		List<SimpleSpecializationWithNumber> ic4 = studentService.findSimpleIcStats(4);
+		List<SimpleSpecializationWithNumber> ic5 = studentService.findSimpleIcStats(5);
 
 		rowNum += 2;
 		for (ImprovementCourse ic : specializationService.findImprovementCourses()) {
@@ -438,11 +438,11 @@ public class FilesController {
 			}
 		}
 
-		List<SimpleSpecializationWithNumber> js1 = statisticsService.findSimpleJsStats(1);
-		List<SimpleSpecializationWithNumber> js2 = statisticsService.findSimpleJsStats(2);
-		List<SimpleSpecializationWithNumber> js3 = statisticsService.findSimpleJsStats(3);
-		List<SimpleSpecializationWithNumber> js4 = statisticsService.findSimpleJsStats(4);
-		List<SimpleSpecializationWithNumber> js5 = statisticsService.findSimpleJsStats(5);
+		List<SimpleSpecializationWithNumber> js1 = studentService.findSimpleJsStats(1);
+		List<SimpleSpecializationWithNumber> js2 = studentService.findSimpleJsStats(2);
+		List<SimpleSpecializationWithNumber> js3 = studentService.findSimpleJsStats(3);
+		List<SimpleSpecializationWithNumber> js4 = studentService.findSimpleJsStats(4);
+		List<SimpleSpecializationWithNumber> js5 = studentService.findSimpleJsStats(5);
 
 		rowNum += 1;
 		for (JobSector js : specializationService.findJobSectors()) {

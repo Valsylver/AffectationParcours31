@@ -51,7 +51,6 @@ import fr.affectation.service.documents.DocumentService;
 import fr.affectation.service.exclusion.ExclusionService;
 import fr.affectation.service.mail.MailService;
 import fr.affectation.service.specialization.SpecializationService;
-import fr.affectation.service.statistics.StatisticsService;
 import fr.affectation.service.student.StudentService;
 import fr.affectation.service.validation.ValidationService;
 
@@ -73,9 +72,6 @@ public class AdminController {
 
 	@Inject
 	private ExclusionService exclusionService;
-
-	@Inject
-	private StatisticsService statisticsService;
 
 	@Inject
 	private ConfigurationService configurationService;
@@ -959,8 +955,8 @@ public class AdminController {
 	public String pieChartsForChoice(@PathVariable int choice, Model model) {
 		if (configurationService.isRunning()) {
 			model.addAttribute("choiceNumber", choice);
-			model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats(choice));
-			model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats(choice));
+			model.addAttribute("simpleImprovementCourses", studentService.findSimpleIcStats(choice));
+			model.addAttribute("simpleJobSectors", studentService.findSimpleJsStats(choice));
 			model.addAttribute("allIc", specializationService.findImprovementCourses());
 			model.addAttribute("allJs", specializationService.findJobSectors());
 			return "admin/run/main/statistics/choice";

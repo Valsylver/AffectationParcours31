@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.affectation.domain.specialization.ImprovementCourse;
 import fr.affectation.domain.specialization.SimpleSpecializationWithList;
+import fr.affectation.domain.specialization.SimpleSpecializationWithNumber;
 import fr.affectation.domain.specialization.Specialization;
 import fr.affectation.domain.student.SimpleStudent;
 import fr.affectation.domain.student.SimpleStudentWithValidation;
@@ -68,5 +69,9 @@ public interface StudentService {
 	public List<Specialization> findJsChoicesFullSpecByLogin(String login);
 
 	public List<List<ImprovementCourse>> findIcAvailableAsListWithSuperIc();
+
+	public List<SimpleSpecializationWithNumber> findSimpleIcStats(int choice);
+
+	public List<SimpleSpecializationWithNumber> findSimpleJsStats(int choice);
 
 }

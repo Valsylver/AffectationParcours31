@@ -20,7 +20,6 @@ import fr.affectation.domain.student.SimpleStudentWithValidation;
 import fr.affectation.service.configuration.ConfigurationService;
 import fr.affectation.service.responsible.ResponsibleService;
 import fr.affectation.service.specialization.SpecializationService;
-import fr.affectation.service.statistics.StatisticsService;
 import fr.affectation.service.student.StudentService;
 import fr.affectation.service.validation.ValidationService;
 
@@ -30,9 +29,6 @@ public class ResponsibleController {
 
 	@Inject
 	private SpecializationService specializationService;
-
-	@Inject
-	private StatisticsService statisticsService;
 
 	@Inject
 	private ResponsibleService responsibleService;
@@ -137,8 +133,8 @@ public class ResponsibleController {
 					.getImprovementCourseByAbbreviation(abbreviation) : specializationService.getJobSectorByAbbreviation(abbreviation);
 			model.addAttribute("specialization", specialization);
 			model.addAttribute("choiceNumber", choice);
-			model.addAttribute("simpleImprovementCourses", statisticsService.findSimpleIcStats(choice));
-			model.addAttribute("simpleJobSectors", statisticsService.findSimpleJsStats(choice));
+			model.addAttribute("simpleImprovementCourses", studentService.findSimpleIcStats(choice));
+			model.addAttribute("simpleJobSectors", studentService.findSimpleJsStats(choice));
 			model.addAttribute("allIc", specializationService.findImprovementCourses());
 			model.addAttribute("allJs", specializationService.findJobSectors());
 			return "responsable/run/statistics/choice";
