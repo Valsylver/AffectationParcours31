@@ -49,9 +49,9 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 	
 	private boolean validating = false;
 	
-	private boolean firstMailActivated = true;
+	private boolean firstMailActivated = false;
 	
-	private boolean secondMailActivated = true;
+	private boolean secondMailActivated = false;
 
 	private When when;
 	

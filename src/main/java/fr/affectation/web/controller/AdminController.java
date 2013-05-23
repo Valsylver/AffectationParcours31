@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -1047,61 +1046,7 @@ public class AdminController {
 
 	@PostConstruct
 	public void initialize() {
-		if (!configurationService.hasAlreadyBeenLaunched()) {
-			createFakeSpecialization();
-			adminService.save("jmrossi");
-			adminService.save("vmarmousez");
-			Mail first = new Mail((long) 1, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-			Mail second = new Mail((long) 2, "Voeux Parcours/Filières 3A", "Bonjour, vous n'avez pas ...");
-			mailService.save(first);
-			mailService.save(second);
-			configurationService.setFirstMailActivated(false);
-			configurationService.setSecondMailActivated(false);
-			configurationService.setAlreadyBeenLaunched();
-		}
 		configurationService.initializeFromDataBase();
-	}
-
-	public void createFakeSpecialization() {
-		createAndSaveFakeIc("AISE", "Acoustique Industrielle, Sons et Environnement");
-		createAndSaveFakeIc("M3S", "Modélisation Mécanique des Matériaux et des Structures");
-		createAndSaveFakeIc("FETES", "Fluides : Energie, Transport, Environnement, Santé");
-		createAndSaveFakeIc("GM", "Génie Mer");
-		createAndSaveFakeIc("CMV", "Chimie : Molécules et Vivant");
-		createAndSaveFakeIc("PM", "Procédés et Molécules");
-		createAndSaveFakeIc("MSA", "Micro Systèmes Avancés");
-		createAndSaveFakeIc("OP", "Optique et Photonique");
-		createAndSaveFakeIc("CSA", "Conception des Systèmes Automatisés");
-		createAndSaveFakeIc("I2T", "Ingénierie des Images et Télécommunications");
-		createAndSaveFakeIc("MAF", "Mathématiques Appliquées Finance");
-		createAndSaveFakeIc("S2I", "Systèmes d'Information et Informatique");
-
-		createAndSaveFakeJs("R&D", "Recherche et développement");
-		createAndSaveFakeJs("CBE", "Conception, Bureau d'Etudes");
-		createAndSaveFakeJs("PRL", "Production, Logistique");
-		createAndSaveFakeJs("AC", "Audit et Conseil");
-		createAndSaveFakeJs("MEE", "Management d'Entreprise, Entreprenariat");
-	}
-
-	public void createAndSaveFakeIc(String abbreviation, String name) {
-		ImprovementCourse improvementCourse = new ImprovementCourse();
-		improvementCourse.setAbbreviation(abbreviation);
-		improvementCourse.setName(name);
-		improvementCourse.setResponsibleLogin("respo_" + abbreviation);
-		List<String> liste = Arrays.asList("OMIS", "OMAS", "OMOS", "OMUS");
-		double f = Math.random() * (liste.size());
-		int i = (int) (f);
-		String value = liste.get(i);
-		improvementCourse.setSuperIc(value);
-		specializationService.save(improvementCourse);
-	}
-
-	public void createAndSaveFakeJs(String abbreviation, String name) {
-		JobSector jobSector = new JobSector();
-		jobSector.setAbbreviation(abbreviation);
-		jobSector.setName(name);
-		jobSector.setResponsibleLogin("respo_" + abbreviation);
-		specializationService.save(jobSector);
 	}
 
 }
