@@ -64,11 +64,9 @@ public class ConfigurationService{
 	}
 	
 	public void sendFirstEmail(){
-		//mailService.sendMail("valery.marmousez@centrale-marseille.fr", "valery.marmousez@gmail.com", "Rappel", "1er rappel");
 	}
 	
 	public void sendSecondEmail(){
-		//mailService.sendMail("valery.marmousez@centrale-marseille.fr", "valery.marmousez@gmail.com", "Rappel", "2ème rappel");
 	}
 	
 	public void endSubmission(){
